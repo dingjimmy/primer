@@ -65,6 +65,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Primer.Mocking\Primer.Mocking.csproj">
+      <Project>{6e907a5f-8d52-49c0-907e-83e4779454e3}</Project>
+      <Name>Primer.Mocking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Primer\Primer.csproj">
+      <Project>{74d2e102-c77d-4b66-bdb7-57c436b170f8}</Project>
+      <Name>Primer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

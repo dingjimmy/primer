@@ -5,10 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Primer;
+using Moq;
 
 namespace Primer.Mocking
 {
-    class MockHelper
+    class Helper
     {
+
+        public static Mock<IViewModel> MockViewModel()
+        {
+            var mock = new Mock<IViewModel>();
+
+
+            return mock;
+        }
     }
 }
