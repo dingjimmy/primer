@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Primer.Validation;
 
-namespace Primer
+namespace Primer.SampleApp
 {
 
     public class MyViewModel : ViewModel
     {
 
         private int _ID;
+
+        [NullValueValidator]
         public int ID
         {
             get { return _ID; }
@@ -21,6 +24,8 @@ namespace Primer
 
 
         private string _Name;
+
+        [NullValueValidator]
         public string Name
         {
             get { return _Name; }
@@ -30,6 +35,8 @@ namespace Primer
 
 
         private string _EmailAddress;
+
+        [NullValueValidator]
         public string EmailAddress
         {
             get { return _EmailAddress; }
@@ -37,20 +44,17 @@ namespace Primer
         }
 
 
-        public ICommand Save { get; set; }
+
+        public ICommand Ok { get; set; }
+
 
         public ICommand Cancel { get; set; }
 
 
-        public MyViewModel()
-        {
-
-            
-
-        }
+        public MyViewModel() : base() { }
 
 
-        public void SaveMe()
+        public void Save(object parameter)
         {
 
             Validate("ID", "Name", "EmailAddress");
@@ -59,6 +63,12 @@ namespace Primer
             {
                 // save me to a database!
             }
+        }
+
+
+        public void CancelThis(object parameter)
+        {
+
         }
     }
 

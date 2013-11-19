@@ -15,6 +15,15 @@ namespace Primer
     public abstract class ViewModel : INotifyPropertyChanged, IDataErrorInfo, IDisposable
     {
 
+        /// <summary>
+        /// Primary Constructor
+        /// </summary>
+        public ViewModel()
+        {
+            CacheValidatorAttributes();
+        }
+
+
 
         /// <summary>
         /// Compares the current and proposed values and raises the <see cref="ViewModel.PropertyChanged"/> event if they are not equal.
@@ -22,7 +31,7 @@ namespace Primer
         /// <param name="propertyName">The name of the property that has changed.</param>
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
-        /// <returns>The proposed value if the values are not equal; othwerwise the current value.</returns>
+        /// <returns>The proposed value if the values are not equal; otherwise the current value.</returns>
         protected T UpdateProperty<T>(string propertyName, T currentValue, T proposedValue)
         {
 
