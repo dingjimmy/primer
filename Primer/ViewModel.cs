@@ -12,8 +12,32 @@ using Primer.Validation;
 
 namespace Primer
 {
-    class ViewModel : IViewModel, INotifyPropertyChanged, IDataErrorInfo, IDisposable
+    public abstract class ViewModel : INotifyPropertyChanged, IDataErrorInfo, IDisposable
     {
+
+
+        /// <summary>
+        /// Compares the current and proposed values and raises the <see cref="ViewModel.PropertyChanged"/> event if they are not equal.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that has changed.</param>
+        /// <param name="currentValue">The current value of the property.</param>
+        /// <param name="proposedValue">The proposed value of the property</param>
+        /// <returns>The proposed value if the values are not equal; othwerwise the current value.</returns>
+        protected T UpdateProperty<T>(string propertyName, T currentValue, T proposedValue)
+        {
+
+            if (!EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
+            {
+                RaisePropertyChanged(this, propertyName);
+                return proposedValue;
+            }
+            else
+            {
+                return currentValue;
+            }
+            
+        }
+
 
 
 #region INotifyPropertyChanged Support
@@ -27,12 +51,19 @@ namespace Primer
 
 
         /// <summary>
-        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the property's value has changed. 
+        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the property's value has changed. .
         /// </summary>
+        /// <param name="sender">The source of the event.</param>
         /// <param name="propertyName">The name of the property that has changed.</param>
-        public virtual void NotifyPropertyChanged(string propertyName)
+        protected void RaisePropertyChanged(object sender, string propertyName)
         {
-           RaisePropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+
+            // to avoid race conditions, we get a reference to any handlers befor invoking
+            var handlers = PropertyChanged;
+
+            // invoke the event
+            if (handlers != null) handlers(sender, new PropertyChangedEventArgs(propertyName));
+
         }
 
 
@@ -40,27 +71,14 @@ namespace Primer
         /// <summary>
         /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the value of the provided properties have changed. 
         /// </summary>
-        /// <param name="propertyName">A list of the properties that have been changed.</param>
-        public virtual void NotifyPropertyChanged(params string[] properties)
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="properties">A list of the properties that have been changed.</param>
+        protected void RaisePropertyChanged(object sender, params string[] properties)
         {
             foreach (var p in properties)
             {
-                RaisePropertyChanged(this, new PropertyChangedEventArgs(p));
+                RaisePropertyChanged(sender, p);
             }
-        }
-
-
-
-        // Event raising helper.
-        protected void RaisePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-
-            // to avoid race conditions, we get a reference to any handlers befor invoking
-            var handlers = PropertyChanged;
-
-            // invoke the event
-            if (handlers != null) handlers(sender, e);
-
         }
 
 
@@ -117,7 +135,7 @@ namespace Primer
         /// <returns>
         /// True if the ViewModel does have properties in an error state; otherwise false.
         /// </returns>
-        public bool HasErrors { get { return _Errors.Count > 0 ? true : false; } }
+        protected bool HasErrors { get { return _Errors.Count > 0 ? true : false; } }
 
 
         
@@ -126,7 +144,7 @@ namespace Primer
         /// </summary>
         /// <param name="properties">A list of properties to check.</param>
         /// <returns>True if the properties are in an error state; false otherwise.</returns>
-        public bool InError(params string[] properties)
+        protected bool InError(params string[] properties)
         {
 
             // check all provided properties to see if any are in error and return true if so.
@@ -250,7 +268,7 @@ namespace Primer
         /// <summary>
         /// Validate multiple properties at once.
         /// </summary>
-        public void Validate(params string[] properties)
+        protected void Validate(params string[] properties)
         {
             foreach (var p in properties)
             {

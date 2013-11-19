@@ -17,6 +17,7 @@ namespace Primer.Mocking
         {
             var mock = new Mock<IViewModel>();
 
+            mock.Setup(m => m.Dispose()).Throws(new ApplicationException());
 
             return mock;
         }
