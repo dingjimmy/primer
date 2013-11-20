@@ -6,7 +6,7 @@ using System.Windows.Markup;
 
 namespace Primer.Windows
 {
-    class WindowingService :IWindowingService
+    public class WindowingService :IWindowingService
     {
 
 
@@ -28,10 +28,11 @@ namespace Primer.Windows
         {
             
             // init the window
-            var win = new Window();
-            win.Name = identifier;
-            win.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
-            win.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.IetfLanguageTag);
+            var win = new Primer.Windows.Window();
+            //win.Name = identifier;
+            //win.WindowStyle = System.Windows.WindowStyle.None;
+            //win.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+            //win.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.IetfLanguageTag);
 
 
             // set the viewmodel for this window to use

@@ -17,7 +17,7 @@ namespace Primer.SampleApp
         {
             base.OnStartup(e);
 
-            var win = new MainWindow();
+            var win = new Primer.Windows.Window();
             win.Content = new MyViewModel();
             MainWindow = win;
             MainWindow.Show();

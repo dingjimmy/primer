@@ -47,9 +47,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\NullValueValidatorAttribute.cs" />
     <Compile Include="Validation\ValidatorAttribute.cs" />
-    <Compile Include="Windows\IWindowingService.cs" />
+    <Compile Include="Windows\Services\IWindowingService.cs" />
     <Compile Include="Windows\WindowBase.cs" />
-    <Compile Include="Windows\WindowingService.cs" />
+    <Compile Include="Windows\Services\WindowingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Commands\" />
@@ -59,6 +59,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\Styles\WindowStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Windows\Resources\close16.png" />
+    <Content Include="Windows\Resources\maximize16.png" />
+    <Content Include="Windows\Resources\minimize16.png" />
+    <Content Include="Windows\Resources\restore16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
