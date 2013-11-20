@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Primer.Windows;
 
 namespace Primer.SampleApp
 {
@@ -17,10 +18,10 @@ namespace Primer.SampleApp
         {
             base.OnStartup(e);
 
-            var win = new Primer.Windows.Window();
-            win.Content = new MyViewModel();
-            MainWindow = win;
-            MainWindow.Show();
+            IWindowingService svc = new WindowingService();
+
+            svc.Initialize();
+            svc.ShowWindow("MyWindow", new MyViewModel(), null);
 
         }
     }

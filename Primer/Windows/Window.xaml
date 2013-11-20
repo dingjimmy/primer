@@ -7,5 +7,15 @@
         WindowStyle="None"
         ShowInTaskbar="True"
         ResizeMode="CanResize"
-        SizeToContent="Manual">
+        SizeToContent="Manual"
+        Style="{StaticResource WindowStyle}">
+    
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/windows/styles/windowstyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
 </pw:WindowBase>

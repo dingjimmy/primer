@@ -15,6 +15,7 @@ namespace Primer.Windows
         public WindowBase()
         {
 
+
             // init command bindings
             close = new CommandBinding(SystemCommands.CloseWindowCommand, (s, e) => SystemCommands.CloseWindow((Window)this));
             minimize = new CommandBinding(SystemCommands.MinimizeWindowCommand, (s, e) => SystemCommands.MinimizeWindow((Window)this));
@@ -33,6 +34,10 @@ namespace Primer.Windows
             if (!CommandBindings.Contains(maximize)) CommandBindings.Add(maximize);
 
         }
+
+        
+
+        
         
     }
 }

@@ -2,12 +2,30 @@
 
 using System;
 using System.Threading;
+using System.Windows;
 using System.Windows.Markup;
 
 namespace Primer.Windows
 {
     public class WindowingService :IWindowingService
     {
+
+        bool _IsInitialized = false;
+        ResourceDictionary _BaseWindowStyleResource;
+
+        public void Initialize()
+        {
+
+            _BaseWindowStyleResource = new ResourceDictionary();
+            _BaseWindowStyleResource.Source = new Uri("/primerlib;component/windows/styles/windowstyle.xaml", UriKind.Relative);
+            _BaseWindowStyleResource.(new Uri("/primerlib;component/windows/resources/close16.png", UriKind.Relative)); 
+
+            //System.Uri resourceLocater = new Uri("/primerlib;component/windows/window.xaml", UriKind.Relative);
+            //System.Windows.Application.LoadComponent(this, resourceLocater);
+
+            _IsInitialized = true;
+
+        }
 
 
         public bool ShowPopupWindow(ViewModel content, System.Windows.Window owner)
@@ -27,12 +45,19 @@ namespace Primer.Windows
         public System.Windows.Window ShowWindow(string identifier, ViewModel content, System.Windows.Window owner)
         {
             
+            //check service has been initialized
+            if (!_IsInitialized) throw new InvalidOperationException("The WindowingService must be initialized first.");
+
+
             // init the window
             var win = new Primer.Windows.Window();
-            //win.Name = identifier;
-            //win.WindowStyle = System.Windows.WindowStyle.None;
-            //win.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
-            //win.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.IetfLanguageTag);
+            win.Name = identifier;
+            win.WindowStyle = System.Windows.WindowStyle.None;
+            win.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
+            win.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.IetfLanguageTag);
+            win.Resources.MergedDictionaries.Add(_BaseWindowStyleResource);           
+            win.Style = (Style)_BaseWindowStyleResource["WindowStyle"];
+           
 
 
             // set the viewmodel for this window to use

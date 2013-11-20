@@ -6,6 +6,8 @@ namespace Primer.Windows
     public interface IWindowingService
     {
 
+        void Initialize();
+
         bool ShowPopupWindow(ViewModel content, System.Windows.Window owner);
 
         string ShowFilePicker(FilePickerMode mode, string filename, System.Windows.Window owner, string defaultExtension, params string[] validExtensions);

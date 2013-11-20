@@ -1,9 +1,15 @@
 ﻿<Application x:Class="Primer.SampleApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:app="clr-namespace:Primer.SampleApp">
     
     <Application.Resources>
-         
+
+        <!-- Tell the runtime which view to display when a MyViewModel is being used. -->
+        <DataTemplate DataType="{x:Type app:MyViewModel}">
+            <app:MyView />
+        </DataTemplate>
+
     </Application.Resources>
     
 </Application>
