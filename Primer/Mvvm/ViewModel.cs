@@ -15,14 +15,54 @@ namespace Primer
     public abstract class ViewModel : INotifyPropertyChanged, IDataErrorInfo, IDisposable
     {
 
+
+#region Fields
+
+        private Dictionary<string, string> _Errors;
+        private Dictionary<string, List<ValidatorAttribute>> _Validators;
+
+#endregion
+
+
+#region Properties
+
+
+        /// <summary>
+        /// Gets a value that indicates whether the ViewModel has properties in an error state.
+        /// </summary>
+        /// <returns>
+        /// True if the ViewModel does have properties in an error state; otherwise false.
+        /// </returns>
+        protected bool HasErrors { get { return _Errors.Count > 0 ? true : false; } }
+
+
+#endregion
+
+
+#region Constructor
+
+
         /// <summary>
         /// Primary Constructor
         /// </summary>
         public ViewModel()
         {
+
+            // init error and validator dictionaries
+            _Errors = new Dictionary<string, string>();
+            _Validators = new Dictionary<string, List<ValidatorAttribute>>();
+
+
+            // cache validators
             CacheValidatorAttributes();
+
         }
 
+
+#endregion
+
+
+#region Update Property Methods
 
 
         /// <summary>
@@ -44,110 +84,80 @@ namespace Primer
             {
                 return currentValue;
             }
-            
+
         }
 
 
+#endregion
 
-#region INotifyPropertyChanged Support
 
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
+#region Validation Methods
 
 
         /// <summary>
-        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the property's value has changed. .
+        /// Validates this property against its adorned <see cref="ValidatorAttribute" />s and returns a value that indicates whether the property passed validation.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="propertyName">The name of the property that has changed.</param>
-        protected void RaisePropertyChanged(object sender, string propertyName)
+        /// <param name="propertyName">The name of the property to validate.</param>
+        /// <returns>True if the property has passed validation; false otherwise.</returns>
+        protected bool Validate(string propertyName)
         {
+            bool isValid = true;
 
-            // to avoid race conditions, we get a reference to any handlers befor invoking
-            var handlers = PropertyChanged;
 
-            // invoke the event
-            if (handlers != null) handlers(sender, new PropertyChangedEventArgs(propertyName));
+            // clear the error state on this property
+            ClearError(propertyName);
+
+
+            // check if the property has validators attached to it
+            if (_Validators.ContainsKey(propertyName))
+            {
+
+                // get the value of the property
+                var value = this.GetType().GetProperty(propertyName).GetValue(this, null);
+
+
+                // get a list of all validator attributes assigned to the property
+                var validators = _Validators[propertyName];
+
+
+                // loop through all validator attributes
+                foreach (var validator in validators)
+                {
+
+                    // run validation
+                    validator.Validate(value);
+
+
+                    // if validation was not successfull then set error and don't process the remaining attributes
+                    if (!validator.IsValid)
+                    {
+                        SetError(propertyName, validator.Message);
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+            // return a value indicating whether this property is valid or not.
+            return isValid;
 
         }
 
 
 
         /// <summary>
-        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the value of the provided properties have changed. 
+        /// Validate multiple properties at once.
         /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="properties">A list of the properties that have been changed.</param>
-        protected void RaisePropertyChanged(object sender, params string[] properties)
+        protected void Validate(params string[] properties)
         {
             foreach (var p in properties)
             {
-                RaisePropertyChanged(sender, p);
+                Validate(p);
             }
         }
 
 
-#endregion
 
-
-#region IDataErrorInfo Support
-
-
-        // property backing fields
-        string _Error = string.Empty;
-        Dictionary<string, string> _Errors = new Dictionary<string,string>();
-        Dictionary<string, List<ValidatorAttribute>> _Validators = new Dictionary<string,List<ValidatorAttribute>>();
-
-
-        /// <Summary>
-        /// Gets an error message indicating what is wrong with this object.
-        /// </Summary>
-        /// <returns> An error message indicating what is wrong with this object. The default is an empty string ("").</returns>
-        public string Error
-        {
-            get { return _Error; }        
-        }
-
-
-        /// <summary>
-        /// Gets the error message for the property with the given name.
-        /// </summary>
-        /// <param name="propertyName">The name of the property whose error message to get.</param>
-        /// <returns>The error message for the property. The default is an empty string ("").</returns>
-        public string this[string propertyName]
-        {
-            get 
-            { 
-                if( _Validators.ContainsKey(propertyName))
-                {
-                    if (!Validate(propertyName)) return _Errors[propertyName];
-                }
-
-                return String.Empty;
-            }
-        }
-
-
-#endregion
-
-
-#region Validation
-
-
-        /// <summary>
-        /// Gets a value that indicates whether the ViewModel has properties in an error state.
-        /// </summary>
-        /// <returns>
-        /// True if the ViewModel does have properties in an error state; otherwise false.
-        /// </returns>
-        protected bool HasErrors { get { return _Errors.Count > 0 ? true : false; } }
-
-
-        
         /// <summary>
         /// Checks to see if the properties are in an error state and returns a value that confirms if this is the case. 
         /// </summary>
@@ -222,69 +232,10 @@ namespace Primer
         }
 
 
-
-        /// <summary>
-        /// Validates this property against its adorned <see cref="ValidatorAttribute" />s and returns a value that indicates whether the property passed validation.
-        /// </summary>
-        /// <param name="propertyName">The name of the property to validate.</param>
-        /// <returns>True if the property has passed validation; false otherwise.</returns>
-        protected bool Validate(string propertyName)
-        {
-            bool isValid = true;
+#endregion
 
 
-            // clear the error state on this property
-            ClearError(propertyName);
-
-
-            // check if the property has validators attached to it
-            if (_Validators.ContainsKey(propertyName))
-            {
-               
-                // get the value of the property
-                var value = this.GetType().GetProperty(propertyName).GetValue(this, null);
-
-
-                // get a list of all validator attributes assigned to the property
-                var validators = _Validators[propertyName];
-
-
-                // loop through all validator attributes
-                foreach (var validator in validators)
-                {
-
-                    // run validation
-                    validator.Validate(value);
-
-
-                    // if validation was not successfull then set error and don't process the remaining attributes
-                    if (!validator.IsValid)
-                    {
-                        SetError(propertyName, validator.Message);
-                        isValid = false;
-                        break;
-                    }
-                }
-            }
-
-            // return a value indicating whether this property is valid or not.
-            return isValid;
-
-        }
-
-
-
-        /// <summary>
-        /// Validate multiple properties at once.
-        /// </summary>
-        protected void Validate(params string[] properties)
-        {
-            foreach (var p in properties)
-            {
-                Validate(p);
-            }
-        }
-
+#region Attribute Caching Methods
 
 
         /// <summary>
@@ -308,7 +259,7 @@ namespace Primer
 
 
                 // get all validator attributes for this property
-                var validators = (ValidatorAttribute[]) p.GetCustomAttributes(typeof(ValidatorAttribute), false);
+                var validators = (ValidatorAttribute[])p.GetCustomAttributes(typeof(ValidatorAttribute), false);
 
 
                 /*  now sorting on the generic list, rather than the array
@@ -318,7 +269,7 @@ namespace Primer
 
                 // prepare attribute list
                 var list = validators.ToList();
-                
+
                 // sort validator attributes into correct processing order
                 list.Sort();
 
@@ -336,7 +287,7 @@ namespace Primer
         {
 
             // if property exists and the attribute isnt already added to the property, then add it.
-            if(_Validators.ContainsKey(propertyName))
+            if (_Validators.ContainsKey(propertyName))
             {
                 if (!_Validators[propertyName].Contains(attribute)) _Validators[propertyName].Add(attribute);
             }
@@ -344,11 +295,96 @@ namespace Primer
         }
 
 
+#endregion
+
+
+#region INotifyPropertyChanged Support
+
+
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+
+        /// <summary>
+        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the property's value has changed. .
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="propertyName">The name of the property that has changed.</param>
+        protected void RaisePropertyChanged(object sender, string propertyName)
+        {
+
+            // to avoid race conditions, we get a reference to any handlers befor invoking
+            var handlers = PropertyChanged;
+
+            // invoke the event
+            if (handlers != null) handlers(sender, new PropertyChangedEventArgs(propertyName));
+
+        }
+
+
+
+        /// <summary>
+        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the value of the provided properties have changed. 
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="properties">A list of the properties that have been changed.</param>
+        protected void RaisePropertyChanged(object sender, params string[] properties)
+        {
+            foreach (var p in properties)
+            {
+                RaisePropertyChanged(sender, p);
+            }
+        }
+
+
+#endregion
+
+
+#region IDataErrorInfo Support
+
+
+        string _Error = string.Empty;
+
+
+        /// <Summary>
+        /// Gets an error message indicating what is wrong with this object.
+        /// </Summary>
+        /// <returns> An error message indicating what is wrong with this object. The default is an empty string ("").</returns>
+        public string Error
+        {
+            get { return _Error; }        
+        }
+
+
+        /// <summary>
+        /// Gets the error message for the property with the given name.
+        /// </summary>
+        /// <param name="propertyName">The name of the property whose error message to get.</param>
+        /// <returns>The error message for the property. The default is an empty string ("").</returns>
+        public string this[string propertyName]
+        {
+            get 
+            { 
+                if( _Validators.ContainsKey(propertyName))
+                {
+                    if (!Validate(propertyName)) return _Errors[propertyName];
+                }
+
+                return String.Empty;
+            }
+        }
+
 
 #endregion
 
 
 #region IDisposable Support
+
+
+        protected bool _IsDisposed = false;
 
 
         /// <summary>
@@ -364,12 +400,24 @@ namespace Primer
 
         protected virtual void Dispose(bool disposing)
         {
+
+            if (_IsDisposed) throw new ObjectDisposedException("ViewModel");
+
+
+            // get rid of managed resources
             if(disposing)
             {
-                // TOD: get rid of managed resources
+                
             }
 
-            // TODO: get rid of unmanaged resources
+
+            // get rid of unmanaged resources
+            // TODO: Only required if you use unmanaged resources directly in this class.
+
+
+            // set flag to confirm disposal complete
+            _IsDisposed = true;
+
         }
 
 
