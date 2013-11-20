@@ -1,13 +1,10 @@
 ﻿// Copyright (c) James Dingle
 
+using Primer.Validation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
-using System.Collections;
-using Primer.Validation;
+using System.Linq;
 
 
 namespace Primer
