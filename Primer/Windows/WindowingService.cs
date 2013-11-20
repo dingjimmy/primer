@@ -17,14 +17,14 @@ namespace Primer.Windows
 
 
 
-        public string ShowFilePicker(FilePickerMode mode, string filename, System.Windows.Window owner, string defaultExtension, params string validExtensions)
+        public string ShowFilePicker(FilePickerMode mode, string filename, System.Windows.Window owner, string defaultExtension, params string[] validExtensions)
         {
             throw new NotImplementedException();
         }
 
 
 
-        public void ShowWindow(string identifier, ViewModel content, System.Windows.Window owner)
+        public System.Windows.Window ShowWindow(string identifier, ViewModel content, System.Windows.Window owner)
         {
             
             // init the window
@@ -49,11 +49,15 @@ namespace Primer.Windows
             // show the window
             win.Show();
 
+
+            // return reference to caller
+            return win;
+
         }
 
 
 
-        public void ShowAsyncWindow(string identifier, ViewModel content)
+        public System.Windows.Window ShowAsyncWindow(string identifier, ViewModel content)
         {
             throw new NotImplementedException();
         }
