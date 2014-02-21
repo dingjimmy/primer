@@ -5,10 +5,10 @@
     
     <Application.Resources>
 
-        <!-- Tell the runtime which view to display when a MyViewModel is being used. -->
+        <!-- Tell the runtime which view to display when a MyViewModel is being used. --><!--
         <DataTemplate DataType="{x:Type app:MyViewModel}">
             <app:MyView />
-        </DataTemplate>
+        </DataTemplate>-->
 
     </Application.Resources>
     

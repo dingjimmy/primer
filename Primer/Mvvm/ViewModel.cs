@@ -69,7 +69,7 @@ namespace Primer
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
         /// <returns>The proposed value if the values are not equal; otherwise the current value.</returns>
-        protected T UpdateProperty<T>(string propertyName, T currentValue, T proposedValue)
+        public T UpdateProperty<T>(string propertyName, T currentValue, T proposedValue)
         {
 
             if (!EqualityComparer<T>.Default.Equals(currentValue, proposedValue))

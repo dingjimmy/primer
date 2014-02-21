@@ -18,10 +18,14 @@ namespace Primer.SampleApp
         {
             base.OnStartup(e);
 
-            IWindowingService svc = new WindowingService();
+            //IWindowingService svc = new WindowingService();
+            //svc.Initialize();
+            //svc.ShowWindow("MyWindow", new SampleViewModel(), null);
 
-            svc.Initialize();
-            svc.ShowWindow("MyWindow", new MyViewModel(), null);
+            var win = new Window1();
+            var vm = new SampleViewModel();
+            win.DataContext = vm;
+            win.Show();
 
         }
     }

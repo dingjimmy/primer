@@ -18,7 +18,7 @@ namespace Primer.Windows
 
             _BaseWindowStyleResource = new ResourceDictionary();
             _BaseWindowStyleResource.Source = new Uri("/primerlib;component/windows/styles/windowstyle.xaml", UriKind.Relative);
-            _BaseWindowStyleResource.(new Uri("/primerlib;component/windows/resources/close16.png", UriKind.Relative)); 
+            //_BaseWindowStyleResource.(new Uri("/primerlib;component/windows/resources/close16.png", UriKind.Relative)); 
 
             //System.Uri resourceLocater = new Uri("/primerlib;component/windows/window.xaml", UriKind.Relative);
             //System.Windows.Application.LoadComponent(this, resourceLocater);
@@ -52,11 +52,11 @@ namespace Primer.Windows
             // init the window
             var win = new Primer.Windows.Window();
             win.Name = identifier;
-            win.WindowStyle = System.Windows.WindowStyle.None;
             win.SizeToContent = System.Windows.SizeToContent.WidthAndHeight;
             win.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.IetfLanguageTag);
-            win.Resources.MergedDictionaries.Add(_BaseWindowStyleResource);           
-            win.Style = (Style)_BaseWindowStyleResource["WindowStyle"];
+            win.Resources.MergedDictionaries.Add(_BaseWindowStyleResource);
+            //win.WindowStyle = System.Windows.WindowStyle.None;
+            //win.Style = (Style)_BaseWindowStyleResource["WindowStyle"];
            
 
 
