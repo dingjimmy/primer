@@ -9,6 +9,10 @@ using System.Linq;
 
 namespace Primer
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class ViewModel : INotifyPropertyChanged, IDataErrorInfo, IDisposable
     {
 

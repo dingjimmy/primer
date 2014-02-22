@@ -1,13 +1,15 @@
-﻿using System;
+﻿// Copyright (c) James Dingle
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Primer
+namespace Primer.SmartProperties
 {
-    class Action : ICommand
+    public class Action : ICommand, IActionProperty
     {
 
         public Action()

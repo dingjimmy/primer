@@ -11,7 +11,7 @@ namespace Primer.SampleApp
         {
             InitializeComponent();
 
-            Loaded += (o, e) => MessageBox.Show(string.Format("{0}", this.DataContext.GetType()));
+            //Loaded += (o, e) => MessageBox.Show(string.Format("{0}", this.DataContext.GetType()));
         }
 
        

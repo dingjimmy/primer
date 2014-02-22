@@ -23,7 +23,7 @@ namespace Primer.SampleApp
             //svc.ShowWindow("MyWindow", new SampleViewModel(), null);
 
             var win = new Window1();
-            var vm = new SampleViewModel();
+            var vm = new SampleCustomerViewModel();
             win.DataContext = vm;
             win.Show();
 
