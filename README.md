@@ -1,10 +1,10 @@
 Primer
-======
+=
 
 A simple MVVM framework for.NET
 
-Usage - Declaring Data
-=
+Usage
+-
 
     class CustomerViewModel:ViewModel
     {
@@ -28,7 +28,8 @@ Usage - Declaring Data
         FirstName = this.Init("FirstName", "Jeremy");
         FamilyName = this.Init("FamilyName", "Kyle");
         TelNumber = this.Init("TelNumber", "01225 436921");
-        StartDate = this.InitDate("StartDate", "
+        StartDate = this.InitDate("StartDate", "2014-02-22");
+        EndDate = this.InitNullableDate("EndDate", null);
       }
   
     }
