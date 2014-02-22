@@ -4,7 +4,7 @@ Primer
 A simple MVVM framework for.NET
 
 Usage
--
+---
 
     class CustomerViewModel:ViewModel
     {
