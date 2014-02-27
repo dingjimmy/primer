@@ -9,49 +9,17 @@ A simple MVVM framework for.NET
     class CustomerViewModel:ViewModel
     {
     
-        //
-        // Declare Data-Properties
-        //
-        public Data<int> ID { get; set; }
-        public Data<string> FirstName { get; set; }
-        public Data<string> FamilyName { get; set; }
-        public Data<string> TelNumber { get; set; }
-        public Data<DateTime> StartDate { get; set; }
-        public Data<DateTime?> EndDate { get; set; }
-        public Data<List<OrderViewModel>> Orders { get; set; }
-    
-    
-        //
-        // Declare Action-Properties
-        //
-        public Action Save { get; set; }
-        public Action Cancel { get; set; }
+        public DataProperty<int> ID { get; set; }
+        public DataProperty<string> FirstName { get; set; }
+        public DataProperty<string> FamilyName { get; set; }
         
-        
-        public CustomerViewModel()
+        public CustomerViewModel() : base() { }
+
+        public override void InitialiseDataProperties(DataPropertyInitialiser pi)
         {
-
-            //
-            // Initialise Data-Properties
-            //
-            ID = Init.Data(this,"ID", 987654321);
-            FirstName = Init.Data(this, "FirstName", "Jeremy");
-            FamilyName = Init.Data(this, "FamilyName", "Kyle");
-            TelNumber = Init.Data(this, "TelNumber", "01225 436921");
-            StartDate = Init.Data(this,"StartDate", Convert.ToDateTime("2014-02-22"));
-            EndDate = Init.NullableData(this, "End Date", Convert.ToDateTime("2014-11-4"));
-            Orders = Init.Data(this, "Order", new List<OrderViewModel>()
-            {
-                new OrderViewModel(), 
-                new OrderViewModel(), 
-                new OrderViewModel()
-            });
-
-
-            //
-            // TODO: Initialise Action-Properties
-            //
-            
+            ID = pi.Initialise<int>("ID", this).WithValue(1280571);
+            FirstName = pi.Initialise<string>("FirstName", this).WithValue("Joeseph");
+            FamilyName = pi.Initialise<string>("FamilyName", this).WithValue("Bloggs");
         }
   
     }
@@ -61,10 +29,6 @@ A simple MVVM framework for.NET
         class CustomerViewModel:ViewModel
         {
     
-            //
-            // Declare Data-Properties
-            //
-            
             int _ID = 987654321;
             public int ID
             {
@@ -86,9 +50,6 @@ A simple MVVM framework for.NET
                 set { _FamilyName = UpdateProperty("FamilyName", _FamilyName, value); }
             }
             
-            
-            public CustomerViewModel()
-            {
-            }
+            public CustomerViewModel() {}
         
         }
