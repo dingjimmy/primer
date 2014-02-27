@@ -34,22 +34,22 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="ID:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=ID.Value}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=ID.Data}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="First Name:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=FirstName.Value}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=FirstName.Data}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="Family Name:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=FamilyName.Value}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=FamilyName.Data}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="Tel No:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=TelNumber.Value}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=TelNumber.Data}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="Start Date:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=StartDate.Value, StringFormat={}{0:dd-MMM-yyyy}}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=StartDate.Data, StringFormat={}{0:dd-MMM-yyyy}}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="End Date:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=EndDate.Value, StringFormat={}{0:dd-MMM-yyyy}}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=EndDate.Data, StringFormat={}{0:dd-MMM-yyyy}}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="9" />
 
 
         <Button Content="Ok" Margin="4" Grid.Row="10" Grid.Column="7" Grid.ColumnSpan="3" />

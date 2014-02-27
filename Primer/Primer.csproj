@@ -44,10 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SmartProperties\ActionProperty.cs" />
+    <Compile Include="SmartProperties\ActionPropertyInitialiser.cs" />
     <Compile Include="SmartProperties\DataProperty.cs" />
     <Compile Include="SmartProperties\IActionProperty.cs" />
     <Compile Include="SmartProperties\IDataProperty.cs" />
-    <Compile Include="SmartProperties\Initialiser.cs" />
+    <Compile Include="SmartProperties\DataPropertyInitialiser.cs" />
     <Compile Include="ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validation\NullValueValidatorAttribute.cs" />

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Primer.SmartProperties;
 
 
 namespace Primer
@@ -57,7 +58,27 @@ namespace Primer
             // cache validators
             CacheValidatorAttributes();
 
+
+            // initialise data properties
+            InitialiseDataProperties(new DataPropertyInitialiser());
+
+
+            // initialise action properties
+            InitialiseActionProperties(new ActionPropertyInitialiser());
+
         }
+
+
+#endregion
+
+
+#region Initialise SmartProperty Methods
+
+
+        public abstract void InitialiseDataProperties(DataPropertyInitialiser dp);
+
+
+        public abstract void InitialiseActionProperties(ActionPropertyInitialiser ap);
 
 
 #endregion
