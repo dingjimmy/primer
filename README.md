@@ -17,9 +17,9 @@ A simple MVVM framework for.NET
 
         public override void InitialiseDataProperties(DataPropertyInitialiser pi)
         {
-            ID = pi.Initialise<int>("ID", this).WithValue(1280571);
-            FirstName = pi.Initialise<string>("FirstName", this).WithValue("Joeseph");
-            FamilyName = pi.Initialise<string>("FamilyName", this).WithValue("Bloggs");
+            ID = pi.Initialise<int>("ID").WithValue(1280571);
+            FirstName = pi.Initialise<string>("FirstName").WithValue("Joeseph");
+            FamilyName = pi.Initialise<string>("FamilyName").WithValue("Bloggs");
         }
   
     }
