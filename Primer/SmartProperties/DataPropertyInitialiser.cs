@@ -12,9 +12,19 @@ namespace Primer.SmartProperties
     public class DataPropertyInitialiser
     {
 
-        public DataPropertyInitialiser<T> Initialise<T>(string name, ViewModel parentViewModel)
+        ViewModel _TargetViewModel;
+
+        public DataPropertyInitialiser(ViewModel targetViewModel)
         {
-            return new DataPropertyInitialiser<T>(name, parentViewModel);
+            if (targetViewModel != null)
+                _TargetViewModel = targetViewModel;
+            else
+                throw new ArgumentNullException("targetViewModel");
+        }
+
+        public DataPropertyInitialiser<T> Initialise<T>(string name)
+        {
+            return new DataPropertyInitialiser<T>(name, _TargetViewModel);
         }
 
     }

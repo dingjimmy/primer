@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Primer.SmartProperties;
+using System;
 using System.Windows.Input;
-using Primer;
-using Primer.SmartProperties;
-using Primer.Validation;
 
 namespace Primer.SampleApp
 {
@@ -31,11 +25,12 @@ namespace Primer.SampleApp
 
         public override void InitialiseDataProperties(DataPropertyInitialiser pi)
         {
-            ID = pi.Initialise<int>("ID", this).WithValue(1280571);
-            FirstName = pi.Initialise<string>("FirstName", this).WithValue("Joeseph");
-            FamilyName = pi.Initialise<string>("FamilyName", this).WithValue("Bloggs");
-            StartDate = pi.Initialise<DateTime>("StartDate", this).WithValue("2014-02-27");
-            EndDate = pi.Initialise<DateTime?>("EndDate", this).WithValue("2018-09-03");         
+            ID = pi.Initialise<int>("ID").WithValue(1280571);
+            FirstName = pi.Initialise<string>("FirstName").WithValue("Joeseph");
+            FamilyName = pi.Initialise<string>("FamilyName").WithValue("Bloggs");
+            StartDate = pi.Initialise<DateTime>("StartDate").WithValue("2014-02-27");
+            EndDate = pi.Initialise<DateTime?>("EndDate").WithValue("2018-09-03");
+            EndDate = pi.Initialise<DateTime?>("EndDate").WithDefaultValue();
         }
 
 

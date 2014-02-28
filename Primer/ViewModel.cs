@@ -60,11 +60,11 @@ namespace Primer
 
 
             // initialise data properties
-            InitialiseDataProperties(new DataPropertyInitialiser());
+            InitialiseDataProperties(new DataPropertyInitialiser(this));
 
 
             // initialise action properties
-            InitialiseActionProperties(new ActionPropertyInitialiser());
+            InitialiseActionProperties(new ActionPropertyInitialiser(this));
 
         }
 

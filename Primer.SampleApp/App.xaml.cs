@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using Primer.Windows;
+﻿using System.Windows;
 
 namespace Primer.SampleApp
 {
@@ -17,10 +10,6 @@ namespace Primer.SampleApp
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            //IWindowingService svc = new WindowingService();
-            //svc.Initialize();
-            //svc.ShowWindow("MyWindow", new SampleViewModel(), null);
 
             var win = new Window1();
             var vm = new SampleCustomerViewModel();
