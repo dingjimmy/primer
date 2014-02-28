@@ -22,6 +22,13 @@ namespace Primer.SmartProperties
                 throw new ArgumentNullException("targetViewModel");
         }
 
+
+
+        /// <summary>
+        /// Creates a new DataProperty, and begins the initialisation process.
+        /// </summary>
+        /// <typeparam name="T">The underlying data-type for this DataProperty.</typeparam>
+        /// <returns>A  that can be used to complete the initialisation process.</returns>
         public DataPropertyInitialiser<T> Initialise<T>(string name)
         {
             return new DataPropertyInitialiser<T>(name, _TargetViewModel);

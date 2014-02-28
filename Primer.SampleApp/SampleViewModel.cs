@@ -30,7 +30,6 @@ namespace Primer.SampleApp
             FamilyName = pi.Initialise<string>("FamilyName").WithValue("Bloggs");
             StartDate = pi.Initialise<DateTime>("StartDate").WithValue("2014-02-27");
             EndDate = pi.Initialise<DateTime?>("EndDate").WithValue("2018-09-03");
-            EndDate = pi.Initialise<DateTime?>("EndDate").WithDefaultValue();
         }
 
 
