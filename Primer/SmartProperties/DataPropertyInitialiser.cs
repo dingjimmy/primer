@@ -1,6 +1,8 @@
 ﻿// Copyright (c) James Dingle
 
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Primer.SmartProperties
 {
@@ -34,6 +36,43 @@ namespace Primer.SmartProperties
             return new DataPropertyInitialiser<T>(name, _TargetViewModel);
         }
 
+
+
+        /// <summary>
+        /// Creates a new <see cref="ObservableCollection[T]" /> using the supplied predicate function. 
+        /// </summary>
+        /// <typeparam name="T">The underlying data-type for this collection.</typeparam>
+        /// <param name="predicate">The function  used to initialise and fill-out the collection.</param>
+        public ObservableCollection<T> InitialiseCollection<T>(Func<ObservableCollection<T>, ObservableCollection<T>> predicate)
+        {
+            return predicate(new ObservableCollection<T>());
+        }
+
+
+
+        /// <summary>
+        /// Creates a new <see cref="ObservableCollection{ViewModel}" />. 
+        /// </summary>
+        public ObservableCollection<TViewModel> InitialiseCollection<TViewModel, TData>(IQueryable<TData> query, Func<DataPropertyInitialiser, TData, TViewModel> predicate) 
+            where TViewModel : ViewModel, new()
+        {
+            var collection = new ObservableCollection<TViewModel>();
+
+            foreach (var item in query)
+            {
+                var vm = new TViewModel();
+                var initialiser = new DataPropertyInitialiser(vm);
+
+            }
+           
+            return predicate(new DataPropertyInitialiser(new T()), );
+        }
+
+
+        public ObservableCollection<global::Primer.SampleApp.DetailViewModel> InitialiseCollection<T1>(Func<DataPropertyInitialiser, ObservableCollection<global::Primer.SampleApp.DetailViewModel>, ObservableCollection<global::Primer.SampleApp.DetailViewModel>> func)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -133,5 +172,12 @@ namespace Primer.SmartProperties
         }
 
     }
+
+
+
+    //public class CollectionInitialiser<T>
+    //{
+
+    //}
 
 }
