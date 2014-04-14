@@ -11,12 +11,14 @@ namespace Primer.SmartProperties
     /// <summary>
     /// 
     /// </summary>
-    public class DataPropertyInitialiser
+    public class FieldInitialiser
     {
 
         ViewModel _TargetViewModel;
 
-        public DataPropertyInitialiser(ViewModel targetViewModel)
+
+        // Primary Constructor
+        public FieldInitialiser(ViewModel targetViewModel)
         {
             if (targetViewModel != null)
                 _TargetViewModel = targetViewModel;
@@ -27,25 +29,13 @@ namespace Primer.SmartProperties
 
 
         /// <summary>
-        /// Creates a new DataProperty, and begins the initialisation process.
+        /// Creates a new <see cref="Primer.SmartProperties.Field{T}"/>, and begins the initialisation process.
         /// </summary>
-        /// <typeparam name="T">The underlying data-type for this DataProperty.</typeparam>
+        /// <typeparam name="T">The underlying data-type for this <see cref="Primer.SmartProperties.Field{R}"/>.</typeparam>
         /// <returns>A  that can be used to complete the initialisation process.</returns>
-        public DataPropertyInitialiser<T> Initialise<T>(string name)
+        public FieldInitialiser<T> Initialise<T>(string name)
         {
-            return new DataPropertyInitialiser<T>(name, _TargetViewModel);
-        }
-
-
-
-        /// <summary>
-        /// Creates a new <see cref="ObservableCollection[T]" /> using the supplied predicate function. 
-        /// </summary>
-        /// <typeparam name="T">The underlying data-type for this collection.</typeparam>
-        /// <param name="predicate">The function  used to initialise and fill-out the collection.</param>
-        public ObservableCollection<T> InitialiseCollection<T>(Func<ObservableCollection<T>, ObservableCollection<T>> predicate)
-        {
-            return predicate(new ObservableCollection<T>());
+            return new FieldInitialiser<T>(name, _TargetViewModel);
         }
 
 
@@ -53,26 +43,38 @@ namespace Primer.SmartProperties
         /// <summary>
         /// Creates a new <see cref="ObservableCollection{ViewModel}" />. 
         /// </summary>
-        public ObservableCollection<TViewModel> InitialiseCollection<TViewModel, TData>(IQueryable<TData> query, Func<DataPropertyInitialiser, TData, TViewModel> predicate) 
+        public ObservableCollection<TViewModel> InitialiseCollection<TViewModel, TData>(IQueryable<TData> query, Action<FieldInitialiser, TData, TViewModel> initialiseMethod) 
             where TViewModel : ViewModel, new()
         {
+
+            // init collection of desired type
             var collection = new ObservableCollection<TViewModel>();
 
+
+            // execute query and loop through the results
             foreach (var item in query)
             {
+
+                // init new viewmodel
                 var vm = new TViewModel();
-                var initialiser = new DataPropertyInitialiser(vm);
 
+                // init new data-initialiser
+                var initialiser = new FieldInitialiser(vm);
+
+                // action the init function supplied by caller
+                initialiseMethod(initialiser, item, vm);
+
+                // add vm to collection
+                collection.Add(vm);
             }
-           
-            return predicate(new DataPropertyInitialiser(new T()), );
+
+
+            // return the completed collection to the caller
+            return collection;
+
         }
 
 
-        public ObservableCollection<global::Primer.SampleApp.DetailViewModel> InitialiseCollection<T1>(Func<DataPropertyInitialiser, ObservableCollection<global::Primer.SampleApp.DetailViewModel>, ObservableCollection<global::Primer.SampleApp.DetailViewModel>> func)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
@@ -81,7 +83,7 @@ namespace Primer.SmartProperties
     /// 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class DataPropertyInitialiser<T>
+    public class FieldInitialiser<T>
     {
 
 
@@ -94,7 +96,7 @@ namespace Primer.SmartProperties
         /// <summary>
         /// Public constructor
         /// </summary>
-        public DataPropertyInitialiser(string name, ViewModel parentViewModel)
+        public FieldInitialiser(string name, ViewModel parentViewModel)
         {
             _PropertyName = name;
             _ParentViewModel = parentViewModel;
@@ -105,9 +107,9 @@ namespace Primer.SmartProperties
         /// <summary>
         /// Set the initial value to the default value of the underlying type. 
         /// </summary>
-        public DataProperty<T> WithDefaultValue()
+        public Field<T> WithDefaultValue()
         {
-            return new DataProperty<T>(_PropertyName, default(T), _ParentViewModel);
+            return new Field<T>(_PropertyName, default(T), _ParentViewModel);
         }
 
 
@@ -115,9 +117,9 @@ namespace Primer.SmartProperties
         /// <summary>
         /// Sets the initial value. 
         /// </summary>
-        public DataProperty<T> WithValue(T value)
+        public Field<T> WithValue(T value)
         {
-            return new DataProperty<T>(_PropertyName, value, _ParentViewModel);
+            return new Field<T>(_PropertyName, value, _ParentViewModel);
         }
 
 
@@ -125,7 +127,7 @@ namespace Primer.SmartProperties
         /// <summary>
         /// Sets an initial value for the DataProperty from it's string representation.
         /// </summary>
-        public DataProperty<T> WithValue(string value)
+        public Field<T> WithValue(string value)
         {
 
             object convertedValue = default(T);
@@ -162,7 +164,7 @@ namespace Primer.SmartProperties
 
 
                 // return new DataProperty with initial value
-                return new DataProperty<T>(_PropertyName, (T)convertedValue, _ParentViewModel);
+                return new Field<T>(_PropertyName, (T)convertedValue, _ParentViewModel);
 
             }
             catch (Exception ex)

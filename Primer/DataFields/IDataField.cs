@@ -2,7 +2,7 @@
 
 namespace Primer.SmartProperties
 {
-    interface IDataProperty<T>
+    public interface IDataField<T>
     {
         bool IsReadOnly { get; set; }
         string Name { get; }
