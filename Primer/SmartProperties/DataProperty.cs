@@ -27,7 +27,7 @@ namespace Primer.SmartProperties
             _IsReadOnly = readOnly;
             _Name = name;
             _CurrentValue = initialValue;
-            _ViewModel = ViewModel;
+            _ViewModel = parentViewModel;
         }
 
 
