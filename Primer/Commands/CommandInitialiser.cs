@@ -4,11 +4,11 @@ using System;
 
 namespace Primer.SmartProperties
 {
-    public class ActionPropertyInitialiser
+    public class CommandInitialiser
     {
         ViewModel _TargetViewModel;
 
-        public ActionPropertyInitialiser(ViewModel targetViewModel)
+        public CommandInitialiser(ViewModel targetViewModel)
         {
             if (targetViewModel != null)
                 _TargetViewModel = targetViewModel;
@@ -16,7 +16,7 @@ namespace Primer.SmartProperties
                 throw new ArgumentNullException("targetViewModel");
         }
 
-        public DataPropertyInitialiser<T> Initialise<T>(string name)
+        public FieldInitialiser<T> Initialise<T>(string name)
         {
             throw new NotImplementedException();
             //return new ActionPropertyInitialiser<T>(name, _TargetViewModel);

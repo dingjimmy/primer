@@ -2,7 +2,7 @@
 
 namespace Primer.SmartProperties
 {
-    interface IActionProperty
+    interface IActionCommand
     {
     }
 }
