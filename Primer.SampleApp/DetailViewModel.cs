@@ -5,34 +5,39 @@ using System.Windows.Input;
 
 namespace Primer.SampleApp
 {
-    class DetailViewModel : ViewModel
+    public class DetailViewModel : ViewModel
     {
 
         // Dependancies
-        OrderDetail _Detail;
+
 
 
         // Data Properties
-        public DataProperty<int> ID;
-        public DataProperty<string> Description;
+        public Field<int> ID;
+        public Field<string> Description;
 
 
         // Constructor
-        public DetailViewModel() : base() { }
+        public DetailViewModel() : base() 
+        {
+
+            // This call is required for the ViewModel to function correctly. 
+            Initialise();
+
+        }
 
 
         // Init Data Properties
-        public override void InitialiseDataProperties(DataPropertyInitialiser pi)
+        protected override void InitialiseFields(FieldInitialiser pi)
         {
-            pi.Initialise<int>("ID").WithValue(_Detail.ID);
-            pi.Initialise<string>("Description").WithValue(_Detail.Description);
+
         }
 
 
         // Init Action Properties
-        public override void InitialiseActionProperties(ActionPropertyInitialiser ap)
+        protected override void InitialiseCommands(CommandInitialiser ap)
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

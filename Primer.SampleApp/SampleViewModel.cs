@@ -15,60 +15,59 @@ namespace Primer.SampleApp
 
 
         // Data Properties
-        public DataProperty<int> ID { get; set; }
-        public DataProperty<string> FirstName { get; set; }
-        public DataProperty<string> FamilyName { get; set; }
-        public DataProperty<DateTime> StartDate { get; set; }
-        public DataProperty<DateTime?> EndDate { get; set; }
+        public Field<int> ID { get; set; }
+        public Field<string> FirstName { get; set; }
+        public Field<string> FamilyName { get; set; }
+        public Field<DateTime> StartDate { get; set; }
+        public Field<DateTime?> EndDate { get; set; }
 
 
         public ObservableCollection<DetailViewModel> Details { get; set; }
 
 
-        public ICommand Ok { get; set; }
-        public ICommand Cancel { get; set; }
+        public Command Ok { get; set; }
+        public Command Cancel { get; set; }
 
 
 
-        public SampleCustomerViewModel(DataContext ctx) : base() 
+        public SampleCustomerViewModel(DataContext ctx)
         {
+
+            // Set dependancies
             _Context = ctx;
+
+
+            // This call is required for the ViewModel to function correctly. 
+            Initialise();
+
         }
 
-
-        public override void InitialiseDataProperties(DataPropertyInitialiser pi)
+        protected override void InitialiseFields(FieldInitialiser fi)
         {
-            ID = pi.Initialise<int>("ID").WithValue(1280571);
-            FirstName = pi.Initialise<string>("FirstName").WithValue("Joeseph");
-            FamilyName = pi.Initialise<string>("FamilyName").WithValue("Bloggs");
-            StartDate = pi.Initialise<DateTime>("StartDate").WithValue("2014-02-27");
-            EndDate = pi.Initialise<DateTime?>("EndDate").WithValue("2018-09-03");
 
-            Details = pi.InitialiseCollection<DetailViewModel>((i, collection) =>
+            var query = from d in _Context.Details select d;
+
+
+            ID = fi.Initialise<int>("ID").WithValue(1280571);
+            FirstName = fi.Initialise<string>("FirstName").WithValue("Joeseph");
+            FamilyName = fi.Initialise<string>("FamilyName").WithValue("Bloggs");
+            StartDate = fi.Initialise<DateTime>("StartDate").WithValue("2014-02-27");
+            EndDate = fi.Initialise<DateTime?>("EndDate").WithValue("2018-09-03");
+
+
+            Details = fi.InitialiseCollection<DetailViewModel, OrderDetail>(query, (cfi, item, vm) =>
             {
-
-                var query = from d in _Context.Details
-                            select d;
-
-                foreach (var d in query)
-                {
-                    var vm = new DetailViewModel();
-
-                    vm.ID = i.Initialise<int>("ID").WithValue(d.ID);
-                    vm.Description = i.Initialise<string>("Description").WithValue(d.Description);
-
-                    collection.Add(vm);
-                }
-
-                return collection;
+                vm.ID = cfi.Initialise<int>("ID").WithValue(item.ID);
+                vm.Description = cfi.Initialise<string>("Description").WithValue(item.Description);
             });
 
         }
 
 
-        public override void InitialiseActionProperties(ActionPropertyInitialiser pi)
+        protected override void InitialiseCommands(CommandInitialiser ci)
         {
-            
+            this.Ok = new Command { Action = SaveThis, IsEnabled = true };
+            this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
         }
 
 
@@ -76,7 +75,7 @@ namespace Primer.SampleApp
         #region CommandMethods
 
 
-        public void Save(object parameter)
+        public void SaveThis()
         {
 
             Validate("ID", "Name", "EmailAddress");
@@ -89,7 +88,7 @@ namespace Primer.SampleApp
 
 
 
-        public void CancelThis(object parameter)
+        public void CancelThis()
         {
 
         }
@@ -97,6 +96,11 @@ namespace Primer.SampleApp
 
         #endregion
 
+
+        public void DoSomethingSpecial()
+        {
+
+        }
     }
 
 }

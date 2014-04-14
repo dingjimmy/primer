@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Primer.SampleApp
 {
-    class DataContext
+    public class DataContext
     {
 
         public DataSet<OrderDetail> Details { get; set; }
+
+        public DataContext() { Details = new DataSet<OrderDetail>(); }
 
         public void SaveChanges() { }
 

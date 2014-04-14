@@ -54,31 +54,39 @@ namespace Primer
             _Errors = new Dictionary<string, string>();
             _Validators = new Dictionary<string, List<ValidatorAttribute>>();
 
-
-            // cache validators
-            CacheValidatorAttributes();
-
-
-            // initialise data properties
-            InitialiseDataProperties(new DataPropertyInitialiser(this));
-
-
-            // initialise action properties
-            InitialiseActionProperties(new ActionPropertyInitialiser(this));
-
         }
 
 
 #endregion
 
 
-#region Initialise SmartProperty Methods
+#region Initialise Methods
 
 
-        public abstract void InitialiseDataProperties(DataPropertyInitialiser dp);
+        /// <summary>
+        /// Requiered method for ViewModel to operate correctly. Caches validation attributes and starts off initialisation of Fields and Commands
+        /// </summary>
+        protected void Initialise()
+        {
+
+            // cache validators
+            CacheValidatorAttributes();
 
 
-        public abstract void InitialiseActionProperties(ActionPropertyInitialiser ap);
+            // initialise data properties
+            InitialiseFields(new FieldInitialiser(this));
+
+
+            // initialise action properties
+            InitialiseCommands(new CommandInitialiser(this));
+
+        }
+
+
+        protected abstract void InitialiseFields(FieldInitialiser fi);
+
+
+        protected abstract void InitialiseCommands(CommandInitialiser ci);
 
 
 #endregion

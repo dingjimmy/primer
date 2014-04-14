@@ -19,12 +19,12 @@ namespace Primer.Tests.ProtectedTesters
             return this.UpdateProperty<T>(propertyName, currentValue, proposedValue);
         }
 
-        public override void InitialiseDataProperties(SmartProperties.DataPropertyInitialiser dp)
+        protected override void InitialiseFields(SmartProperties.FieldInitialiser dp)
         {
             throw new NotImplementedException();
         }
 
-        public override void InitialiseActionProperties(SmartProperties.ActionPropertyInitialiser ap)
+        protected  override void InitialiseCommands(SmartProperties.CommandInitialiser ap)
         {
             throw new NotImplementedException();
         }
