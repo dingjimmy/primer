@@ -63,10 +63,24 @@ namespace Primer
 #region Initialise Methods
 
 
+
         /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Caches validation attributes and starts off initialisation of Fields and Commands
+        /// Requiered method for ViewModel to operate correctly. Caches validation attributes, but DOES NOT trigger initialisation of Fields and Commands; this must be done seperatly.
         /// </summary>
         protected void Initialise()
+        {
+
+            // cache validators
+            CacheValidatorAttributes();
+     
+        }
+
+
+        /// <summary>
+        /// Requiered method for ViewModel to operate correctly. Caches validation attributes and triggers initialisation of Fields and Commands
+        /// </summary>
+        /// <param name="source">The source object to initialise the viewmodel with. Usually an entity or linq query, but could be anyting.</param>
+        protected void Initialise(object source)
         {
 
             // cache validators
@@ -74,8 +88,8 @@ namespace Primer
 
 
             // initialise data properties
-            InitialiseFields(new FieldInitialiser(this));
-
+            InitialiseFields(source, new FieldInitialiser(this));
+            
 
             // initialise action properties
             InitialiseCommands(new CommandInitialiser(this));
@@ -83,10 +97,10 @@ namespace Primer
         }
 
 
-        protected abstract void InitialiseFields(FieldInitialiser fi);
+        protected internal abstract void InitialiseFields(object source, FieldInitialiser fi);
 
 
-        protected abstract void InitialiseCommands(CommandInitialiser ci);
+        protected internal abstract void InitialiseCommands(CommandInitialiser ci);
 
 
 #endregion

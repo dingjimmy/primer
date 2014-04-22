@@ -22,8 +22,9 @@ namespace Primer.SampleApp
         public Field<DateTime?> EndDate { get; set; }
 
 
-        public ObservableCollection<DetailViewModel> Details { get; set; }
+        public ViewModelCollection<DetailViewModel> Details { get; set; }
 
+        public ViewModelCollection MoreDetails { get; set; }
 
         public Command Ok { get; set; }
         public Command Cancel { get; set; }
@@ -37,15 +38,22 @@ namespace Primer.SampleApp
             _Context = ctx;
 
 
+            // build linq query
+            var query = from d in _Context.Details select d;
+
+
             // This call is required for the ViewModel to function correctly. 
-            Initialise();
+            Initialise(query);
 
         }
 
-        protected override void InitialiseFields(FieldInitialiser fi)
+        
+        
+
+        protected override void InitialiseFields(object source, FieldInitialiser fi)
         {
 
-            var query = from d in _Context.Details select d;
+            var query = source as IQueryable<OrderDetail>;
 
 
             ID = fi.Initialise<int>("ID").WithValue(1280571);
@@ -60,6 +68,9 @@ namespace Primer.SampleApp
                 vm.ID = cfi.Initialise<int>("ID").WithValue(item.ID);
                 vm.Description = cfi.Initialise<string>("Description").WithValue(item.Description);
             });
+
+
+            MoreDetails = fi.InitialiseCollection<DetailViewModel, OrderDetail>(query);
 
         }
 

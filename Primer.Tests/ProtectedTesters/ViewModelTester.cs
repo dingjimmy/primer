@@ -19,7 +19,7 @@ namespace Primer.Tests.ProtectedTesters
             return this.UpdateProperty<T>(propertyName, currentValue, proposedValue);
         }
 
-        protected override void InitialiseFields(SmartProperties.FieldInitialiser dp)
+        protected override void InitialiseFields(object source, SmartProperties.FieldInitialiser fi)
         {
             throw new NotImplementedException();
         }

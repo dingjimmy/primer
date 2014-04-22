@@ -41,14 +41,14 @@ namespace Primer.SmartProperties
 
 
         /// <summary>
-        /// Creates a new <see cref="ObservableCollection{ViewModel}" />. 
+        /// Creates a new <see cref="ViewModelCollection{ViewModel}" />. 
         /// </summary>
-        public ObservableCollection<TViewModel> InitialiseCollection<TViewModel, TData>(IQueryable<TData> query, Action<FieldInitialiser, TData, TViewModel> initialiseMethod) 
+        public ViewModelCollection<TViewModel> InitialiseCollection<TViewModel, TData>(IQueryable<TData> query, Action<FieldInitialiser, TData, TViewModel> initialiseMethod) 
             where TViewModel : ViewModel, new()
         {
 
             // init collection of desired type
-            var collection = new ObservableCollection<TViewModel>();
+            var collection = new ViewModelCollection<TViewModel>();
 
 
             // execute query and loop through the results
@@ -63,6 +63,44 @@ namespace Primer.SmartProperties
 
                 // action the init function supplied by caller
                 initialiseMethod(initialiser, item, vm);
+
+                // add vm to collection
+                collection.Add(vm);
+            }
+
+
+            // return the completed collection to the caller
+            return collection;
+
+        }
+
+
+
+        /// <summary>
+        /// Creates a new <see cref="ViewModelCollection" />. 
+        /// </summary>
+        public ViewModelCollection InitialiseCollection<TViewModel, TData>(IQueryable<TData> query)
+            where TViewModel : ViewModel, new()
+        {
+
+            // init collection of desired type
+            var collection = new ViewModelCollection();
+
+
+            // execute query and loop through the results
+            foreach (var item in query)
+            {
+
+                // init new viewmodel
+                var vm = new TViewModel();
+
+                // init new data-initialiser
+                var fi = new FieldInitialiser(vm);
+                var ci = new CommandInitialiser(vm);
+
+                // init vm
+                vm.InitialiseFields(item, fi);
+                vm.InitialiseCommands(ci);
 
                 // add vm to collection
                 collection.Add(vm);

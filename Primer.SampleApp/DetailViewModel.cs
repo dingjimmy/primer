@@ -28,9 +28,12 @@ namespace Primer.SampleApp
 
 
         // Init Data Properties
-        protected override void InitialiseFields(FieldInitialiser pi)
+        protected override void InitialiseFields(object source, FieldInitialiser fi)
         {
+            var detail = source as OrderDetail;
 
+            ID = fi.Initialise<int>("ID").WithValue(detail.ID);
+            Description = fi.Initialise<string>("Description").WithValue(detail.Description);
         }
 
 
