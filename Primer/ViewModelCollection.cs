@@ -1,9 +1,10 @@
-﻿using System;
+﻿// Copyright (c) James Dingle
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-
-namespace Primer.SmartProperties
+namespace Primer
 {
     public class ViewModelCollection<T> : ObservableCollection<T>
     {

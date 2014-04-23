@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Primer.SmartProperties
+namespace Primer
 {
-    public class Command : ICommand
+    public class Command<T> : ICommand
     {
 
 
@@ -22,7 +22,7 @@ namespace Primer.SmartProperties
 
 
         // Alternative Constructor
-        public Command(Action action)
+        public Command(Action<T> action)
         {
             _Action = action;
         }
@@ -35,7 +35,7 @@ namespace Primer.SmartProperties
 
 
         // private backing fields
-        Action _Action;
+        Action<T> _Action;
         bool _IsEnabled;
 
 
@@ -66,7 +66,7 @@ namespace Primer.SmartProperties
         /// <summary>
         /// Gets or sets the action delegate to call when the command is excuted.
         /// </summary>
-        public Action Action
+        public Action<T> Action
         {
             get
             {

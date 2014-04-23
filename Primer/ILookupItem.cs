@@ -1,13 +1,14 @@
-﻿using System;
+﻿// Copyright (c) James Dingle
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Primer.SmartProperties;
 
-namespace Primer.Lookups
+namespace Primer
 {
-    public interface ILookupItem<TKey, TEntity, TDescription> : IDisposable
+    public interface ILookupItem<TKey, TEntity, TDescription>
     {
         TKey Key { get; set; }
         TEntity Entity { get; set; }

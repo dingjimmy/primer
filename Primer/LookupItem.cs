@@ -1,11 +1,12 @@
-﻿using System;
+﻿// Copyright (c) James Dingle
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Primer.SmartProperties;
 
-namespace Primer.Lookups
+namespace Primer
 {
     public class LookupItem<TKey, TEntity, TDescription>: ILookupItem<TKey, TEntity, TDescription>
     {

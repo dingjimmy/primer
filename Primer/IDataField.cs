@@ -1,6 +1,6 @@
 ﻿// Copyright (c) James Dingle
 
-namespace Primer.SmartProperties
+namespace Primer
 {
     public interface IDataField<T>
     {

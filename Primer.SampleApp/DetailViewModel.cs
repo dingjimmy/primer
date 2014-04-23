@@ -1,4 +1,4 @@
-﻿using Primer.SmartProperties;
+﻿using Primer;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -28,19 +28,13 @@ namespace Primer.SampleApp
 
 
         // Init Data Properties
-        protected override void InitialiseFields(object source, FieldInitialiser fi)
+        protected override void Initialise(object source, ViewModelInitialiser fi)
         {
             var detail = source as OrderDetail;
 
-            ID = fi.Initialise<int>("ID").WithValue(detail.ID);
-            Description = fi.Initialise<string>("Description").WithValue(detail.Description);
+            ID = fi.Field<int>("ID").WithValue(detail.ID);
+            Description = fi.Field<string>("Description").WithValue(detail.Description);
         }
 
-
-        // Init Action Properties
-        protected override void InitialiseCommands(CommandInitialiser ap)
-        {
-            
-        }
     }
 }

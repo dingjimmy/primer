@@ -1,7 +1,5 @@
-﻿using Primer.SmartProperties;
-using Primer.Lookups;
+﻿using Primer;
 using System;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Linq;
 
@@ -54,45 +52,41 @@ namespace Primer.SampleApp
         
         
 
-        protected override void InitialiseFields(object source, FieldInitialiser fi)
+        protected override void Initialise(object source, ViewModelInitialiser initialise)
         {
 
             var query = source as IQueryable<OrderDetail>;
 
 
-            ID = fi.Initialise<int>("ID").WithValue(1280571);
-            FirstName = fi.Initialise<string>("FirstName").WithValue("Joeseph");
-            FamilyName = fi.Initialise<string>("FamilyName").WithValue("Bloggs");
-            StartDate = fi.Initialise<DateTime>("StartDate").WithValue("2014-02-27");
-            EndDate = fi.Initialise<DateTime?>("EndDate").WithValue("2018-09-03");
+            ID = initialise.Field<int>("ID").WithValue(1280571);
+            FirstName = initialise.Field<string>("FirstName").WithValue("Joeseph");
+            FamilyName = initialise.Field<string>("FamilyName").WithValue("Bloggs");
+            StartDate = initialise.Field<DateTime>("StartDate").WithValue("2014-02-27");
+            EndDate = initialise.Field<DateTime?>("EndDate").WithValue("2018-09-03");
 
 
-            Details = fi.InitialiseCollection<DetailViewModel, OrderDetail>(query, (cfi, item, vm) =>
+            Details = initialise.Collection<DetailViewModel, OrderDetail>(query, (cfi, item, vm) =>
                 {
-                    vm.ID = cfi.Initialise<int>("ID").WithValue(item.ID);
-                    vm.Description = cfi.Initialise<string>("Description").WithValue(item.Description);
+                    vm.ID = cfi.Field<int>("ID").WithValue(item.ID);
+                    vm.Description = cfi.Field<string>("Description").WithValue(item.Description);
                 });
 
 
-            MoreDetails = fi.InitialiseCollection<DetailViewModel, OrderDetail>(query);
+            MoreDetails = initialise.Collection<DetailViewModel, OrderDetail>(query);
 
 
-            AvailableSuppliers = fi.InitialiseLookup<Supplier>(suppliers, (supplier, item) =>
+            AvailableSuppliers = initialise.Lookup<Supplier>(suppliers, (supplier, item) =>
                 {
                     item.Key = supplier.ID;
                     item.Description = String.Format("{0} - {1}", supplier.Name, supplier.Branch);
                     item.Entity = supplier;
                 });
 
-        }
 
-
-        protected override void InitialiseCommands(CommandInitialiser ci)
-        {
             this.Ok = new Command { Action = SaveThis, IsEnabled = true };
             this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
-        }
 
+        }
 
 
         #region CommandMethods

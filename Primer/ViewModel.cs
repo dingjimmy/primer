@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Primer.SmartProperties;
-
 
 namespace Primer
 {
@@ -87,20 +85,16 @@ namespace Primer
             CacheValidatorAttributes();
 
 
-            // initialise data properties
-            InitialiseFields(source, new FieldInitialiser(this));
+            // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
+            Initialise(source, new ViewModelInitialiser(this));
             
 
-            // initialise action properties
-            InitialiseCommands(new CommandInitialiser(this));
 
         }
 
 
-        protected internal abstract void InitialiseFields(object source, FieldInitialiser fi);
+        protected internal abstract void Initialise(object source, ViewModelInitialiser fi);
 
-
-        protected internal abstract void InitialiseCommands(CommandInitialiser ci);
 
 
 #endregion
