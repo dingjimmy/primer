@@ -1,4 +1,5 @@
 ﻿using Primer.SmartProperties;
+using Primer.Lookups;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -25,6 +26,9 @@ namespace Primer.SampleApp
         public ViewModelCollection<DetailViewModel> Details { get; set; }
 
         public ViewModelCollection MoreDetails { get; set; }
+
+        public Lookup<Supplier> AvailableSuppliers { get; set; }
+
 
         public Command Ok { get; set; }
         public Command Cancel { get; set; }
@@ -64,13 +68,21 @@ namespace Primer.SampleApp
 
 
             Details = fi.InitialiseCollection<DetailViewModel, OrderDetail>(query, (cfi, item, vm) =>
-            {
-                vm.ID = cfi.Initialise<int>("ID").WithValue(item.ID);
-                vm.Description = cfi.Initialise<string>("Description").WithValue(item.Description);
-            });
+                {
+                    vm.ID = cfi.Initialise<int>("ID").WithValue(item.ID);
+                    vm.Description = cfi.Initialise<string>("Description").WithValue(item.Description);
+                });
 
 
             MoreDetails = fi.InitialiseCollection<DetailViewModel, OrderDetail>(query);
+
+
+            AvailableSuppliers = fi.InitialiseLookup<Supplier>(suppliers, (supplier, item) =>
+                {
+                    item.Key = supplier.ID;
+                    item.Description = String.Format("{0} - {1}", supplier.Name, supplier.Branch);
+                    item.Entity = supplier;
+                });
 
         }
 

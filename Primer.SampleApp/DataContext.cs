@@ -70,4 +70,12 @@ namespace Primer.SampleApp
         public int Quantity { get; set; }
         public decimal Value { get; set; }
     }
+
+
+    public class Supplier
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Branch { get; set; }
+    }
 }
