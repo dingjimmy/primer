@@ -10,8 +10,13 @@ namespace Primer.SampleApp
     {
 
         public DataSet<OrderDetail> Details { get; set; }
+        public DataSet<Supplier> Suppliers { get; set; }
 
-        public DataContext() { Details = new DataSet<OrderDetail>(); }
+        public DataContext() 
+        { 
+            Details = new DataSet<OrderDetail>(); 
+            Suppliers = new DataSet<Supplier>(); 
+        }
 
         public void SaveChanges() { }
 

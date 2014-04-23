@@ -114,7 +114,7 @@ namespace Primer
                 var fi = new ViewModelInitialiser(vm);
 
                 // init vm
-                vm.Initialise(item, fi);
+                vm.Initialise(fi, item);
 
                 // add vm to collection
                 collection.Add(vm);

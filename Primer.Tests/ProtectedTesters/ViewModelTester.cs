@@ -19,7 +19,7 @@ namespace Primer.Tests.ProtectedTesters
             return this.UpdateProperty<T>(propertyName, currentValue, proposedValue);
         }
 
-        protected override void Initialise(object source, ViewModelInitialiser fi)
+        protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
         {
             throw new NotImplementedException();
         }

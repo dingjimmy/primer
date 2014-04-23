@@ -41,21 +41,22 @@ namespace Primer.SampleApp
 
 
             // build linq query
-            var query = from d in _Context.Details select d;
+            var dtlQuery = from d in _Context.Details select d;
+            var splQuery = from s in _Context.Suppliers select s;
 
 
             // This call is required for the ViewModel to function correctly. 
-            Initialise(query);
+            Initialise(dtlQuery, splQuery);
 
         }
 
-        
-        
 
-        protected override void Initialise(object source, ViewModelInitialiser initialise)
+        protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
         {
 
-            var query = source as IQueryable<OrderDetail>;
+            var details = primaryDataSource as IQueryable<OrderDetail>;
+            var suppliers = secondaryDataSources[0] as IQueryable<Supplier>;
+
 
 
             ID = initialise.Field<int>("ID").WithValue(1280571);
@@ -65,19 +66,19 @@ namespace Primer.SampleApp
             EndDate = initialise.Field<DateTime?>("EndDate").WithValue("2018-09-03");
 
 
-            Details = initialise.Collection<DetailViewModel, OrderDetail>(query, (cfi, item, vm) =>
+            Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (cfi, item, vm) =>
                 {
                     vm.ID = cfi.Field<int>("ID").WithValue(item.ID);
                     vm.Description = cfi.Field<string>("Description").WithValue(item.Description);
                 });
 
 
-            MoreDetails = initialise.Collection<DetailViewModel, OrderDetail>(query);
+            MoreDetails = initialise.Collection<DetailViewModel, OrderDetail>(details);
 
 
             AvailableSuppliers = initialise.Lookup<Supplier>(suppliers, (supplier, item) =>
                 {
-                    item.Key = supplier.ID;
+                    item.Key = supplier.ID.ToString();
                     item.Description = String.Format("{0} - {1}", supplier.Name, supplier.Branch);
                     item.Entity = supplier;
                 });

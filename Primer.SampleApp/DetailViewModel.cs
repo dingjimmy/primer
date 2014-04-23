@@ -28,12 +28,12 @@ namespace Primer.SampleApp
 
 
         // Init Data Properties
-        protected override void Initialise(object source, ViewModelInitialiser fi)
+        protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
         {
-            var detail = source as OrderDetail;
+            var detail = primaryDataSource as OrderDetail;
 
-            ID = fi.Field<int>("ID").WithValue(detail.ID);
-            Description = fi.Field<string>("Description").WithValue(detail.Description);
+            ID = initialise.Field<int>("ID").WithValue(detail.ID);
+            Description = initialise.Field<string>("Description").WithValue(detail.Description);
         }
 
     }

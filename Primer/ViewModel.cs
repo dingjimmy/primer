@@ -77,8 +77,8 @@ namespace Primer
         /// <summary>
         /// Requiered method for ViewModel to operate correctly. Caches validation attributes and triggers initialisation of Fields and Commands
         /// </summary>
-        /// <param name="source">The source object to initialise the viewmodel with. Usually an entity or linq query, but could be anyting.</param>
-        protected void Initialise(object source)
+        /// <param name="primaryDataSource">The source object to initialise the viewmodel with. Usually an entity or linq query, but could be anyting.</param>
+        protected void Initialise(object primaryDataSource, params object[] secondaryDataSources)
         {
 
             // cache validators
@@ -86,14 +86,14 @@ namespace Primer
 
 
             // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
-            Initialise(source, new ViewModelInitialiser(this));
+            Initialise(new ViewModelInitialiser(this), primaryDataSource, secondaryDataSources);
             
 
 
         }
 
 
-        protected internal abstract void Initialise(object source, ViewModelInitialiser fi);
+        protected internal abstract void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources);
 
 
 

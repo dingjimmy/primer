@@ -21,6 +21,10 @@ namespace Primer.SampleApp
             ctx.Details.Add(new OrderDetail() { ID = 2985, Description = "Box of Screws", Quantity = 1, Value = 5.0M });
             ctx.Details.Add(new OrderDetail() { ID = 2985, Description = "8x2\" MDF", Quantity = 5, Value = 246.00M });
 
+            ctx.Suppliers.Add(new Supplier() { ID = 123456, Name = "Wicks", Branch = "Longwell Green" });
+            ctx.Suppliers.Add(new Supplier() { ID = 123456, Name = "B&Q", Branch = "Longwell Green" });
+            ctx.Suppliers.Add(new Supplier() { ID = 123456, Name = "Homebase", Branch = "Longwell Green" });
+
 
             var vm = new SampleCustomerViewModel(ctx);
             win.DataContext = vm;   
