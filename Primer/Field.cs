@@ -106,7 +106,7 @@ namespace Primer
             if (_CurrentValue != null)
                 return _CurrentValue.ToString();
             else
-                return base.ToString();
+                return String.Empty;
         }
 
 
