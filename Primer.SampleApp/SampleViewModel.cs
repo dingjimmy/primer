@@ -44,9 +44,12 @@ namespace Primer.SampleApp
             var dtlQuery = from d in _Context.Details select d;
             var splQuery = from s in _Context.Suppliers select s;
 
+            Console.WriteLine("IsLoaded={0}", this.IsLoaded);
 
             // This call is required for the ViewModel to function correctly. 
             Initialise(dtlQuery, splQuery);
+
+            Console.WriteLine("IsLoaded={0}", this.IsLoaded);
 
         }
 
@@ -70,6 +73,7 @@ namespace Primer.SampleApp
                 {
                     vm.ID = cfi.Field<int>("ID").WithValue(item.ID);
                     vm.Description = cfi.Field<string>("Description").WithValue(item.Description);
+                    vm.IsLoaded = true;
                 });
 
 
@@ -86,6 +90,10 @@ namespace Primer.SampleApp
 
             this.Ok = new Command { Action = SaveThis, IsEnabled = true };
             this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
+
+            throw new Exception("Test Exception");
+
+            //IsLoaded = true;
 
         }
 

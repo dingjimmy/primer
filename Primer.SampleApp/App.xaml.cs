@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Primer.SampleApp
 {
@@ -25,11 +26,20 @@ namespace Primer.SampleApp
             ctx.Suppliers.Add(new Supplier() { ID = 123456, Name = "B&Q", Branch = "Longwell Green" });
             ctx.Suppliers.Add(new Supplier() { ID = 123456, Name = "Homebase", Branch = "Longwell Green" });
 
+            try
+            {
 
-            var vm = new SampleCustomerViewModel(ctx);
-            win.DataContext = vm;   
+                var vm = new SampleCustomerViewModel(ctx);
 
-            win.Show();
+                win.DataContext = vm;
+                win.Show();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, ex.GetType().ToString());
+            }
+          
 
         }
     }

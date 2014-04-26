@@ -16,7 +16,7 @@ namespace Primer
     {
 
 
-#region Fields
+#region Private State
 
         private Dictionary<string, string> _Errors;
         private Dictionary<string, List<ValidatorAttribute>> _Validators;
@@ -24,7 +24,7 @@ namespace Primer
 #endregion
 
 
-#region Properties
+#region Public Properties
 
 
         /// <summary>
@@ -34,6 +34,16 @@ namespace Primer
         /// True if the ViewModel does have properties in an error state; otherwise false.
         /// </returns>
         protected bool HasErrors { get { return _Errors.Count > 0 ? true : false; } }
+
+
+
+        /// <summary>
+        /// Gets or sets a value that indicates whether the ViewModel has been initialised successfully.
+        /// </summary>
+        /// <returns>
+        /// True if ViewModel initialisation has been successfull; otherwise false.
+        /// </returns>
+        public bool IsLoaded { get; set; }
 
 
 #endregion
@@ -52,6 +62,10 @@ namespace Primer
             _Errors = new Dictionary<string, string>();
             _Validators = new Dictionary<string, List<ValidatorAttribute>>();
 
+
+            // set initial initialisation state
+            IsLoaded = false;
+
         }
 
 
@@ -63,32 +77,68 @@ namespace Primer
 
 
         /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Caches validation attributes, but DOES NOT trigger initialisation of Fields and Commands; this must be done seperatly.
+        /// Requiered method for ViewModel to operate correctly. Caches validation attributes, but DOES NOT trigger the abstract initialisation method; this must be done seperatly.
         /// </summary>
         protected void Initialise()
         {
 
-            // cache validators
-            CacheValidatorAttributes();
+            try
+            {
+
+                // cache validators
+                CacheValidatorAttributes();
+
+
+                // set loaded state
+                IsLoaded = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                // set loaded state
+                IsLoaded = false;
+
+                // throw more descriptive exception to caller
+                throw new InitialiseViewModelException("ViewModel initialisation has failed. Please see inner exception for further details", ex);
+
+            }
      
         }
 
 
         /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Caches validation attributes and triggers initialisation of Fields and Commands
+        /// Requiered method for ViewModel to operate correctly. Caches validation attributes and triggers the abstract initialisation method.
         /// </summary>
         /// <param name="primaryDataSource">The source object to initialise the viewmodel with. Usually an entity or linq query, but could be anyting.</param>
         protected void Initialise(object primaryDataSource, params object[] secondaryDataSources)
         {
 
-            // cache validators
-            CacheValidatorAttributes();
+            try
+            {
+
+                // cache validators
+                CacheValidatorAttributes();
 
 
-            // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
-            Initialise(new ViewModelInitialiser(this), primaryDataSource, secondaryDataSources);
-            
+                // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
+                Initialise(new ViewModelInitialiser(this), primaryDataSource, secondaryDataSources);
 
+
+                // set loaded state
+                IsLoaded = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                // set loaded state
+                IsLoaded = false;
+
+                // throw more descriptive exception to caller
+                throw new InitialiseViewModelException("ViewModel initialisation has failed. Please see inner exception for further details", ex);
+
+            }
 
         }
 

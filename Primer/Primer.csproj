@@ -83,8 +83,8 @@
     <Compile Include="Command.cs" />
     <Compile Include="Command T.cs" />
     <Compile Include="Field.cs" />
-    <Compile Include="IActionCommand.cs" />
     <Compile Include="IDataField.cs" />
+    <Compile Include="InitialiseViewModelException.cs" />
     <Compile Include="ViewModelInitialiser.cs" />
     <Compile Include="ViewModelCollection.cs" />
     <Compile Include="ILookupItem.cs" />
