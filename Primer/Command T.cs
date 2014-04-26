@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace Primer
 {
-    public class Command<T> : ICommand
+    public class Command<T> : ICommand where T : class
     {
 
 
@@ -88,7 +88,7 @@ namespace Primer
         /// </summary>
         public bool CanExecute(object param)
         {
-            return true;
+            return _IsEnabled;
         }
 
 
@@ -98,7 +98,10 @@ namespace Primer
         /// </summary>
         public void Execute(object param)
         {
-            return;
+            if (_IsEnabled)
+            {
+                _Action(param as T);
+            }
         }
 
 

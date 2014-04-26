@@ -98,7 +98,10 @@ namespace Primer
         /// </summary>
         public void Execute(object param)
         {
-            return;
+            if (_IsEnabled)
+            {
+                _Action();
+            }
         }
 
 
