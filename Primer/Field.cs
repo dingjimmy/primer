@@ -79,7 +79,7 @@ namespace Primer
             {
                 if (!_IsReadOnly)
                 {
-                    _CurrentValue = _ViewModel.UpdateProperty(_Name, _CurrentValue, value);
+                    _ViewModel.UpdateProperty(_Name, ref _CurrentValue, value);
                 }
             }
         }

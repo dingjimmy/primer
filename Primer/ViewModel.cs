@@ -160,6 +160,7 @@ namespace Primer
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
         /// <returns>The proposed value if the values are not equal; otherwise the current value.</returns>
+        [Obsolete("Is buggy. Use UpdateProperty(string, ref T, T) instead")]
         public T UpdateProperty<T>(string propertyName, T currentValue, T proposedValue)
         {
 
@@ -171,6 +172,31 @@ namespace Primer
             else
             {
                 return currentValue;
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// Compares the current and proposed values; Updates the current with the proposed and raises the <see cref="ViewModel.PropertyChanged"/> event if they are not equal.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that has changed.</param>
+        /// <param name="currentValue">The current value of the property.</param>
+        /// <param name="proposedValue">The proposed value of the property</param>
+        /// <returns>True if the current value has been updated, false otherwise.</returns>
+        public bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue)
+        {
+
+            if (!EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
+            {
+                currentValue = proposedValue;
+                RaisePropertyChanged(this, propertyName);
+                return true;
+            }
+            else
+            {
+                return false;
             }
 
         }

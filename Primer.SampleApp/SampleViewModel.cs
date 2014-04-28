@@ -104,12 +104,15 @@ namespace Primer.SampleApp
         public void SaveThis()
         {
 
+
             Validate("ID", "Name", "EmailAddress");
 
             if (!InError("ID", "Name", "EmailAddress"))
             {
                 // save me to a database!
             }
+
+            FirstName.Data = "This is a test!";
         }
 
 
