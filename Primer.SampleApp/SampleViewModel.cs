@@ -91,7 +91,7 @@ namespace Primer.SampleApp
             this.Ok = new Command { Action = SaveThis, IsEnabled = true };
             this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
 
-            throw new Exception("Test Exception");
+            //throw new Exception("Test Exception");
 
             //IsLoaded = true;
 

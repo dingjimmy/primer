@@ -17,5 +17,10 @@ namespace Primer
 
         public TDescription Description { get; set; }
 
+        public override string ToString()
+        {
+            return Description.ToString();
+        }
+
     }
 }
