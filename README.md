@@ -13,7 +13,10 @@ A simple MVVM framework for.NET
         public Field<string> FirstName { get; set; }
         public Field<string> FamilyName { get; set; }
         
-        public CustomerViewModel() : base() { }
+        public CustomerViewModel()
+        {
+            Initialise()
+        }
 
         public override void InitialiseDataProperties(ViewModelInitialiser initialise)
         {
