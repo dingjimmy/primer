@@ -4,27 +4,27 @@ A simple MVVM framework for.NET
 
 ###Usage
 
-#####The new way with smart-properties...
+#####The new way...
 
     class CustomerViewModel:ViewModel
     {
     
-        public DataProperty<int> ID { get; set; }
-        public DataProperty<string> FirstName { get; set; }
-        public DataProperty<string> FamilyName { get; set; }
+        public Field<int> ID { get; set; }
+        public Field<string> FirstName { get; set; }
+        public Field<string> FamilyName { get; set; }
         
         public CustomerViewModel() : base() { }
 
-        public override void InitialiseDataProperties(DataPropertyInitialiser pi)
+        public override void InitialiseDataProperties(ViewModelInitialiser initialise)
         {
-            ID = pi.Initialise<int>("ID").WithValue(1280571);
-            FirstName = pi.Initialise<string>("FirstName").WithValue("Joeseph");
-            FamilyName = pi.Initialise<string>("FamilyName").WithValue("Bloggs");
+            ID = initialise.Field<int>("ID").WithValue(1280571);
+            FirstName = initialise.Field<string>("FirstName").WithValue("Joeseph");
+            FamilyName = initialise.Field<string>("FamilyName").WithValue("Bloggs");
         }
   
     }
     
-#####The old way without smart-properties...
+#####The old way...
 
         class CustomerViewModel:ViewModel
         {
