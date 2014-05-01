@@ -91,14 +91,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ProtectedTesters\ViewModelTester.cs" />
-    <Compile Include="ViewModel\ViewModelTests.cs" />
+    <Compile Include="Fakes\ViewModelTester.cs" />
+    <Compile Include="MessagingChannelTests.cs" />
+    <Compile Include="ViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Validation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Primer\Primer.csproj">
       <Project>{74d2e102-c77d-4b66-bdb7-57c436b170f8}</Project>
