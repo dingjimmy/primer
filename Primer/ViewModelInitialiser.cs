@@ -76,6 +76,9 @@ namespace Primer
                 // init new data-initialiser
                 var initialiser = new ViewModelInitialiser(vm);
 
+                // set viewmodel to use its parent's messaging channel, allowing them to blissfully communicate with each-other!
+                vm.Channel = _TargetViewModel.Channel;
+
                 // action the init function supplied by caller
                 initialiseMethod(initialiser, item, vm);
 
@@ -112,6 +115,9 @@ namespace Primer
 
                 // init new data-initialiser
                 var fi = new ViewModelInitialiser(vm);
+
+                // set viewmodel to use its parent's messaging channel, allowing them to blissfully communicate with each-other!
+                vm.Channel = _TargetViewModel.Channel;
 
                 // init vm
                 vm.Initialise(fi, item);

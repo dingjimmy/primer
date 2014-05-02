@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Input;
 using System.Linq;
+using Primer.Messages;
 
 namespace Primer.SampleApp
 {
@@ -58,11 +59,13 @@ namespace Primer.SampleApp
         protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
         {
 
+            // Verify dependacies
             var details = primaryDataSource as IQueryable<OrderDetail>;
             var suppliers = secondaryDataSources[0] as IQueryable<Supplier>;
 
 
 
+            // Init this ViewModel's fields
             ID = initialise.Field<int>("ID").WithValue(1280571);
             FirstName = initialise.Field<string>("FirstName").WithValue("Joeseph");
             FamilyName = initialise.Field<string>("FamilyName").WithValue("Bloggs");
@@ -70,18 +73,23 @@ namespace Primer.SampleApp
             EndDate = initialise.Field<DateTime?>("EndDate").WithValue("2018-09-03");
 
 
+
+            // Init a collection of ViewModels using a specific initialisation method.
             Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (cfi, item, vm) =>
                 {
                     vm.ID = cfi.Field<int>("ID").WithValue(item.ID);
                     vm.Description = cfi.Field<string>("Description").WithValue(item.Description);
-                    vm.Channel = this.Channel;
                     vm.IsLoaded = true;
                 });
 
 
+
+            // Init collection of ViewModels using the ViewModel's default initialisation method.
             MoreDetails = initialise.Collection<DetailViewModel, OrderDetail>(details);
 
 
+
+            // Init Lookups
             AvailableSuppliers = initialise.Lookup<Supplier>(suppliers, (supplier, item) =>
                 {
                     item.Key = supplier.ID.ToString();
@@ -90,8 +98,26 @@ namespace Primer.SampleApp
                 });
 
 
+
+            // Init Commands
             this.Ok = new Command { Action = SaveThis, IsEnabled = true };
             this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
+            
+
+
+            // Listen for FieldChanged messages
+            Listen<FieldChanged>(m => 
+                {
+                    System.Diagnostics.Debug.WriteLine("A 'FieldChanged' message was broadcast by '{1}' at '{2}'",  m.Sender.GetType().ToString(), m.BroadcastOn);
+                });
+
+
+            // Change a fields value; this will broadcast the FieldChanged message which should cause the above listener method to be executed!
+            Details[0].Description.Data = "Testing! 1,2,3 testing.....";
+
+
+
+
 
             //throw new Exception("Test Exception");
 

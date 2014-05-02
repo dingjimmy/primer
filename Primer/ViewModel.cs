@@ -46,6 +46,13 @@ namespace Primer
         public bool IsLoaded { get; set; }
 
 
+
+        /// <summary>
+        /// Gets or sets the default messaging channel for this ViewModel.
+        /// </summary>
+        public IMessagingChannel Channel { get; set; }
+
+
 #endregion
 
 
@@ -61,7 +68,6 @@ namespace Primer
             // init error and validator dictionaries
             _Errors = new Dictionary<string, string>();
             _Validators = new Dictionary<string, List<ValidatorAttribute>>();
-
 
             // set initial initialisation state
             IsLoaded = false;
@@ -407,6 +413,42 @@ namespace Primer
             }
 
         }
+
+
+#endregion
+
+
+#region Message Broadcasting
+
+
+
+        /// <summary>
+        /// Broadcasts a message of the desired type on ViewModels default messaging channel.
+        /// </summary>
+        /// <typeparam name="T">The type of message to broadcast.</typeparam>
+        public void Broadcast<T>() where T : IMessage, new()
+        {
+            if (Channel != null)
+            {
+                Channel.Broadcast<T>();
+            }
+        }
+
+
+
+        /// <summary>
+        /// Listens to the default messaging channel for a particular message type and executes the provided delegate.
+        /// </summary>
+        /// <typeparam name="T">The type of message to listen out for.</typeparam>
+        /// <param name="messageHandler">The delegate to execute when a message of the desired type is broadcast.</param>
+        public void Listen<T>(Action<IMessage> messageHandler) where T: IMessage
+        {
+            if (Channel != null)
+            {
+                Channel.Listen<T>(messageHandler);
+            }
+        }
+
 
 
 #endregion
