@@ -426,11 +426,11 @@ namespace Primer
         /// Broadcasts a message of the desired type on ViewModels default messaging channel.
         /// </summary>
         /// <typeparam name="T">The type of message to broadcast.</typeparam>
-        public void Broadcast<T>() where T : IMessage, new()
+        public void Broadcast(IMessage message)
         {
             if (Channel != null)
             {
-                Channel.Broadcast<T>();
+                Channel.Broadcast(message);
             }
         }
 

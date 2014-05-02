@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Primer.Messages;
 
 namespace Primer
 {
@@ -80,6 +81,7 @@ namespace Primer
                 if (!_IsReadOnly)
                 {
                     _ViewModel.UpdateProperty(_Name, ref _CurrentValue, value);
+                    _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });
                 }
             }
         }

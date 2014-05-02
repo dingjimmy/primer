@@ -108,7 +108,7 @@ namespace Primer.SampleApp
             // Listen for FieldChanged messages
             Listen<FieldChanged>(m => 
                 {
-                    System.Diagnostics.Debug.WriteLine("A 'FieldChanged' message was broadcast by '{1}' at '{2}'",  m.Sender.GetType().ToString(), m.BroadcastOn);
+                    System.Diagnostics.Debug.WriteLine("A 'FieldChanged' message was broadcast by '{0}' at '{1}'",  m.Sender.GetType().ToString(), m.BroadcastOn);
                 });
 
 

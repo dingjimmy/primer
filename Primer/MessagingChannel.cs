@@ -78,17 +78,6 @@ namespace Primer
 
 
         /// <summary>
-        /// Broadcasts a message to anyone who is listening to the channel.
-        /// </summary>
-        /// <typeparam name="T">The type of message to broadcast.</typeparam>
-        public void Broadcast<T>() where T : IMessage, new()
-        {
-            Broadcast(new T());
-        }
-
-
-
-        /// <summary>
         /// Listens to the channel for a particular message type. When a message of that type is broadcast the message handler delegate is executed.
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
