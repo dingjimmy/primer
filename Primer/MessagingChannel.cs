@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Primer
 {
-    public class MessagingChannel : IMessagingService
+    public class MessagingChannel : IMessagingChannel
     {
 
         public virtual IDictionary<Type, IList<Action<IMessage>>> Handlers { get; protected set; }

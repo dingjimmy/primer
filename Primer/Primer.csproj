@@ -83,9 +83,10 @@
     <Compile Include="Command.cs" />
     <Compile Include="Command T.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="FieldInitialiser.cs" />
     <Compile Include="IDataField.cs" />
     <Compile Include="IMessage.cs" />
-    <Compile Include="IMessagingService.cs" />
+    <Compile Include="IMessagingChannel.cs" />
     <Compile Include="InitialiseViewModelException.cs" />
     <Compile Include="Messages\CommandExecuted.cs" />
     <Compile Include="Messages\FieldChanged.cs" />

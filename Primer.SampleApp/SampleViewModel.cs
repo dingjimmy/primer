@@ -38,6 +38,7 @@ namespace Primer.SampleApp
 
             // Set dependancies
             _Context = ctx;
+            Channel = new MessagingChannel();
 
 
             // build linq query
@@ -73,6 +74,7 @@ namespace Primer.SampleApp
                 {
                     vm.ID = cfi.Field<int>("ID").WithValue(item.ID);
                     vm.Description = cfi.Field<string>("Description").WithValue(item.Description);
+                    vm.Channel = this.Channel;
                     vm.IsLoaded = true;
                 });
 

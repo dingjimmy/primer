@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Primer
 {
-    public interface IMessagingService
+    public interface IMessagingChannel
     {
 
 
