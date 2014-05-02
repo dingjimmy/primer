@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Primer
 {
-    public class MessagingChannel : IMessagingChannel
+    public class MessagingChannel : IMessagingService
     {
 
         public virtual IDictionary<Type, IList<Action<IMessage>>> Handlers { get; protected set; }
@@ -47,7 +47,7 @@ namespace Primer
         #endregion
 
 
-        #region IMessageChannel Implementation
+        #region IMessageChannel Support
 
 
         /// <summary>
@@ -73,6 +73,17 @@ namespace Primer
                 mb(message);  
             }
 
+        }
+
+
+
+        /// <summary>
+        /// Broadcasts a message to anyone who is listening to the channel.
+        /// </summary>
+        /// <typeparam name="T">The type of message to broadcast.</typeparam>
+        public void Broadcast<T>() where T : IMessage, new()
+        {
+            Broadcast(new T());
         }
 
 

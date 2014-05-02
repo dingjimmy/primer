@@ -85,10 +85,11 @@
     <Compile Include="Field.cs" />
     <Compile Include="IDataField.cs" />
     <Compile Include="IMessage.cs" />
-    <Compile Include="IMessagingChannel.cs" />
+    <Compile Include="IMessagingService.cs" />
     <Compile Include="InitialiseViewModelException.cs" />
     <Compile Include="Messages\CommandExecuted.cs" />
     <Compile Include="Messages\FieldChanged.cs" />
+    <Compile Include="Message.cs" />
     <Compile Include="MessagingChannel.cs" />
     <Compile Include="ViewModelInitialiser.cs" />
     <Compile Include="ViewModelCollection.cs" />
