@@ -10,7 +10,6 @@ namespace Primer.Validation
     {
 
 
-
         #region IsValid Property
 
 
@@ -52,7 +51,7 @@ namespace Primer.Validation
         #endregion
 
 
-#region ProcessingOrder Property
+        #region ProcessingOrder Property
 
 
         // property backing field
@@ -68,17 +67,17 @@ namespace Primer.Validation
         }
 
 
-#endregion
+        #endregion
 
 
-#region Methods
+        #region Methods
 
 
         /// <summary>
         /// Validates the value against a pre-determned set of rules.
         /// </summary>
         /// <param name="value"></param>
-        public abstract void Validate(object value);
+        public abstract void Validate<T>(Field<T> value);
 
 
 

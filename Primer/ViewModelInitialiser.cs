@@ -176,10 +176,10 @@ namespace Primer
         #region Validation Initialisation Methods
 
 
-        public ValidatorAttacher<T> Validator<T>() where T: ValidatorAttribute, new()
-        {
-            return new ValidatorAttacher<T>(_TargetViewModel);
-        }
+        //public ValidatorAttacher<T> Validator<T>() where T: ValidatorAttribute, new()
+        //{
+        //    return new ValidatorAttacher<T>(_TargetViewModel);
+        //}
 
 
         #endregion

@@ -403,7 +403,7 @@ namespace Primer
 
 
 
-        protected internal void AddValidatorAttribute<T>(string propertyName, ValidatorAttribute<T> attribute)
+        protected internal void AddValidatorAttribute(string propertyName, ValidatorAttribute attribute)
         {
 
             // if property exists and the attribute isnt already added to the property, then add it.
@@ -413,6 +413,20 @@ namespace Primer
             }
 
         }
+
+
+
+
+        //protected internal void AddValidatorAttribute<T>(string propertyName, ValidatorAttribute<T> attribute)
+        //{
+
+        //    // if property exists and the attribute isnt already added to the property, then add it.
+        //    if (_Validators.ContainsKey(propertyName))
+        //    {
+        //        if (!_Validators[propertyName].Contains(attribute)) _Validators[propertyName].Add(attribute);
+        //    }
+
+        //}
 
 
 #endregion

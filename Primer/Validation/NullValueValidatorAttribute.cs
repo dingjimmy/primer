@@ -9,16 +9,17 @@ namespace Primer.Validation
     public class NullValueValidatorAttribute : ValidatorAttribute
     {
 
-        public override void Validate(object value)
+        public override void Validate<T>(Field<T> field)
         {
 
             // clear any errors
             SetState(true, string.Empty);
 
             // check value is not null
-            if (value != null)
+            if (field != null)
             {
-                var field = value as Fi
+ 
+
             }
                 
                 
@@ -28,7 +29,7 @@ namespace Primer.Validation
         }
 
 
-        public override void Initialise(params object parameters)
+        public override void Initialise(params object[] parameters)
         {
             // do nothing as this validator does not require initialisation!
         }

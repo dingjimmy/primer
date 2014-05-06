@@ -129,8 +129,8 @@ namespace Primer.SampleApp
 
 
             // Init validators
-            var v1 = initialise.Validator<NullValueValidatorAttribute>().OnField("FirstName").WithNoParameters();
-            var v2 = initialise.Validator<NullValueValidatorAttribute>().OnField("FamilyName").WithNoParameters();
+            //var v1 = initialise.Validator<NullValueValidatorAttribute>().OnField("FirstName").WithNoParameters();
+            //var v2 = initialise.Validator<NullValueValidatorAttribute>().OnField("FamilyName").WithNoParameters();
 
 
             //throw new Exception("Test Exception");
