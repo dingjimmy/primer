@@ -403,7 +403,7 @@ namespace Primer
 
 
 
-        protected void AddValidatorAttribute(string propertyName, ValidatorAttribute attribute)
+        protected internal void AddValidatorAttribute<T>(string propertyName, ValidatorAttribute<T> attribute)
         {
 
             // if property exists and the attribute isnt already added to the property, then add it.

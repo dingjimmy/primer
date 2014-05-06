@@ -3,6 +3,7 @@ using System;
 using System.Windows.Input;
 using System.Linq;
 using Primer.Messages;
+using Primer.Validation;
 
 namespace Primer.SampleApp
 {
@@ -15,10 +16,20 @@ namespace Primer.SampleApp
 
 
         // Data Properties
+
+        [NullValueValidator]  
         public Field<int> ID { get; set; }
+
+        [NullValueValidator]
         public Field<string> FirstName { get; set; }
+
+        [NullValueValidator]
         public Field<string> FamilyName { get; set; }
+
+        [NullValueValidator]
         public Field<DateTime> StartDate { get; set; }
+
+        [NullValueValidator]
         public Field<DateTime?> EndDate { get; set; }
 
 
@@ -117,6 +128,9 @@ namespace Primer.SampleApp
 
 
 
+            // Init validators
+            var v1 = initialise.Validator<NullValueValidatorAttribute>().OnField("FirstName").WithNoParameters();
+            var v2 = initialise.Validator<NullValueValidatorAttribute>().OnField("FamilyName").WithNoParameters();
 
 
             //throw new Exception("Test Exception");

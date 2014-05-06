@@ -10,7 +10,8 @@ namespace Primer.Validation
     {
 
 
-#region IsValid Property
+
+        #region IsValid Property
 
 
         // property backing field
@@ -25,13 +26,14 @@ namespace Primer.Validation
         public bool IsValid
         {
             get { return _IsValid; }
+            protected set { _IsValid = value; }
         }
 
 
-#endregion
+        #endregion
 
 
-#region Message Property
+        #region Message Property
 
 
         // property backing field
@@ -43,10 +45,11 @@ namespace Primer.Validation
         public string Message
         {
             get { return _Message; }
+            protected set { _Message = value; }
         }
 
 
-#endregion
+        #endregion
 
 
 #region ProcessingOrder Property
@@ -76,6 +79,13 @@ namespace Primer.Validation
         /// </summary>
         /// <param name="value"></param>
         public abstract void Validate(object value);
+
+
+
+        /// <summary>
+        /// Initialise the validator with the provided parameters.
+        /// </summary>
+        public abstract void Initialise(params object[] parameters);
 
 
 

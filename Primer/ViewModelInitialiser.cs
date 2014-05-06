@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Collections.Generic;
+using Primer.Validation;
 
 namespace Primer
 {
@@ -166,6 +167,18 @@ namespace Primer
             // return completed lookup to caller
             return lookup;
 
+        }
+
+
+        #endregion
+
+
+        #region Validation Initialisation Methods
+
+
+        public ValidatorAttacher<T> Validator<T>() where T: ValidatorAttribute, new()
+        {
+            return new ValidatorAttacher<T>(_TargetViewModel);
         }
 
 

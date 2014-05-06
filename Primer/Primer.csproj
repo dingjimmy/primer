@@ -92,6 +92,11 @@
     <Compile Include="Messages\FieldChanged.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessagingChannel.cs" />
+    <Compile Include="Validation\ValidatorAttribute - Generic.cs" />
+    <Compile Include="Validation\ValidatorAttributeException.cs" />
+    <Compile Include="Validation\StringValidationAttributes.cs" />
+    <Compile Include="Validation\ValidatorAttacher.cs" />
+    <Compile Include="Validation\ValidatorInitialiser.cs" />
     <Compile Include="ViewModelInitialiser.cs" />
     <Compile Include="ViewModelCollection.cs" />
     <Compile Include="ILookupItem.cs" />
