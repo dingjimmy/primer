@@ -551,19 +551,21 @@ namespace Primer
         /// Gets the error message for the property with the given name.
         /// </summary>
         /// <param name="propertyName">The name of the property whose error message to get.</param>
-        /// <returns>The error message for the property. The default is an empty string ("").</returns>
+        /// <returns>The error message for the property. The default value that occours when there are no errors is an empty string .</returns>
         public string this[string propertyName]
         {
             get 
             { 
                 if( _Validators.ContainsKey(propertyName))
                 {
-                    if (!Validate(propertyName)) return _Errors[propertyName];
+                    if (!Validate(propertyName)) 
+                        return _Errors[propertyName];
                 }
 
                 return String.Empty;
             }
         }
+
 
 
 #endregion

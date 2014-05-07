@@ -1,16 +1,13 @@
 ﻿// Copyright (c) James Dingle
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Primer.Messages;
 using Primer.Validation;
+using System;
+using System.ComponentModel;
 
 namespace Primer
 {
-    public class Field<T> : IDataField<T>, IValidationTarget
+    public class Field<T> : IDataField<T>, IValidationTarget, IDataErrorInfo
     {
 
         #region Constructors
@@ -76,7 +73,10 @@ namespace Primer
         /// </summary>
         public T Data
         {
-            get { return _CurrentValue; }
+            get 
+            { 
+                return _CurrentValue;
+            }
             set
             {
                 if (!_IsReadOnly)
@@ -119,6 +119,34 @@ namespace Primer
         #endregion
 
 
+        #region IDataErrorInfo Support
+
+
+        /// <Summary>
+        /// Gets an error message indicating what is wrong with this Field.
+        /// </Summary>
+        /// <returns>An error message indicating what is wrong with this Field. The default value (when there are no errors) is an empty string .</returns>
+        string IDataErrorInfo.Error
+        {
+            get { return _ViewModel[_Name]; }
+        }
+
+
+
+        /// <summary>
+        /// Gets an error message indicating what is wrong with this Field.
+        /// </summary>
+        /// <param name="notused">Due to this (as far as i am aware) entirely unique implementation, this parameter is ignored; however it must remain here in order to satisfy the IDataErrorInfo interface.</param>
+        /// <returns>An error message indicating what is wrong with this Field. The default value (when there are no errors) is an empty string .</returns>
+        string IDataErrorInfo.this[string notused]
+        {
+            get { return _ViewModel[_Name]; }
+        }
+
+
+        #endregion
+
+
         #region Operator Overloads
 
 
@@ -132,7 +160,6 @@ namespace Primer
 
 
         #endregion
-
 
     }
 }

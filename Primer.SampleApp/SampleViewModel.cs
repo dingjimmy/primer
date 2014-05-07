@@ -34,6 +34,23 @@ namespace Primer.SampleApp
 
 
 
+        string _TestProperty = "This is a test property!";
+        [NullValueValidator]
+        public string TestProperty
+        {
+            get
+            {
+                return _TestProperty;
+            }
+
+            set
+            {
+                UpdateProperty("TestProperty", ref _TestProperty, value);
+            }
+        }
+
+
+
         // Sub-ViewModel collections
         public ViewModelCollection<DetailViewModel> Details { get; set; }
         public ViewModelCollection MoreDetails { get; set; }
@@ -144,6 +161,13 @@ namespace Primer.SampleApp
 
             //IsLoaded = true;
 
+            this.PropertyChanged += SampleCustomerViewModel_PropertyChanged;
+
+        }
+
+        void SampleCustomerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            System.Windows.MessageBox.Show(string.Format("Property '{0}' has been changed.", e.PropertyName));
         }
 
 
