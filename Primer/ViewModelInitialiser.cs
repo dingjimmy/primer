@@ -39,9 +39,9 @@ namespace Primer
 
 
         /// <summary>
-        /// Creates a new <see cref="Primer.SmartProperties.Field{T}"/>, and begins the initialisation process.
+        /// Creates a new <see cref="Primer.Field{T}"/>, and begins the initialisation process.
         /// </summary>
-        /// <typeparam name="T">The underlying data-type for this <see cref="Primer.SmartProperties.Field{R}"/>.</typeparam>
+        /// <typeparam name="T">The underlying data-type for this <see cref="Primer.Field{R}"/>.</typeparam>
         /// <returns>A  that can be used to complete the initialisation process.</returns>
         public FieldInitialiser<T> Field<T>(string name)
         {
@@ -59,6 +59,7 @@ namespace Primer
         /// Creates a new <see cref="ViewModelCollection{TViewModel}" />. 
         /// </summary>
         /// <param name="query">A collection of {TEntity} that is used to initialise the <see cref="ViewModelCollection{TViewModel}"/>. This is likley to be a Linq To Sql or Linq to Entities query, however any enumerable collection can be used.</param>
+        /// <param name="initialiseMethod">An action delegete that handles the initialsation of each new ViewModel in the collection.</param>
         public ViewModelCollection<TViewModel> Collection<TViewModel, TEntity>(IEnumerable<TEntity> query, Action<ViewModelInitialiser, TEntity, TViewModel> initialiseMethod) 
             where TViewModel : ViewModel, new()
         {
@@ -141,9 +142,10 @@ namespace Primer
 
 
         /// <summary>
-        /// Creates a new <see cref="Primer.Lookups.Lookup{TEntity}"/>.
+        /// Creates a new <see cref="Primer.Lookup{TEntity}"/>.
         /// </summary>
-        /// <param name="entityCollection">A collection of [TEntity] that is used to initialise a <see cref="Lookup"/>. This is likley to be a Linq To Sql or Linq to Entities query, however any enumerable collection can be used.</param>
+        /// <param name="entityCollection">A collection of {TEntity} that is used to initialise a <see cref="Lookup{TEntity}"/>. This is likley to be a Linq To Sql or Linq to Entities query, however any enumerable collection can be used.</param>
+        /// <param name="initialiseMethod">An action delegete that handles the initialsation of each new <see cref="Primer.LookupItem{TKey, TEntity, TDescription}" /> in the Lookup.</param>
         public Lookup<TEntity> Lookup<TEntity>(IEnumerable<TEntity> entityCollection, Action<TEntity, LookupItem<string, TEntity, string>> initialiseMethod)
         {
 
@@ -176,10 +178,10 @@ namespace Primer
         #region Validation Initialisation Methods
 
 
-        //public ValidatorAttacher<T> Validator<T>() where T: ValidatorAttribute, new()
-        //{
-        //    return new ValidatorAttacher<T>(_TargetViewModel);
-        //}
+        public ValidatorAttacher<T> Validator<T>() where T : ValidatorAttribute, new()
+        {
+            return new ValidatorAttacher<T>(_TargetViewModel);
+        }
 
 
         #endregion

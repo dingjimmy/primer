@@ -8,8 +8,8 @@ using System.Collections.Generic;
 namespace Primer
 {
 
-    // <summary>
-    /// Creates and initialises instances of the <see cref="Primer.Field"/> class.
+    /// <summary>
+    /// Creates and initialises instances of the <see cref="Primer.Field{T}"/> class.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class FieldInitialiser<T>

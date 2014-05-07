@@ -15,8 +15,8 @@ namespace Primer.SampleApp
         DataContext _Context;
 
 
-        // Data Properties
 
+        // Fields
         [NullValueValidator]  
         public Field<int> ID { get; set; }
 
@@ -33,15 +33,22 @@ namespace Primer.SampleApp
         public Field<DateTime?> EndDate { get; set; }
 
 
-        public ViewModelCollection<DetailViewModel> Details { get; set; }
 
+        // Sub-ViewModel collections
+        public ViewModelCollection<DetailViewModel> Details { get; set; }
         public ViewModelCollection MoreDetails { get; set; }
 
+
+
+        // Lookups
         public Lookup<Supplier> AvailableSuppliers { get; set; }
 
 
+
+        // Commands
         public Command Ok { get; set; }
         public Command Cancel { get; set; }
+
 
 
 
@@ -129,8 +136,8 @@ namespace Primer.SampleApp
 
 
             // Init validators
-            //var v1 = initialise.Validator<NullValueValidatorAttribute>().OnField("FirstName").WithNoParameters();
-            //var v2 = initialise.Validator<NullValueValidatorAttribute>().OnField("FamilyName").WithNoParameters();
+            //var v1 = initialise.Validator<NullValueValidatorAttribute>().OnField("FamilyName").WithNoParameters();
+            var v2 = initialise.Validator<EmptyStringValidatorAttribute>().OnField("FamilyName").WithNoParameters();
 
 
             //throw new Exception("Test Exception");

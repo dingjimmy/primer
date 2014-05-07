@@ -1,47 +1,60 @@
-﻿//// Copyright (c) James Dingle
+﻿// Copyright (c) James Dingle
 
-//using System;
-//using System.Text.RegularExpressions;
+using System;
+using System.Text.RegularExpressions;
 
-//namespace Primer.Validation
-//{
+namespace Primer.Validation
+{
 
 
-//    /// <summary>
-//    /// Checks for empty or whitespace-only strings. Returns NotValid if found, IsValid otherwise.
-//    /// </summary>
-//    [AttributeUsage(AttributeTargets.Property, AllowMultiple=true, Inherited=false)]
-//    class EmptyStringValidatorAttribute : ValidatorAttribute<string>
-//    {
+    /// <summary>
+    /// Checks for empty or whitespace-only strings. Returns NotValid if found, IsValid otherwise.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple=true, Inherited=false)]
+    public class EmptyStringValidatorAttribute : ValidatorAttribute
+    {
 
-//        public override void Validate(Field<string> field)
-//        {
+
+        /// <summary>
+        /// Validates a target's value.
+        /// </summary>
+        public override void Validate(IValidationTarget target)
+        {
             
-//            // clear error state
-//            SetState(true, null);
-
-//            // check for null
-//            if (field != null)
-//            {
-
-//                    // check for empty string or whitespace
-//                    if (string.IsNullOrWhiteSpace(field.Data))
-//                    {
-//                        SetState(false, "This field cannot be empty. Please enter a value.");
-//                    }
-
-//            }
-
-//        }
+            // clear error state
+            SetState(true, null);
 
 
+            // get the value we wish to validate
+            var value = target.ValueToValidate as string;
 
-//        public override void Initialise(params string[] parameters)
-//        {
-//            // do nothing as this validator does not require initialisation!
-//        }
 
-//    }
+            // check for null
+            if (value != null)
+            {
+
+                    // check for empty string or whitespace
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        SetState(false, "This field cannot be empty. Please enter a value.");
+                    }
+
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// Initialise the validator with the provided parameters. This validator does not require any parameters to initialise.
+        /// </summary>
+        public override void Initialise(params object[] parameters)
+        {
+            // do nothing as this validator does not require initialisation!
+        }
+
+
+    }
 
 
 
@@ -52,7 +65,7 @@
 //    public class EmptyStringConverterAttribute : ValidatorAttribute<string>
 //    {
 
-//        public override void Validate(Field<string> field)
+//       public override void Validate(IValidationTarget target)
 //        {
 
 //            // clear error state
@@ -74,7 +87,7 @@
 
 
 
-//        public override void Initialise(params string[] parameters)
+//        public override void Initialise(params object[] parameters)
 //        {
 //            // do nothing as this validator does not require initialisation!
 //        }
@@ -90,14 +103,14 @@
 //    public class StringLengthValidatorAttribute : ValidatorAttribute<string>
 //    {
 
-//        public override void Validate(Field<string> field)
+//       public override void Validate(IValidationTarget target)
 //        {
 //            throw new NotImplementedException();
 //        }
 
 
 
-//        public override void Initialise(params string[] parameters)
+//        public override void Initialise(params object[] parameters)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -114,14 +127,14 @@
 //    public class NumericStringValidatorAttribute : ValidatorAttribute<string>
 //    {
 
-//        public override void Validate(Field<string> field)
+//       public override void Validate(IValidationTarget target)
 //        {
 //            throw new NotImplementedException();
 //        }
 
 
 
-//        public override void Initialise(params string[] parameters)
+//        public override void Initialise(params object[] parameters)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -140,14 +153,14 @@
 //    public class CurrencyStringValidatorAttribute : ValidatorAttribute<string>
 //    {
 
-//        public override void Validate(Field<string> field)
+//       public override void Validate(IValidationTarget target)
 //        {
 //            throw new NotImplementedException();
 //        }
 
 
 
-//        public override void Initialise(params string[] parameters)
+//        public override void Initialise(params object[] parameters)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -166,14 +179,14 @@
 //    class EmailAddressValidatorAttribute : ValidatorAttribute<string>
 //    {
 
-//        public override void Validate(Field<String> field)
+//       public override void Validate(IValidationTarget target)
 //        {
 //            throw new NotImplementedException();
 //        }
 
 
 
-//        public override void Initialise(params string[] parameters)
+//        public override void Initialise(params object[] parameters)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -190,14 +203,14 @@
 //    class PostCodeValidatorAttribute : ValidatorAttribute<string>
 //    {
 
-//        public override void Validate(Field<String> field)
+//       public override void Validate(IValidationTarget target)
 //        {
 //            throw new NotImplementedException();
 //        }
 
 
 
-//        public override void Initialise(params string[] parameters)
+//        public override void Initialise(params object[] parameters)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -208,4 +221,4 @@
 //#endregion
 
 
-//}
+}

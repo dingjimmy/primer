@@ -117,6 +117,7 @@ namespace Primer
         /// Requiered method for ViewModel to operate correctly. Caches validation attributes and triggers the abstract initialisation method.
         /// </summary>
         /// <param name="primaryDataSource">The source object to initialise the viewmodel with. Usually an entity or linq query, but could be anyting.</param>
+        /// <param name="secondaryDataSources">Additional, optional objects to use in the viewmodel initialisation.</param>
         protected void Initialise(object primaryDataSource, params object[] secondaryDataSources)
         {
 
@@ -232,29 +233,46 @@ namespace Primer
             if (_Validators.ContainsKey(propertyName))
             {
 
-                // get the value of the property
-                var value = this.GetType().GetProperty(propertyName).GetValue(this, null);
+                // get the value of the property which should be of type validation-target
+                var target = this.GetType().GetProperty(propertyName).GetValue(this, null) as IValidationTarget;
 
 
-                // get a list of all validator attributes assigned to the property
-                var validators = _Validators[propertyName];
-
-
-                // loop through all validator attributes
-                foreach (var validator in validators)
+                // check if property value is a validation-target
+                if (target != null)
                 {
 
-                    // run validation
-                    validator.Validate(value);
+
+                    // get a list of all validator attributes assigned to the property
+                    var validators = _Validators[propertyName];
 
 
-                    // if validation was not successfull then set error and don't process the remaining attributes
-                    if (!validator.IsValid)
+                    // loop through all validator attributes
+                    foreach (var validator in validators)
                     {
-                        SetError(propertyName, validator.Message);
-                        isValid = false;
-                        break;
+
+                        try
+                        {
+
+                            // run validation
+                            validator.Validate(target);
+
+
+                            // if validation was not successfull then set error and don't process the remaining attributes
+                            if (!validator.IsValid)
+                            {
+                                SetError(propertyName, validator.Message);
+                                isValid = false;
+                                break;
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ValidatorAttributeException(String.Format("Error occoured during validation of '{0}'.", propertyName), ex);
+                        }
                     }
+
+
                 }
             }
 
@@ -439,7 +457,7 @@ namespace Primer
         /// <summary>
         /// Broadcasts a message of the desired type on ViewModels default messaging channel.
         /// </summary>
-        /// <typeparam name="T">The type of message to broadcast.</typeparam>
+        /// <param name="message">The message to broadcast.</param>
         public void Broadcast(IMessage message)
         {
             if (Channel != null)

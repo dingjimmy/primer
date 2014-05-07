@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Primer.Messages;
+using Primer.Validation;
 
 namespace Primer
 {
-    public class Field<T>:IDataField<T>
+    public class Field<T> : IDataField<T>, IValidationTarget
     {
 
         #region Constructors
@@ -100,6 +101,24 @@ namespace Primer
         #endregion
 
 
+        #region IValidationTarget Support
+
+
+        public object ValueToValidate
+        {
+            get { return Data; }
+        }
+
+
+        public Type TypeToValidate
+        {
+            get { return typeof(T); }
+        }
+
+
+        #endregion
+
+
         #region Operator Overloads
 
 
@@ -113,6 +132,7 @@ namespace Primer
 
 
         #endregion
+
 
     }
 }

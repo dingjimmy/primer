@@ -5,6 +5,9 @@ using System;
 namespace Primer.Validation
 {
 
+    /// <summary>
+    /// When overridden in a derived class, handles the validation of a target object against a pre-determined set of rules.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple=true, Inherited=false)]
     public abstract class ValidatorAttribute: Attribute, IComparable<ValidatorAttribute>
     {
@@ -74,10 +77,10 @@ namespace Primer.Validation
 
 
         /// <summary>
-        /// Validates the value against a pre-determned set of rules.
+        /// Validates a target's value.
         /// </summary>
-        /// <param name="value"></param>
-        public abstract void Validate<T>(Field<T> value);
+        /// <param name="target">The target object we wish to validate.</param>
+        public abstract void Validate(IValidationTarget target);
 
 
 

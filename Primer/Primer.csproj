@@ -38,6 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>bin\x86\Debug\primer.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -92,7 +93,7 @@
     <Compile Include="Messages\FieldChanged.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessagingChannel.cs" />
-    <Compile Include="Validation\ValidatorAttribute - Generic.cs" />
+    <Compile Include="Validation\IValidationTarget.cs" />
     <Compile Include="Validation\ValidatorAttributeException.cs" />
     <Compile Include="Validation\StringValidationAttributes.cs" />
     <Compile Include="Validation\ValidatorAttacher.cs" />
