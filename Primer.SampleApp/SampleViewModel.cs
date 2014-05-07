@@ -153,21 +153,15 @@ namespace Primer.SampleApp
 
 
             // Init validators
-            //var v1 = initialise.Validator<NullValueValidatorAttribute>().OnField("FamilyName").WithNoParameters();
-            var v2 = initialise.Validator<EmptyStringValidatorAttribute>().OnField("FamilyName").WithNoParameters();
+            var v = initialise.Validator<EmptyStringValidatorAttribute>().OnField("FamilyName").WithNoParameters();
 
 
             //throw new Exception("Test Exception");
 
             //IsLoaded = true;
 
-            this.PropertyChanged += SampleCustomerViewModel_PropertyChanged;
+ 
 
-        }
-
-        void SampleCustomerViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            System.Windows.MessageBox.Show(string.Format("Property '{0}' has been changed.", e.PropertyName));
         }
 
 
