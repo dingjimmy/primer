@@ -79,7 +79,7 @@ namespace Primer
             }
             set
             {
-                SetData(value, true)
+                SetData(value, true);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Primer
         {
             if (!_IsReadOnly)
             {
-                if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, value))
+                if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, proposedValue))
                 {
                     if (broadcastMessage) 
                         _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });
