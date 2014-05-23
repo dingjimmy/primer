@@ -195,7 +195,9 @@ namespace Primer.SampleApp
 
         public void DoSomethingSpecial()
         {
-
+            AvailableSuppliers.ResetFilter();
+            AvailableSuppliers.FilterOut((item) => item.key <= 6);
+            AvailableSuppliers.FilterIn((item) => item.Key > 3 && item.Key < 10);
         }
     }
 
