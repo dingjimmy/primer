@@ -79,13 +79,7 @@ namespace Primer
             }
             set
             {
-                if (!_IsReadOnly)
-                {
-                    if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, value))
-                    {
-                        _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });
-                    }
-                }
+                SetData(value, true)
             }
         }
 
@@ -99,6 +93,24 @@ namespace Primer
             get { return _ViewModel; }
         }
 
+
+
+        /// <summary>
+        /// Sets the value of the data this property is responsible for while automatically updating the state of the parent viewmodel.
+        /// </summary>
+        /// <param name="proposedValue">The new value we wish to apply to this field.</param>
+        /// <param name="broadcastMessage">A flag that indicates wether we wish to broadcast a 'FieldChanged' message for this action.</param>
+        public void SetData(T proposedValue, bool broadcastMessage)
+        {
+            if (!_IsReadOnly)
+            {
+                if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, value))
+                {
+                    _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });
+                }
+            }
+        }
+        
 
         #endregion
 
