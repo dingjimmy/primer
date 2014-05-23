@@ -106,7 +106,8 @@ namespace Primer
             {
                 if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, value))
                 {
-                    _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });
+                    if (broadcastMessage) 
+                        _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });
                 }
             }
         }
