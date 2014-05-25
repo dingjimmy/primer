@@ -8,7 +8,7 @@ namespace Primer.Tests
     {
         [TestMethod]
         [TestCategory("Primer.Lookup")]
-        public void ApplyFilter_Hides_Items_That_Match_Criteria()
+        public void ApplyFilter_Hides_Items_That_Do_Not_Match_Criteria()
         {
 
             // Arrange
@@ -27,9 +27,9 @@ namespace Primer.Tests
 
             // Assert
             Assert.AreEqual(3, lookup.Count);
-            Assert.AreSame(thriteen, lookup[0]);
-            Assert.AreSame(fourteen, lookup[1]);
-            Assert.AreSame(fifteen, lookup[2]);
+            Assert.AreSame(ten, lookup[0]);
+            Assert.AreSame(eleven, lookup[1]);
+            Assert.AreSame(twelve, lookup[2]);
 
 
         }

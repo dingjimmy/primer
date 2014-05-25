@@ -78,19 +78,33 @@ namespace Primer
 
         
         /// <summary>
-        /// Filter the lookup based using the supplied criteria. Items that match the criteria will be hidden from the lookup.
+        /// Filter the lookup based using the supplied criteria. Items that do not match the criteria will be hidden from the lookup.
         /// </summary>
         /// <param name="criteria">The expression that will be used to filter the lookup.,</param>
         public void ApplyFilter(Func<ILookupItem<string, TEntity, string>, bool> criteria)
         {
 
+            // clear the existing filter (if there is one)
             ClearFilter();
-            
-            _HiddenItems = this.Where(criteria).ToList();
 
-            foreach (var item in _HiddenItems)
+
+            // get a list of the items that match the criteria and we want to keep visible
+            var visible = this.Where(criteria).ToList();
+
+
+            // get temp copy of lookup items: prevents invalid operation when removing items from a list you are enumerating.
+            var tmp = this.ToList();
+
+
+            // loop through all items in the list and hide all the ones not in the visible list
+            foreach (var item in tmp)
             {
-                this.Remove(item);
+                if (!visible.Contains(item))
+                {
+                    _HiddenItems.Add(item);
+                    this.Remove(item);
+                }
+                
             }
 
         }
