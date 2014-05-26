@@ -79,7 +79,7 @@ namespace Primer
             }
             set
             {
-                SetData(value, true);
+                SetData(value, true,false);
             }
         }
 
@@ -100,11 +100,13 @@ namespace Primer
         /// </summary>
         /// <param name="proposedValue">The new value we wish to apply to this field.</param>
         /// <param name="broadcastMessage">A flag that indicates wether we wish to broadcast a 'FieldChanged' message for this action.</param>
-        public void SetData(T proposedValue, bool broadcastMessage)
+        /// <param name="force">Force the field to update, regardless of if the proposed and current values are the same. This parameter is ignored if
+        /// the Field is read-only.</param>
+        public void SetData(T proposedValue, bool broadcastMessage, bool force)
         {
             if (!_IsReadOnly)
             {
-                if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, proposedValue))
+                if (_ViewModel.UpdateProperty(_Name, ref _CurrentValue, proposedValue, force))
                 {
                     if (broadcastMessage) 
                         _ViewModel.Broadcast(new FieldChanged() { Sender = _ViewModel, Name = this.Name });

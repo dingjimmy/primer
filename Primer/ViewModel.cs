@@ -186,16 +186,16 @@ namespace Primer
 
 
         /// <summary>
-        /// Compares the current and proposed values; Updates the current with the proposed and raises the <see cref="ViewModel.PropertyChanged"/> event if they are not equal.
-        /// </summary>
+        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="ViewModel.PropertyChanged"/> event is raised.
         /// <param name="propertyName">The name of the property that has changed.</param>
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
+        /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
         /// <returns>True if the current value has been updated, false otherwise.</returns>
-        public bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue)
+        public bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate)
         {
 
-            if (!EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
+            if (forceUpdate || !EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
             {
                 currentValue = proposedValue;
                 RaisePropertyChanged(this, propertyName);

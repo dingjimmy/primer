@@ -45,7 +45,7 @@ namespace Primer.SampleApp
 
             set
             {
-                UpdateProperty("TestProperty", ref _TestProperty, value);
+                UpdateProperty("TestProperty", ref _TestProperty, value, false);
             }
         }
 

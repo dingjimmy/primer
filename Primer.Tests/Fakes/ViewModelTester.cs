@@ -14,9 +14,9 @@ namespace Primer.Tests.ProtectedTesters
     /// </summary>
     public class ViewModelTester : ViewModel
     {
-        public bool TestUpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue)
+        public bool TestUpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate)
         {
-            return UpdateProperty<T>(propertyName, ref currentValue, proposedValue);
+            return UpdateProperty<T>(propertyName, ref currentValue, proposedValue, forceUpdate );
         }
 
         protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
