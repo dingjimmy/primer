@@ -38,6 +38,66 @@ namespace Primer.Tests
 
         [TestMethod]
         [TestCategory("Primer.Lookup")]
+        public void Special_Bug_Investigating_Test()
+        {
+
+            // Arrange
+            var lookup = new Lookup<int>();
+            var Jan = lookup.Add("1", 1, "January");
+            var Feb = lookup.Add("2", 2, "February");
+            var Mar = lookup.Add("3", 3, "March");
+            var Apr = lookup.Add("4", 4, "April");
+            var May = lookup.Add("5", 5, "May");
+            var Jun = lookup.Add("6", 6, "June");
+            var Jul = lookup.Add("7", 7, "July");
+            var Aug = lookup.Add("8", 8, "August");
+            var Sep = lookup.Add("9", 9, "September");
+            var Oct = lookup.Add("10", 10, "October");
+            var Nov = lookup.Add("11", 11, "November");
+            var Dec = lookup.Add("12", 12, "December");
+
+
+            // Action
+            lookup.ApplyFilter(item => item.Entity <= 6);
+            lookup.ApplyFilter(item => item.Entity <= 12);
+
+
+            // Assert
+            Assert.AreEqual(12, lookup.Count);
+
+            Assert.IsTrue(lookup.Contains(Jan));
+            Assert.IsTrue(lookup.Contains(Feb));
+            Assert.IsTrue(lookup.Contains(Mar));
+            Assert.IsTrue(lookup.Contains(Apr));
+            Assert.IsTrue(lookup.Contains(May));
+            Assert.IsTrue(lookup.Contains(Jun));
+            Assert.IsTrue(lookup.Contains(Jul));
+            Assert.IsTrue(lookup.Contains(Aug));
+            Assert.IsTrue(lookup.Contains(Sep));
+            Assert.IsTrue(lookup.Contains(Oct));
+            Assert.IsTrue(lookup.Contains(Nov));
+            Assert.IsTrue(lookup.Contains(Dec));
+
+            //Assert.AreSame(Jan, lookup[0]);
+            //Assert.AreSame(Feb, lookup[1]);
+            //Assert.AreSame(Mar, lookup[2]);
+            //Assert.AreSame(Apr, lookup[3]);
+            //Assert.AreSame(May, lookup[4]);
+            //Assert.AreSame(Jun, lookup[5]);
+            //Assert.AreSame(Jul, lookup[6]);
+            //Assert.AreSame(Aug, lookup[7]);
+            //Assert.AreSame(Sep, lookup[8]);
+            //Assert.AreSame(Oct, lookup[9]);
+            //Assert.AreSame(Nov, lookup[10]);
+            //Assert.AreSame(Dec, lookup[11]);
+
+
+        }
+
+
+
+        [TestMethod]
+        [TestCategory("Primer.Lookup")]
         public void ClearFilter_Reveals_Hidden_Items()
         {
 
@@ -66,5 +126,6 @@ namespace Primer.Tests
             Assert.AreSame(fifteen, lookup[5]);
 
         }
+
     }
 }
