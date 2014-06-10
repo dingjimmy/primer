@@ -469,16 +469,28 @@ namespace Primer
 
 
         /// <summary>
-        /// Listens to the default messaging channel for a particular message type and executes the provided delegate.
+        /// Listens to the default messaging channel for a particular message type and executes the provided delegate. This is a friendly wrapper of the <see cref="MessagingChannel.Listen{T}"/> method.
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
         /// <param name="messageHandler">The delegate to execute when a message of the desired type is broadcast.</param>
-        public void Listen<T>(Action<IMessage> messageHandler) where T: IMessage
+        public void Listen<T>(Action<T> messageHandler) where T: IMessage
         {
+
             if (Channel != null)
             {
-                Channel.Listen<T>(messageHandler);
+
+                // wrap the provided generic Action<T> delegete in an Action<IMessage> delegete such that we can easily add it to the messaging channel.
+                Action<IMessage> wrapper = (m) =>
+                    {
+                        messageHandler((T)m);
+                    };
+
+
+                // add the new wrapper delegate to the channel
+                Channel.Listen<T>(wrapper);
+
             }
+
         }
 
 
