@@ -28,7 +28,7 @@ namespace Primer.Windows
         }
 
 
-        public bool ShowPopupWindow(ViewModel content, System.Windows.Window owner)
+        public bool ShowPopupWindow(IViewModel content, System.Windows.Window owner)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +42,7 @@ namespace Primer.Windows
 
 
 
-        public System.Windows.Window ShowWindow(string identifier, ViewModel content, System.Windows.Window owner)
+        public System.Windows.Window ShowWindow(string identifier, IViewModel content, System.Windows.Window owner)
         {
             
             //check service has been initialized
@@ -83,7 +83,7 @@ namespace Primer.Windows
 
 
 
-        public System.Windows.Window ShowAsyncWindow(string identifier, ViewModel content)
+        public System.Windows.Window ShowAsyncWindow(string identifier, IViewModel content)
         {
             throw new NotImplementedException();
         }

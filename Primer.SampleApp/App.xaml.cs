@@ -15,6 +15,8 @@ namespace Primer.SampleApp
             var win = new Window1();
             var ctx = new DataContext();
 
+            ctx.Customers.Add(new Customer() { ID = 1876309338, FirstName = "Rober", FamilyName = "Mugabe", StartDate = DateTime.Today.AddYears(-4), TestProperty = "This is a test property" });
+
             ctx.Details.Add(new OrderDetail() { ID = 2345, Description = "Hammer", Quantity = 1, Value = 12.50M });
             ctx.Details.Add(new OrderDetail() { ID = 9276, Description = "Saw", Quantity = 1, Value = 25.20M });
             ctx.Details.Add(new OrderDetail() { ID = 1754, Description = "Screwdriver", Quantity = 1, Value = 4.50M });

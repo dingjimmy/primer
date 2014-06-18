@@ -3,52 +3,15 @@ using System;
 using System.Windows.Input;
 using System.Linq;
 using Primer.Messages;
-using Primer.Validation;
 
 namespace Primer.SampleApp
 {
 
-    public class SampleCustomerViewModel : ViewModel
+    public class SampleCustomerViewModel : ViewModel<CustomerFacade>
     {
 
         // Dependancies
         DataContext _Context;
-
-
-
-        // Fields
-        [NullValueValidator]  
-        public Field<int> ID { get; set; }
-
-        [NullValueValidator]
-        public Field<string> FirstName { get; set; }
-
-        [NullValueValidator]
-        public Field<string> FamilyName { get; set; }
-
-        [NullValueValidator]
-        public Field<DateTime> StartDate { get; set; }
-
-        [NullValueValidator]
-        public Field<DateTime?> EndDate { get; set; }
-
-
-
-        string _TestProperty = "This is a test property!";
-        [NullValueValidator]
-        public string TestProperty
-        {
-            get
-            {
-                return _TestProperty;
-            }
-
-            set
-            {
-                UpdateProperty("TestProperty", ref _TestProperty, value, false);
-            }
-        }
-
 
 
         // Sub-ViewModel collections
@@ -77,16 +40,20 @@ namespace Primer.SampleApp
             Channel = new MessagingChannel();
 
 
-            // build linq query
+            // build queries
+            var cusQuery = from c in _Context.Customers where c.ID == 1876309338 select c;
             var dtlQuery = from d in _Context.Details select d;
             var splQuery = from s in _Context.Suppliers select s;
 
-            Console.WriteLine("IsLoaded={0}", this.IsLoaded);
 
+            Model = new CustomerFacade(cusQuery.First());
+            Channel = new MessagingChannel();
+            //Validator = new CustomerValidator();
+
+            
             // This call is required for the ViewModel to function correctly. 
             Initialise(dtlQuery, splQuery);
 
-            Console.WriteLine("IsLoaded={0}", this.IsLoaded);
 
         }
 
@@ -97,15 +64,6 @@ namespace Primer.SampleApp
             // Verify dependacies
             var details = primaryDataSource as IQueryable<OrderDetail>;
             var suppliers = secondaryDataSources[0] as IQueryable<Supplier>;
-
-
-
-            // Init this ViewModel's fields
-            ID = initialise.Field<int>("ID").WithValue(1280571);
-            FirstName = initialise.Field<string>("FirstName").WithValue("Joeseph");
-            FamilyName = initialise.Field<string>("FamilyName").WithValue("Bloggs");
-            StartDate = initialise.Field<DateTime>("StartDate").WithValue("2014-02-27");
-            EndDate = initialise.Field<DateTime?>("EndDate").WithValue("2018-09-03");
 
 
 
@@ -141,10 +99,7 @@ namespace Primer.SampleApp
 
 
             // Listen for FieldChanged messages
-            Listen<FieldChanged>(m => 
-                {
-                    System.Diagnostics.Debug.WriteLine("A 'FieldChanged' message was broadcast by '{0}' at '{1}'",  m.Sender.GetType().ToString(), m.BroadcastOn);
-                });
+            Listen<FieldChanged>(m => System.Diagnostics.Debug.WriteLine("A 'FieldChanged' message was broadcast by '{0}' at '{1}'. Field Name: {2}", m.Sender.GetType().ToString(), m.BroadcastOn, m.Name));
 
 
             // Change a fields value; this will broadcast the FieldChanged message which should cause the above listener method to be executed!
@@ -164,6 +119,11 @@ namespace Primer.SampleApp
 
         }
 
+        private void Listen<T1>(Action<FieldChanged> action)
+        {
+            throw new NotImplementedException();
+        }
+
 
 
         #region CommandMethods
@@ -180,7 +140,7 @@ namespace Primer.SampleApp
                 // save me to a database!
             }
 
-            FirstName.Data = "This is a test!";
+            Model.FirstName = "This is a test!";
         }
 
 

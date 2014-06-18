@@ -1,10 +1,10 @@
 ﻿// Copyright (c) James Dingle
 
-using Primer.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using FluentValidation;
 
 namespace Primer
 {
@@ -12,14 +12,13 @@ namespace Primer
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ViewModel : INotifyPropertyChanged, IDataErrorInfo, IDisposable
+    public abstract class ViewModel<TModel> : INotifyPropertyChanged, IDataErrorInfo, IDisposable, IViewModel
     {
 
 
 #region Private State
 
         private Dictionary<string, string> _Errors;
-        private Dictionary<string, List<ValidatorAttribute>> _Validators;
 
 #endregion
 
@@ -47,6 +46,31 @@ namespace Primer
 
 
 
+        private TModel _Model;
+        public TModel Model
+        {
+            get{ return _Model; }
+            set
+            { 
+                _Model = value;
+                RaisePropertyChanged("Model");
+            }
+        }
+
+
+        private IValidator<TModel> _Validator;
+        public IValidator<TModel> Validator
+        {
+            get { return _Validator; }
+            set
+            {
+                _Validator = value;
+                RaisePropertyChanged("Validator");
+            }
+        }
+
+
+
         /// <summary>
         /// Gets or sets the default messaging channel for this ViewModel.
         /// </summary>
@@ -67,7 +91,6 @@ namespace Primer
 
             // init error and validator dictionaries
             _Errors = new Dictionary<string, string>();
-            _Validators = new Dictionary<string, List<ValidatorAttribute>>();
 
             // set initial initialisation state
             IsLoaded = false;
@@ -81,55 +104,18 @@ namespace Primer
 #region Initialise Methods
 
 
-
         /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Caches validation attributes, but DOES NOT trigger the abstract initialisation method; this must be done seperatly.
+        /// Requiered method for ViewModel to operate correctly. Triggers the abstract initialisation method.
         /// </summary>
-        protected void Initialise()
+        /// <param name="dataSources">Objects to use in the viewmodel initialisation.</param>
+        public void Initialise(params object[] dataSources)
         {
 
             try
             {
-
-                // cache validators
-                CacheValidatorAttributes();
-
-
-                // set loaded state
-                IsLoaded = true;
-
-            }
-            catch (Exception ex)
-            {
-
-                // set loaded state
-                IsLoaded = false;
-
-                // throw more descriptive exception to caller
-                throw new InitialiseViewModelException("ViewModel initialisation has failed. Please see inner exception for further details", ex);
-
-            }
-     
-        }
-
-
-        /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Caches validation attributes and triggers the abstract initialisation method.
-        /// </summary>
-        /// <param name="primaryDataSource">The source object to initialise the viewmodel with. Usually an entity or linq query, but could be anyting.</param>
-        /// <param name="secondaryDataSources">Additional, optional objects to use in the viewmodel initialisation.</param>
-        protected void Initialise(object primaryDataSource, params object[] secondaryDataSources)
-        {
-
-            try
-            {
-
-                // cache validators
-                CacheValidatorAttributes();
-
 
                 // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
-                Initialise(new ViewModelInitialiser(this), primaryDataSource, secondaryDataSources);
+                Initialise(new ViewModelInitialiser(this), null, dataSources);
 
 
                 // set loaded state
@@ -150,63 +136,8 @@ namespace Primer
         }
 
 
-        protected internal abstract void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources);
+        protected internal abstract void Initialise(ViewModelInitialiser initialise, params object[] dataSources);
 
-
-
-#endregion
-
-
-#region Update Property Methods
-
-
-        /// <summary>
-        /// Compares the current and proposed values and raises the <see cref="ViewModel.PropertyChanged"/> event if they are not equal.
-        /// </summary>
-        /// <param name="propertyName">The name of the property that has changed.</param>
-        /// <param name="currentValue">The current value of the property.</param>
-        /// <param name="proposedValue">The proposed value of the property</param>
-        /// <returns>The proposed value if the values are not equal; otherwise the current value.</returns>
-        [Obsolete("Is buggy. Use UpdateProperty(string, ref T, T) instead")]
-        public T UpdateProperty<T>(string propertyName, T currentValue, T proposedValue)
-        {
-
-            if (!EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
-            {
-                RaisePropertyChanged(this, propertyName);
-                return proposedValue;
-            }
-            else
-            {
-                return currentValue;
-            }
-
-        }
-
-
-
-        /// <summary>
-        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="ViewModel.PropertyChanged"/> event is raised.
-        /// <param name="propertyName">The name of the property that has changed.</param>
-        /// <param name="currentValue">The current value of the property.</param>
-        /// <param name="proposedValue">The proposed value of the property</param>
-        /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
-        /// <returns>True if the current value has been updated, false otherwise.</returns>
-        public bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate)
-        {
-
-            if (forceUpdate || !EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
-            {
-                currentValue = proposedValue;
-                RaisePropertyChanged(this, propertyName);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
 
 
 #endregion
@@ -216,68 +147,32 @@ namespace Primer
 
 
         /// <summary>
-        /// Validates this property against its adorned <see cref="ValidatorAttribute" />s and returns a value that indicates whether the property passed validation.
+        /// Validates this property against the rules setup in the <see cref="ViewModel.Validator" /> and returns a value that indicates whether the property passed validation.
         /// </summary>
         /// <param name="propertyName">The name of the property to validate.</param>
         /// <returns>True if the property has passed validation; false otherwise.</returns>
         protected bool Validate(string propertyName)
         {
-            bool isValid = true;
 
-
-            // clear the error state on this property
             ClearError(propertyName);
 
+            
+            if (_Validator == null) return true;
 
-            // check if the property has validators attached to it
-            if (_Validators.ContainsKey(propertyName))
+
+            var result = _Validator.Validate(_Model, propertyName);
+
+
+            if (!result.IsValid)
             {
-
-                // get the value of the property which should be of type validation-target
-                var target = this.GetType().GetProperty(propertyName).GetValue(this, null) as IValidationTarget;
-
-
-                // check if property value is a validation-target
-                if (target != null)
+                foreach (var error in result.Errors)
                 {
-
-
-                    // get a list of all validator attributes assigned to the property
-                    var validators = _Validators[propertyName];
-
-
-                    // loop through all validator attributes
-                    foreach (var validator in validators)
-                    {
-
-                        try
-                        {
-
-                            // run validation
-                            validator.Validate(target);
-
-
-                            // if validation was not successfull then set error and don't process the remaining attributes
-                            if (!validator.IsValid)
-                            {
-                                SetError(propertyName, validator.Message);
-                                isValid = false;
-                                break;
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new ValidatorAttributeException(String.Format("Error occoured during validation of '{0}'.", propertyName), ex);
-                        }
-                    }
-
-
+                    SetError(error.PropertyName, error.ErrorMessage);
                 }
             }
 
-            // return a value indicating whether this property is valid or not.
-            return isValid;
+
+            return result.IsValid;
 
         }
 
@@ -288,10 +183,24 @@ namespace Primer
         /// </summary>
         protected void Validate(params string[] properties)
         {
-            foreach (var p in properties)
+
+            ClearError(properties);
+
+
+            if (_Validator == null) return;
+
+
+            var result = _Validator.Validate(_Model, properties);
+
+
+            if (!result.IsValid)
             {
-                Validate(p);
+                foreach (var error in result.Errors)
+                {
+                    SetError(error.PropertyName, error.ErrorMessage);
+                }
             }
+
         }
 
 
@@ -370,81 +279,34 @@ namespace Primer
         }
 
 
-#endregion
+        #endregion
 
 
-#region Attribute Caching Methods
+#region Update Property Methods
 
 
         /// <summary>
-        /// Caches all property validator attributs. This is to save reduce processing time later, as reading attributes via reflection is an expensive run time 
-        /// operation and doing it 'on-the'fly' is not recommended!
-        /// </summary>
-        protected void CacheValidatorAttributes()
+        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="ViewModel.PropertyChanged"/> event is raised.
+        /// <param name="propertyName">The name of the property that has changed.</param>
+        /// <param name="currentValue">The current value of the property.</param>
+        /// <param name="proposedValue">The proposed value of the property</param>
+        /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
+        /// <returns>True if the current value has been updated, false otherwise.</returns>
+        public bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate)
         {
 
-            // get a list of all public properties on this instance
-            var properties = this.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-
-
-            // loop through each property
-            foreach (var p in properties)
+            if (forceUpdate || !EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
             {
-
-                // check property doesnt already exist; this is very reate as normally you cannot have
-                // two proprties with the same name. If it does then do nothing and goto next property.
-                if (_Validators.ContainsKey(p.Name)) continue;
-
-
-                // get all validator attributes for this property
-                var validators = (ValidatorAttribute[])p.GetCustomAttributes(typeof(ValidatorAttribute), false);
-
-
-                /*  now sorting on the generic list, rather than the array
-                // sort validator attributes into correct processing order
-                Array.Sort<ValidatorAttribute>(validators);
-                */
-
-                // prepare attribute list
-                var list = validators.ToList();
-
-                // sort validator attributes into correct processing order
-                list.Sort();
-
-
-                // add this list of validator attributes to the ViewModels to validator dictionary
-                _Validators.Add(p.Name, list);
-
+                currentValue = proposedValue;
+                RaisePropertyChanged(this, propertyName);
+                return true;
+            }
+            else
+            {
+                return false;
             }
 
         }
-
-
-
-        protected internal void AddValidatorAttribute(string propertyName, ValidatorAttribute attribute)
-        {
-
-            // if property exists and the attribute isnt already added to the property, then add it.
-            if (_Validators.ContainsKey(propertyName))
-            {
-                if (!_Validators[propertyName].Contains(attribute)) _Validators[propertyName].Add(attribute);
-            }
-
-        }
-
-
-
-
-        //protected internal void AddValidatorAttribute<T>(string propertyName, ValidatorAttribute<T> attribute)
-        //{
-
-        //    // if property exists and the attribute isnt already added to the property, then add it.
-        //    if (_Validators.ContainsKey(propertyName))
-        //    {
-        //        if (!_Validators[propertyName].Contains(attribute)) _Validators[propertyName].Add(attribute);
-        //    }
-
-        //}
 
 
 #endregion
@@ -566,15 +428,12 @@ namespace Primer
         /// <returns>The error message for the property. The default value that occours when there are no errors is an empty string .</returns>
         public string this[string propertyName]
         {
-            get 
-            { 
-                if( _Validators.ContainsKey(propertyName))
-                {
-                    if (!Validate(propertyName)) 
-                        return _Errors[propertyName];
-                }
-
-                return String.Empty;
+            get
+            {
+                if (!Validate(propertyName))
+                    return _Errors[propertyName];
+                else
+                    return String.Empty;
             }
         }
 

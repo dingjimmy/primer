@@ -6,11 +6,11 @@ using System.Collections.ObjectModel;
 
 namespace Primer
 {
-    public class ViewModelCollection<T> : ObservableCollection<T>
+    public class ViewModelCollection<TViewModel> : ObservableCollection<TViewModel>
     {
     }
 
-    public class ViewModelCollection : ObservableCollection<ViewModel>
+    public class ViewModelCollection : ObservableCollection<IViewModel>
     {
     }
 }

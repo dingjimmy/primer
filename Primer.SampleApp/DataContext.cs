@@ -9,6 +9,7 @@ namespace Primer.SampleApp
     public class DataContext
     {
 
+        public DataSet<Customer> Customers { get; set; }
         public DataSet<OrderDetail> Details { get; set; }
         public DataSet<Supplier> Suppliers { get; set; }
 
@@ -65,6 +66,17 @@ namespace Primer.SampleApp
         {
 	        get { return _Data.AsQueryable().Provider; }
         }
+    }
+
+
+    public class Customer
+    {
+        public int ID {get;set;}
+        public string FirstName { get; set; }
+        public string FamilyName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string TestProperty {get;set;}
     }
 
 

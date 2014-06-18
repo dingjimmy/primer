@@ -103,6 +103,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Facades.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="DetailViewModel.cs" />
     <Compile Include="SampleViewModel.cs" />

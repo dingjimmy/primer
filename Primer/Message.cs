@@ -13,9 +13,9 @@ namespace Primer
 
 
         /// <summary>
-        /// The ViewModel from which the message originated from.
+        /// The class from which the message originated from; usually a ViewModel.
         /// </summary>
-        public ViewModel Sender { get; set; }
+        public Object Sender { get; set; }
 
 
 
