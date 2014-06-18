@@ -1,58 +1,34 @@
 #Primer
 
-A simple MVVM framework for.NET
+A simple MVVM based application framework for WPF and .NET, designed to work well with a domain model based upon the principals of Domain Driven Design.
 
 ###Usage
 
-#####The new way...
+#####Init ViewModel
 
-    class CustomerViewModel:ViewModel
+    var customer = new Customer();
+    var vm = new CustomerViewModel() 
+        { 
+            Model = customer, 
+            Validator = new CustomerValidator(),
+            Channel = new MessagingChannel()
+        };
+        
+    vm.Initialise(
+
+
+    class CustomerViewModel:ViewModel<Customer>
     {
     
-        public Field<int> ID { get; set; }
-        public Field<string> FirstName { get; set; }
-        public Field<string> FamilyName { get; set; }
-        
         public CustomerViewModel()
         {
             Initialise()
         }
 
-        public override void InitialiseDataProperties(ViewModelInitialiser initialise)
+        protected override void Initialise(ViewModelInitialiser initialise, params object[] additionalData)
         {
-            ID = initialise.Field<int>("ID").WithValue(1280571);
-            FirstName = initialise.Field<string>("FirstName").WithValue("Joeseph");
-            FamilyName = initialise.Field<string>("FamilyName").WithValue("Bloggs");
+
         }
   
     }
     
-#####The old way...
-
-        class CustomerViewModel:ViewModel
-        {
-    
-            int _ID = 987654321;
-            public int ID
-            {
-                get { return _ID; }
-                set { _ID = UpdateProperty("ID", _ID, value); }
-            }
-            
-            string _FirstName = "Jeremy";
-            public string FirstName
-            {
-                get { return _FirstName; }
-                set { _FirstName = UpdateProperty("FirstName", _FirstName, value); }
-            }
-            
-            string _FamilyName = "Kyle";
-            public string FamilyName
-            {
-                get { return _FamilyName; }
-                set { _FamilyName = UpdateProperty("FamilyName", _FamilyName, value); }
-            }
-            
-            public CustomerViewModel() {}
-        
-        }
