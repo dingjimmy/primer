@@ -46,7 +46,7 @@ namespace Primer.SampleApp
             var dtlQuery = from d in _Context.Details select d;
             var splQuery = from s in _Context.Suppliers select s;         
 
-            
+
             Initialise(cusQuery, dtlQuery, splQuery);
 
         }
@@ -56,14 +56,13 @@ namespace Primer.SampleApp
         {
 
             // Verify dependacies
-
             var customers = dataSources[0] as IQueryable<Customer>;
             var details = dataSources[1] as IQueryable<OrderDetail>;
             var suppliers = dataSources[2] as IQueryable<Supplier>;
 
 
             // Set the model
-            Model = new CustomerFacade(customers.First(), this.Channel);   
+            Model = new CustomerFacade(customers.First(), this.Channel);
 
 
             // Init a collection of ViewModels using a specific initialisation method.
@@ -77,7 +76,7 @@ namespace Primer.SampleApp
             // Init collection of ViewModels using the ViewModel's default initialisation method.
             MoreDetails = initialise.Collection<DetailViewModel, OrderDetail>(details);
 
-
+            
 
             // Init Lookups
             AvailableSuppliers = initialise.Lookup<Supplier>(suppliers, (supplier, item) =>
@@ -92,7 +91,7 @@ namespace Primer.SampleApp
             // Init Commands
             this.Ok = new Command { Action = SaveThis, IsEnabled = true };
             this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
-            
+
 
 
             // Listen for FieldChanged messages
@@ -105,7 +104,6 @@ namespace Primer.SampleApp
             // Change a fields value; this will broadcast the FieldChanged message which should cause the above listener method to be executed!
             Details[0].Model.Description = "This field has changed!!!";
 
- 
 
         }
 
