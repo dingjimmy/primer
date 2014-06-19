@@ -5,25 +5,11 @@ using System.Windows.Input;
 
 namespace Primer.SampleApp
 {
-    public class DetailViewModel : ViewModel<OrderDetail>
+    public class DetailViewModel : ViewModel<OrderDetailFacade>
     {
-
-
-        // Constructor
-        public DetailViewModel() : base() 
+        protected override void Initialise(ViewModelInitialiser initialise, params object[] dataSources)
         {
-
-            // This call is required for the ViewModel to function correctly. 
-            Initialise();
-
+            this.Model = new OrderDetailFacade(dataSources[0] as OrderDetail, this.Channel);
         }
-
-
-        // Init Data Properties
-        protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
-        {
-
-        }
-
     }
 }

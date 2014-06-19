@@ -14,7 +14,8 @@ namespace Primer.SampleApp
         public DataSet<Supplier> Suppliers { get; set; }
 
         public DataContext() 
-        { 
+        {
+            Customers = new DataSet<Customer>();
             Details = new DataSet<OrderDetail>(); 
             Suppliers = new DataSet<Supplier>(); 
         }
@@ -76,6 +77,7 @@ namespace Primer.SampleApp
         public string FamilyName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string Description { get; set; }
         public string TestProperty {get;set;}
     }
 

@@ -16,7 +16,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("ID", ref _ID, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "ID" });
+                    Broadcast(new PropertyChanged() { Name = "ID", Sender = this });
                 }
             }
         }
@@ -30,7 +30,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("FirstName", ref _FirstName, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "FirstName" });
+                    Broadcast(new PropertyChanged() { Name = "FirstName", Sender = this });
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("FamilyName", ref _FamilyName, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "FamilyName" });
+                    Broadcast(new PropertyChanged() { Name = "FamilyName", Sender = this });
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("StartDate", ref _StartDate, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "StartDate" });
+                    Broadcast(new PropertyChanged() { Name = "StartDate", Sender = this });
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("EndDate", ref _EndDate, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "EndDate" });
+                    Broadcast(new PropertyChanged() { Name = "EndDate", Sender = this });
                 }
             }
         }
@@ -86,7 +86,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("TestProperty", ref _TestProperty, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "TestProperty" });
+                    Broadcast(new PropertyChanged() { Name = "TestProperty", Sender = this });
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("TestOne", ref _TestOne, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "TestOne" });
+                    Broadcast(new PropertyChanged() { Name = "TestOne", Sender = this });
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("TestTwo", ref _TestTwo, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "TestTwo" });
+                    Broadcast(new PropertyChanged() { Name = "TestTwo", Sender = this });
                 }
             }
         }
@@ -128,14 +128,15 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("TestThree", ref _TestThree, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "TestThree" });
+                    Broadcast(new PropertyChanged() { Name = "TestThree", Sender = this });
                 }
             }
         }
 
 
-        public CustomerFacade(Customer customer)
+        public CustomerFacade(Customer customer, IMessagingChannel channel)
         {
+            this.Channel = channel;
             _ID = customer.ID;
             _FirstName = customer.FirstName;
             _FamilyName = customer.FamilyName;
@@ -157,16 +158,49 @@ namespace Primer.SampleApp
             {
                 if (UpdateProperty("ID", ref _ID, value, false))
                 {
-                    Broadcast(new PropertyChanged() { Name = "ID" });
+                    Broadcast(new PropertyChanged() { Name = "ID", Sender = this });
                 }
             }
         }
 
 
-        public OrderDetailFacade(OrderDetail detail)
+        private string _Description;
+        public string Description
         {
+            get { return _Description; }
+            set
+            {
+                if (UpdateProperty("Description", ref _Description, value, false))
+                {
+                    Broadcast(new PropertyChanged() { Name = "Description", Sender = this });
+                }
+            }
+        }
+
+
+        private int _Quantity;
+        public int Quantity
+        {
+            get { return _Quantity; }
+            set
+            {
+                if (UpdateProperty("Quantity", ref _Quantity, value, false))
+                {
+                    Broadcast(new PropertyChanged() { Name = "Quantity", Sender = this });
+                }
+            }
+        }
+
+
+
+        public OrderDetailFacade(OrderDetail detail, IMessagingChannel channel)
+        {
+            this.Channel = channel;
             _ID = detail.ID;
+            _Description = detail.Description;
+            _Quantity = detail.Quantity;
         }
 
     }
+
 }

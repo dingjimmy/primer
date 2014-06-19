@@ -34,22 +34,22 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="ID:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=ID.Data, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=Model.ID, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="First Name:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=FirstName.Data, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=Model.FirstName, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="Family Name:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=FamilyName.Data, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=Model.FamilyName, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="Test:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=TestProperty, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=Model.TestProperty, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="Start Date:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=StartDate.Data, Mode=TwoWay, StringFormat={}{0:dd-MMM-yyyy}, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=Model.StartDate, Mode=TwoWay, StringFormat={}{0:dd-MMM-yyyy}, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="9" />
 
         <TextBlock Text="End Date:" TextAlignment="Right" VerticalAlignment="Center" FontStyle="Italic" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,10,0,9"/>
-        <TextBox Text="{Binding Path=EndDate.Data, Mode=TwoWay, StringFormat={}{0:dd-MMM-yyyy}, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="9" />
+        <TextBox Text="{Binding Path=Model.EndDate, Mode=TwoWay, StringFormat={}{0:dd-MMM-yyyy}, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="9" />
 
 
         <Button Content="Ok" Margin="4" Grid.Row="10" Grid.Column="7" Grid.ColumnSpan="3" />

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using FluentValidation;
+using Primer.Messages;
 
 namespace Primer
 {
@@ -16,25 +17,41 @@ namespace Primer
     {
 
 
-#region Private State
+#region Constructor
 
-        private Dictionary<string, string> _Errors;
+
+        /// <summary>
+        /// Primary Constructor
+        /// </summary>
+        public ViewModel() {}
+
 
 #endregion
 
 
-#region Public Properties
+#region Initialisation
 
+
+        private TModel _Model;
 
         /// <summary>
-        /// Gets a value that indicates whether the ViewModel has properties in an error state.
+        /// Gets or sets the Model containing the data to be displayed by the View.
         /// </summary>
-        /// <returns>
-        /// True if the ViewModel does have properties in an error state; otherwise false.
-        /// </returns>
-        protected bool HasErrors { get { return _Errors.Count > 0 ? true : false; } }
+        public TModel Model
+        {
+            get { return _Model; }
+            set
+            {
+                if (UpdateProperty("Model", ref _Model, value, false))
+                {
+                    Broadcast(new PropertyChanged() { Name = "Model", Sender = this });
+                }
+            }
+        }
 
 
+
+        private bool _IsLoaded = false;
 
         /// <summary>
         /// Gets or sets a value that indicates whether the ViewModel has been initialised successfully.
@@ -42,70 +59,22 @@ namespace Primer
         /// <returns>
         /// True if ViewModel initialisation has been successfull; otherwise false.
         /// </returns>
-        public bool IsLoaded { get; set; }
-
-
-
-        private TModel _Model;
-        public TModel Model
+        public bool IsLoaded
         {
-            get{ return _Model; }
-            set
-            { 
-                _Model = value;
-                RaisePropertyChanged("Model");
-            }
-        }
-
-
-        private IValidator<TModel> _Validator;
-        public IValidator<TModel> Validator
-        {
-            get { return _Validator; }
+            get { return _IsLoaded; }
             set
             {
-                _Validator = value;
-                RaisePropertyChanged("Validator");
+                if (UpdateProperty("IsLoaded", ref _IsLoaded, value, false))
+                {
+                    Broadcast(new PropertyChanged() { Name = "IsLoaded", Sender = this });
+                }
             }
         }
 
 
 
         /// <summary>
-        /// Gets or sets the default messaging channel for this ViewModel.
-        /// </summary>
-        public IMessagingChannel Channel { get; set; }
-
-
-#endregion
-
-
-#region Constructor
-
-
-        /// <summary>
-        /// Primary Constructor
-        /// </summary>
-        public ViewModel()
-        {
-
-            // init error and validator dictionaries
-            _Errors = new Dictionary<string, string>();
-
-            // set initial initialisation state
-            IsLoaded = false;
-
-        }
-
-
-#endregion
-
-
-#region Initialise Methods
-
-
-        /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Triggers the abstract initialisation method.
+        /// Requiered method for ViewModel to operate correctly. Triggers the internal initialisation method.
         /// </summary>
         /// <param name="dataSources">Objects to use in the viewmodel initialisation.</param>
         public void Initialise(params object[] dataSources)
@@ -115,7 +84,7 @@ namespace Primer
             {
 
                 // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
-                Initialise(new ViewModelInitialiser(this), null, dataSources);
+                Initialise(new ViewModelInitialiser(this), dataSources);
 
 
                 // set loaded state
@@ -136,6 +105,12 @@ namespace Primer
         }
 
 
+
+        /// <summary>
+        /// Internal initialisation method. Implemented by a sub-class, this is where all the ViewModel initialisation should go!
+        /// </summary>
+        /// <param name="initialise">Handles initialisation of Lookups and ViewModelCollections</param>
+        /// <param name="dataSources">The data-sources to initialise the ViewModel with.</param>
         protected internal abstract void Initialise(ViewModelInitialiser initialise, params object[] dataSources);
 
 
@@ -143,11 +118,45 @@ namespace Primer
 #endregion
 
 
-#region Validation Methods
+#region Validation
+
+
+        private Dictionary<string, string> _Errors = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets a value that indicates whether the ViewModel has properties in an error state.
+        /// </summary>
+        /// <returns>
+        /// True if the ViewModel does have properties in an error state; otherwise false.
+        /// </returns>
+        protected bool HasErrors
+        {
+            get { return _Errors.Count > 0 ? true : false; }
+        }
+
+
+
+        private IValidator<TModel> _Validator;
+
+        /// <summary>
+        /// Gets or sets the Fluent-Validator that will used to validate properties on the Model.
+        /// </summary>
+        public IValidator<TModel> Validator
+        {
+            get { return _Validator; }
+            set
+            {
+                if (UpdateProperty("Validator", ref _Validator, value, false))
+                {
+                    Broadcast(new PropertyChanged() { Name = "Validator", Sender = this });
+                }
+            }
+        }
+
 
 
         /// <summary>
-        /// Validates this property against the rules setup in the <see cref="ViewModel.Validator" /> and returns a value that indicates whether the property passed validation.
+        /// Validates this property against the rules setup in the <see cref="ViewModel{TModel}.Validator" /> and returns a value that indicates whether the property passed validation.
         /// </summary>
         /// <param name="propertyName">The name of the property to validate.</param>
         /// <returns>True if the property has passed validation; false otherwise.</returns>
@@ -282,11 +291,11 @@ namespace Primer
         #endregion
 
 
-#region Update Property Methods
+#region Property Updating
 
 
         /// <summary>
-        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="ViewModel.PropertyChanged"/> event is raised.
+        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="ViewModel{TModel}.PropertyChanged"/> event is raised.
         /// <param name="propertyName">The name of the property that has changed.</param>
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
@@ -313,6 +322,24 @@ namespace Primer
 
 
 #region Message Broadcasting
+
+
+        private IMessagingChannel _Channel;
+
+        /// <summary>
+        /// Gets or sets the default messaging channel for this ViewModel.
+        /// </summary>
+        public IMessagingChannel Channel
+        {
+            get { return _Channel; }
+            set
+            {
+                if (UpdateProperty("Channel", ref _Channel, value, false))
+                {
+                    Broadcast(new PropertyChanged() { Name = "Channel", Sender = this });
+                }
+            }
+        }
 
 
 

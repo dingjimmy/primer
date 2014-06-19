@@ -104,7 +104,7 @@ namespace Primer
                 vm.Channel = _TargetViewModel.Channel;
 
                 // init vm
-                vm.Initialise(fi, item);
+                vm.Initialise(item);
 
                 // add vm to collection
                 collection.Add(vm);

@@ -38,41 +38,38 @@ namespace Primer.SampleApp
             // Set dependancies
             _Context = ctx;
             Channel = new MessagingChannel();
+            //Validator = new CustomerValidator();
 
 
             // build queries
             var cusQuery = from c in _Context.Customers where c.ID == 1876309338 select c;
             var dtlQuery = from d in _Context.Details select d;
-            var splQuery = from s in _Context.Suppliers select s;
-
-
-            Model = new CustomerFacade(cusQuery.First());
-            Channel = new MessagingChannel();
-            //Validator = new CustomerValidator();
+            var splQuery = from s in _Context.Suppliers select s;         
 
             
-            // This call is required for the ViewModel to function correctly. 
-            Initialise(dtlQuery, splQuery);
-
+            Initialise(cusQuery, dtlQuery, splQuery);
 
         }
 
 
-        protected override void Initialise(ViewModelInitialiser initialise, object primaryDataSource, params object[] secondaryDataSources)
+        protected override void Initialise(ViewModelInitialiser initialise, params object[] dataSources)
         {
 
             // Verify dependacies
-            var details = primaryDataSource as IQueryable<OrderDetail>;
-            var suppliers = secondaryDataSources[0] as IQueryable<Supplier>;
 
+            var customers = dataSources[0] as IQueryable<Customer>;
+            var details = dataSources[1] as IQueryable<OrderDetail>;
+            var suppliers = dataSources[2] as IQueryable<Supplier>;
+
+
+            // Set the model
+            Model = new CustomerFacade(customers.First(), this.Channel);   
 
 
             // Init a collection of ViewModels using a specific initialisation method.
-            Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (cfi, item, vm) =>
+            Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (init, item, vm) =>
                 {
-                    vm.ID = cfi.Field<int>("ID").WithValue(item.ID);
-                    vm.Description = cfi.Field<string>("Description").WithValue(item.Description);
-                    vm.IsLoaded = true;
+                    vm.Model = new OrderDetailFacade(item, this.Channel); 
                 });
 
 
@@ -99,29 +96,17 @@ namespace Primer.SampleApp
 
 
             // Listen for FieldChanged messages
-            Listen<FieldChanged>(m => System.Diagnostics.Debug.WriteLine("A 'FieldChanged' message was broadcast by '{0}' at '{1}'. Field Name: {2}", m.Sender.GetType().ToString(), m.BroadcastOn, m.Name));
+            Listen<PropertyChanged>(m =>
+                {
+                    System.Diagnostics.Debug.WriteLine("A 'PropertyChanged' message was broadcast by '{0}' at '{1}'. Property Name: {2}", m.Sender.GetType().ToString(), m.BroadcastOn, m.Name);
+                });
 
 
             // Change a fields value; this will broadcast the FieldChanged message which should cause the above listener method to be executed!
-            Details[0].Description.Data = "Testing! 1,2,3 testing.....";
-
-
-
-            // Init validators
-            var v = initialise.Validator<EmptyStringValidatorAttribute>().OnField("FamilyName").WithNoParameters();
-
-
-            //throw new Exception("Test Exception");
-
-            //IsLoaded = true;
+            Details[0].Model.Description = "This field has changed!!!";
 
  
 
-        }
-
-        private void Listen<T1>(Action<FieldChanged> action)
-        {
-            throw new NotImplementedException();
         }
 
 
