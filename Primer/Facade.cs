@@ -1,7 +1,9 @@
 ﻿// Copyright (c) James Dingle;
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace Primer
 {
@@ -62,6 +64,50 @@ namespace Primer
 
         }
 
+
+        public String GetPropertyName<T>(Expression<Func<T>> property)
+        {
+            MemberExpression body = (MemberExpression)property.Body;
+            return body.Member.Name;
+        }
+
+        public string GetPropertyName<T>(T property)
+        {
+            return GetPropertyName(() => property);
+        }
+
+
+        public bool UpdateProperty<T>(T currentValue, T proposedValue, bool forceUpdate)
+        {
+
+            var name = GetPropertyName(currentValue);
+
+            return SetProperty(name, ref currentValue , proposedValue, forceUpdate);
+
+        }
+
+
+
+        private int _Firstname;
+        public int Firstname
+        {
+            get { return _Firstname; }
+            set
+            {
+                if (UpdateProperty("Firstname", ref _Firstname, value, false))
+                {
+                    Broadcast(new Messages.PropertyChanged() { Name = "Firstname", Sender = this });
+                }
+            }
+        }
+
+        void test()
+        {
+            UpdateProperty(this._Firstname, 12345, true);
+        }
+
+
+        
 
         #endregion
 

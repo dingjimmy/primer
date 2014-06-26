@@ -36,7 +36,7 @@ namespace Primer.SampleApp
         }
 
 
-        private string _FamilyName;
+        public string _FamilyName;
         public string FamilyName
         {
             get { return _FamilyName; }
@@ -46,6 +46,14 @@ namespace Primer.SampleApp
                 {
                     Broadcast(new PropertyChanged() { Name = "FamilyName", Sender = this });
                 }
+            }
+        }
+
+        public void SetFamilyName(string proposedValue, bool broadcastMessage, bool forceUpdate)
+        {
+            if (UpdateProperty("FamilyName", ref _FamilyName, proposedValue, forceUpdate) && broadcastMessage)
+            {
+                Broadcast(new PropertyChanged() { Name = "FamilyName", Sender = this });
             }
         }
 

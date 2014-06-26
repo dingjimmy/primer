@@ -64,6 +64,12 @@ namespace Primer.SampleApp
             // Set the model
             Model = new CustomerFacade(customers.First(), this.Channel);
 
+            var propname = Model.GetPropertyName(() => Model.FamilyName);
+
+            var ok = Model.UpdateProperty(() => Model.FamilyName, ref Model._FamilyName, "POO POO", true);
+
+            var ok2 = Model.UpdateProperty("FamilyName", ref Model._FamilyName, "WEE WEE", true);
+
 
             // Init a collection of ViewModels using a specific initialisation method.
             Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (init, item, vm) =>
