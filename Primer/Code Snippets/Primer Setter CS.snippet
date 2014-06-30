@@ -2,10 +2,10 @@
 <CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
   <CodeSnippet Format="1.0.0">
     <Header>
-      <Title>Primer Property</Title>
+      <Title>Primer Property Setter</Title>
       <Author>James C Dingle</Author>
-      <Description>Adds full property declaration for use with the Primer 'Facade' or 'ViewModel' classes.</Description>
-      <Shortcut>pprop</Shortcut>
+      <Description>Adds a property setter class, which enables advanced updating options. For use with the Primer 'Facade' or 'ViewModel' classes.</Description>
+      <Shortcut>ppset</Shortcut>
       <SnippetTypes>
 				<SnippetType>Expansion</SnippetType>
 			</SnippetTypes>
@@ -22,14 +22,9 @@
         </Literal>
       </Declarations>
       <Code Language="CSharp" Kind="method decl">
-          <![CDATA[private $PropertyType$ _$PropertyName$;
-            public $PropertyType$ $PropertyName$
+          <![CDATA[public void Set$PropertyName$($PropertyType$ proposedValue, bool forceUpdate, bool broadcastMessage)
             {
-                get { return _$PropertyName$; }
-                set
-                {
-                    SetProperty($PropertyName$, ref _$PropertyName$, value);
-                }
+                SetProperty($PropertyName$, ref _$PropertyName$, proposedValue, forceUpdate, broadcastMessage);
             }
 
 

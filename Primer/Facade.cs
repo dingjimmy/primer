@@ -48,6 +48,7 @@ namespace Primer
         /// <param name="proposedValue">The proposed value of the property</param>
         /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
         /// <returns>True if the current value has been updated, false otherwise.</returns>
+        [ObsoleteAttribute("This method will soon be removed from the public api. Please use the 'SetProperty()' method instead.")]
         public bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate)
         {
 
@@ -65,49 +66,54 @@ namespace Primer
         }
 
 
-        public String GetPropertyName<T>(Expression<Func<T>> property)
+        /// <summary>
+        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="INotifyPropertyChanged.PropertyChanged"/> 
+        /// event is raised and <see cref="Primer.Messages.PropertyChanged"/> message is broadcast.
+        /// </summary>
+        /// <param name="propertyToSet">The property we wish to update.</param>
+        /// <param name="currentValue">The current value of the property.</param>
+        /// <param name="proposedValue">The proposed value of the property</param>
+        public void SetProperty<T>(Expression<Func<T>> propertyToSet, ref T currentValue, T proposedValue)
         {
-            MemberExpression body = (MemberExpression)property.Body;
-            return body.Member.Name;
-        }
-
-        public string GetPropertyName<T>(T property)
-        {
-            return GetPropertyName(() => property);
-        }
-
-
-        public bool UpdateProperty<T>(T currentValue, T proposedValue, bool forceUpdate)
-        {
-
-            var name = GetPropertyName(currentValue);
-
-            return SetProperty(name, ref currentValue , proposedValue, forceUpdate);
-
+            SetProperty(propertyToSet, ref currentValue, proposedValue, false, true);
         }
 
 
-
-        private int _Firstname;
-        public int Firstname
+        /// <summary>
+        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="INotifyPropertyChanged.PropertyChanged"/> 
+        /// event is raised and <see cref="Primer.Messages.PropertyChanged"/> message is broadcast.
+        /// </summary>
+        /// <param name="propertyToSet">The property we wish to update.</param>
+        /// <param name="currentValue">The current value of the property.</param>
+        /// <param name="proposedValue">The proposed value of the property</param>
+        /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
+        public void SetProperty<T>(Expression<Func<T>> propertyToSet, ref T currentValue, T proposedValue, bool forceUpdate)
         {
-            get { return _Firstname; }
-            set
+            SetProperty(propertyToSet, ref currentValue, proposedValue, forceUpdate, true);
+        }
+
+
+        /// <summary>
+        /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="INotifyPropertyChanged.PropertyChanged"/> 
+        /// event is raised and <see cref="Primer.Messages.PropertyChanged"/> message is broadcast.
+        /// </summary>
+        /// <param name="propertyToSet">The property we wish to update.</param>
+        /// <param name="currentValue">The current value of the property.</param>
+        /// <param name="proposedValue">The proposed value of the property</param>
+        /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
+        /// <param name="broadcastMessage">Choose whether to broadcast a PropertyChanged message on the ViewModel messaging channel.</param>
+        public void SetProperty<T>(Expression<Func<T>> propertyToSet, ref T currentValue, T proposedValue, bool forceUpdate, bool broadcastMessage)
+        {
+
+            var name = ((MemberExpression)propertyToSet.Body).Member.Name;
+
+            if (UpdateProperty(name, ref currentValue, proposedValue, forceUpdate) && broadcastMessage)
             {
-                if (UpdateProperty("Firstname", ref _Firstname, value, false))
-                {
-                    Broadcast(new Messages.PropertyChanged() { Name = "Firstname", Sender = this });
-                }
+                Broadcast(new Messages.PropertyChanged() { Name = name, Sender = this });
             }
+
         }
-
-        void test()
-        {
-            UpdateProperty(this._Firstname, 12345, true);
-        }
-
-
-        
+   
 
         #endregion
 

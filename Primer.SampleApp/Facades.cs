@@ -14,10 +14,7 @@ namespace Primer.SampleApp
             get { return _ID; }
             set
             {
-                if (UpdateProperty("ID", ref _ID, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "ID", Sender = this });
-                }
+                SetProperty(() => ID, ref _ID, value);
             }
         }
 
@@ -28,32 +25,18 @@ namespace Primer.SampleApp
             get { return _FirstName; }
             set
             {
-                if (UpdateProperty("FirstName", ref _FirstName, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "FirstName", Sender = this });
-                }
+                SetProperty(() => FirstName, ref _FirstName, value);
             }
         }
 
 
-        public string _FamilyName;
+        private string _FamilyName;
         public string FamilyName
         {
             get { return _FamilyName; }
             set
             {
-                if (UpdateProperty("FamilyName", ref _FamilyName, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "FamilyName", Sender = this });
-                }
-            }
-        }
-
-        public void SetFamilyName(string proposedValue, bool broadcastMessage, bool forceUpdate)
-        {
-            if (UpdateProperty("FamilyName", ref _FamilyName, proposedValue, forceUpdate) && broadcastMessage)
-            {
-                Broadcast(new PropertyChanged() { Name = "FamilyName", Sender = this });
+                SetProperty(() => FamilyName, ref _FamilyName, value);
             }
         }
 
@@ -64,10 +47,7 @@ namespace Primer.SampleApp
             get { return _StartDate; }
             set
             {
-                if (UpdateProperty("StartDate", ref _StartDate, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "StartDate", Sender = this });
-                }
+                SetProperty(() => StartDate, ref _StartDate, value);
             }
         }
 
@@ -78,10 +58,7 @@ namespace Primer.SampleApp
             get { return _EndDate; }
             set
             {
-                if (UpdateProperty("EndDate", ref _EndDate, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "EndDate", Sender = this });
-                }
+                SetProperty(() => EndDate, ref _EndDate, value);
             }
         }
 
@@ -92,13 +69,9 @@ namespace Primer.SampleApp
             get { return _TestProperty; }
             set
             {
-                if (UpdateProperty("TestProperty", ref _TestProperty, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "TestProperty", Sender = this });
-                }
+                SetProperty(() => TestProperty, ref _TestProperty, value);
             }
         }
-
 
         private string _TestOne;
         public string TestOne
@@ -106,10 +79,7 @@ namespace Primer.SampleApp
             get { return _TestOne; }
             set
             {
-                if (UpdateProperty("TestOne", ref _TestOne, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "TestOne", Sender = this });
-                }
+                SetProperty(() => TestOne, ref _TestOne, value);
             }
         }
 
@@ -120,10 +90,7 @@ namespace Primer.SampleApp
             get { return _TestTwo; }
             set
             {
-                if (UpdateProperty("TestTwo", ref _TestTwo, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "TestTwo", Sender = this });
-                }
+                SetProperty(() => TestTwo, ref _TestTwo, value);
             }
         }
 
@@ -134,12 +101,32 @@ namespace Primer.SampleApp
             get { return _TestThree; }
             set
             {
-                if (UpdateProperty("TestThree", ref _TestThree, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "TestThree", Sender = this });
-                }
+                SetProperty(() => TestThree, ref _TestThree, value);
             }
         }
+
+
+
+
+
+        public void SetID(int proposedValue, bool forceUpdate, bool broadcastMessage)
+        {
+            SetProperty(() => ID, ref _ID, proposedValue, forceUpdate, broadcastMessage);
+        }
+
+
+        public void SetFirstName(string proposedValue, bool forceUpdate, bool broadcastMessage)
+        {
+            SetProperty(() => FirstName, ref _FirstName, proposedValue, forceUpdate, broadcastMessage);
+        }
+
+
+        public void SetFamilyName(string proposedValue, bool forceUpdate, bool broadcastMessage)
+        {
+            SetProperty(() => FamilyName, ref _FamilyName, proposedValue, forceUpdate, broadcastMessage);
+        }
+
+
 
 
         public CustomerFacade(Customer customer, IMessagingChannel channel)
@@ -164,13 +151,9 @@ namespace Primer.SampleApp
             get { return _ID; }
             set
             {
-                if (UpdateProperty("ID", ref _ID, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "ID", Sender = this });
-                }
+                SetProperty(() => ID, ref _ID, value);
             }
         }
-
 
         private string _Description;
         public string Description
@@ -178,13 +161,9 @@ namespace Primer.SampleApp
             get { return _Description; }
             set
             {
-                if (UpdateProperty("Description", ref _Description, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "Description", Sender = this });
-                }
+                SetProperty(() => Description, ref _Description, value);
             }
         }
-
 
         private int _Quantity;
         public int Quantity
@@ -192,12 +171,10 @@ namespace Primer.SampleApp
             get { return _Quantity; }
             set
             {
-                if (UpdateProperty("Quantity", ref _Quantity, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "Quantity", Sender = this });
-                }
+                SetProperty(() => Quantity, ref _Quantity, value);
             }
         }
+
 
 
 
@@ -208,6 +185,8 @@ namespace Primer.SampleApp
             _Description = detail.Description;
             _Quantity = detail.Quantity;
         }
+
+
 
     }
 

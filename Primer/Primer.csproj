@@ -121,6 +121,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Code Snippets\Primer Setter CS.snippet" />
     <None Include="Code Snippets\Primer Property VB.snippet" />
     <None Include="Code Snippets\Primer Property CS.snippet" />
     <None Include="Gloss\Resources\close16.png" />

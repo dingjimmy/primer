@@ -32,6 +32,7 @@ namespace Primer.SampleApp
 
 
 
+
         public SampleCustomerViewModel(DataContext ctx)
         {
 
@@ -64,11 +65,7 @@ namespace Primer.SampleApp
             // Set the model
             Model = new CustomerFacade(customers.First(), this.Channel);
 
-            var propname = Model.GetPropertyName(() => Model.FamilyName);
-
-            var ok = Model.UpdateProperty(() => Model.FamilyName, ref Model._FamilyName, "POO POO", true);
-
-            var ok2 = Model.UpdateProperty("FamilyName", ref Model._FamilyName, "WEE WEE", true);
+           
 
 
             // Init a collection of ViewModels using a specific initialisation method.
@@ -107,7 +104,9 @@ namespace Primer.SampleApp
                 });
 
 
-            // Change a fields value; this will broadcast the FieldChanged message which should cause the above listener method to be executed!
+            // Change a fields value; this will broadcast the PropertyChanged message which should cause the above listener method to be executed!
+            Model.SetFirstName("Dicky", true, false);
+            Model.SetFamilyName("Wee Wee", false, true);
             Details[0].Model.Description = "This field has changed!!!";
 
 
