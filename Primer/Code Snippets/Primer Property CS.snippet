@@ -28,7 +28,7 @@
                 get { return _$PropertyName$; }
                 set
                 {
-                    SetProperty($PropertyName$, ref _$PropertyName$, value);
+                    SetProperty(() => $PropertyName$, ref _$PropertyName$, value);
                 }
             }
 

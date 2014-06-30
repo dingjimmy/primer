@@ -4,7 +4,7 @@
     <Header>
       <Title>Primer Property Setter</Title>
       <Author>James C Dingle</Author>
-      <Description>Adds a property setter class, which enables advanced updating options. For use with the Primer 'Facade' or 'ViewModel' classes.</Description>
+      <Description>Adds a property setter method, which enables advanced updating options. For use with the Primer 'Facade' or 'ViewModel' classes.</Description>
       <Shortcut>ppset</Shortcut>
       <SnippetTypes>
 				<SnippetType>Expansion</SnippetType>
@@ -24,7 +24,7 @@
       <Code Language="CSharp" Kind="method decl">
           <![CDATA[public void Set$PropertyName$($PropertyType$ proposedValue, bool forceUpdate, bool broadcastMessage)
             {
-                SetProperty($PropertyName$, ref _$PropertyName$, proposedValue, forceUpdate, broadcastMessage);
+                SetProperty(() => $PropertyName$, ref _$PropertyName$, proposedValue, forceUpdate, broadcastMessage);
             }
 
 
