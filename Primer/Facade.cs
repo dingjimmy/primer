@@ -70,7 +70,7 @@ namespace Primer
         /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="INotifyPropertyChanged.PropertyChanged"/> 
         /// event is raised and <see cref="Primer.Messages.PropertyChanged"/> message is broadcast.
         /// </summary>
-        /// <param name="propertyToSet">The property we wish to update.</param>
+        /// <param name="propertyToSet">An expression which identifies the property to update.</param>
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
         public void SetProperty<T>(Expression<Func<T>> propertyToSet, ref T currentValue, T proposedValue)
@@ -83,7 +83,7 @@ namespace Primer
         /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="INotifyPropertyChanged.PropertyChanged"/> 
         /// event is raised and <see cref="Primer.Messages.PropertyChanged"/> message is broadcast.
         /// </summary>
-        /// <param name="propertyToSet">The property we wish to update.</param>
+        /// <param name="propertyToSet">An expression which identifies the property to update.</param>
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
         /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
@@ -97,7 +97,7 @@ namespace Primer
         /// Compares the current and proposed values; If they are not equal the current value is replaced with the proposed the <see cref="INotifyPropertyChanged.PropertyChanged"/> 
         /// event is raised and <see cref="Primer.Messages.PropertyChanged"/> message is broadcast.
         /// </summary>
-        /// <param name="propertyToSet">The property we wish to update.</param>
+        /// <param name="propertyToSet">An expression which identifies the property to update.</param>
         /// <param name="currentValue">The current value of the property.</param>
         /// <param name="proposedValue">The proposed value of the property</param>
         /// <param name="forceUpdate">Force the property to update, regardless of if the proposed and current values are the same.</param>
