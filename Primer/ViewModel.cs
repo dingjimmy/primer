@@ -661,7 +661,7 @@ namespace Primer
 
         public string GetMethodName<T>(Expression<Func<T>> methodToInspect)
         {
-            return ((MethodCallExpression)methodToInspect.Body).Method..Name;
+            return ((MethodCallExpression)methodToInspect.Body).Method.Name;
         }
 
 
