@@ -105,7 +105,7 @@ namespace Primer
         public void SetProperty<T>(Expression<Func<T>> propertyToSet, ref T currentValue, T proposedValue, bool forceUpdate, bool broadcastMessage)
         {
 
-            var name = ((MemberExpression)propertyToSet.Body).Member.Name;
+            var name = GetPropertyName(propertyToSet);
 
             if (UpdateProperty(name, ref currentValue, proposedValue, forceUpdate) && broadcastMessage)
             {
@@ -132,7 +132,25 @@ namespace Primer
 
 
         #endregion
-       
+
+
+        #region Reflection Helpers
+
+
+        public string GetMethodName<T>(Expression<Func<T>> methodToInspect)
+        {
+            return ((MethodCallExpression)methodToInspect.Body).Method.Name;
+        }
+
+
+        public string GetPropertyName<T>(Expression<Func<T>> propertyToInspect)
+        {
+            return ((MemberExpression)propertyToInspect.Body).Member.Name;
+        }
+
+
+        #endregion
+
 
     }
 }

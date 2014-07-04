@@ -110,6 +110,17 @@ namespace Primer.SampleApp
             Details[0].Model.Description = "This field has changed!!!";
 
 
+            //var nameOne = GetMethodName(() => this.TestSubRoutine());
+            //var nameTwo = GetMethodName(() => this.TestSubRoutineWithParameter(true));
+
+            //var nameThree = GetMethodName(() => this.TestFunction());
+            //var nameFour = GetMethodName(() => this.TestFunctionWithParameter(true));
+            //var nameFive = GetMethodName(() => this.TestFunctionWithTwoParameters(true, true));
+
+
+            //HandleException(() => this.TestSubRoutine(), new ApplicationException("Test SubRoutine"));
+            //HandleException(() => this.TestFunction(), new ApplicationException("Test Function"));
+
         }
 
 
@@ -148,6 +159,17 @@ namespace Primer.SampleApp
             AvailableSuppliers.ApplyFilter((item) => item.Entity.ID <= 6);
             //AvailableSuppliers.FilterIn((item) => item.Entity > 3 && item.Key < 10);
         }
+
+
+        public void TestSubRoutine() { }
+
+        public void TestSubRoutineWithParameter(bool isTest) { }
+
+        public bool TestFunction() { return true; }
+
+        public bool TestFunctionWithParameter(bool isTest) { return isTest; }
+
+        public bool TestFunctionWithTwoParameters(bool isTest, bool thisIsGay) { return isTest; }
     }
 
 }

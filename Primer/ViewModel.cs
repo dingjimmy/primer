@@ -42,10 +42,7 @@ namespace Primer
             get { return _Model; }
             set
             {
-                if (UpdateProperty("Model", ref _Model, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "Model", Sender = this });
-                }
+                SetProperty(() => Model, ref _Model, value);
             }
         }
 
@@ -64,10 +61,23 @@ namespace Primer
             get { return _IsLoaded; }
             set
             {
-                if (UpdateProperty("IsLoaded", ref _IsLoaded, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "IsLoaded", Sender = this });
-                }
+                SetProperty(() => IsLoaded, ref _IsLoaded, value);
+            }
+        }
+
+
+
+        private string _DisplayName;
+
+        /// <summary>
+        /// Gets or sets the display name of the ViewModel; Its main purpose is to be used as the text that appears on the title-bar of a window.
+        /// </summary>
+        public string DisplayName
+        {
+            get { return _DisplayName; }
+            set
+            {
+                SetProperty(() => DisplayName, ref _DisplayName, value);
             }
         }
 
@@ -291,7 +301,7 @@ namespace Primer
         #endregion
 
 
-        #region Property Updating
+#region Property Updating
 
 
         /// <summary>
@@ -369,7 +379,7 @@ namespace Primer
         }
 
 
-        #endregion
+#endregion
 
 
 #region Message Broadcasting
@@ -433,6 +443,81 @@ namespace Primer
 
         }
 
+
+
+#endregion
+
+
+#region Exception Handling
+
+
+
+        private string _DefaultErrorMessage = "I'm terribly sorry but an unexpected '{0}' has occoured.\n\nAny pending changes have not been saved.\n\nIf this problem persists please contact software support for assistance; further details on this error are available in the log.";
+
+        /// <summary>
+        /// Gets or sets the error message displayed when using the default implementation of HandleException(string, exception). Format parameter '{0}' is the name of the error or exception.
+        /// </summary>
+        public string DefaultErrorMessage
+        {
+            get { return _DefaultErrorMessage; }
+            set
+            {
+                SetProperty(() => DefaultErrorMessage, ref _DefaultErrorMessage, value);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Built-in method to allow for a simple and gracefull handling of unexpected exceptions.
+        /// </summary>
+        /// <param name="method">An expression which identifies the method where the exception was caught.</param>
+        /// <param name="ex">The offending exception.</param>
+        /// <returns>False if problem is un-recoverable, True if problem is minor and you wish to continue the current operation. </returns>
+        public bool HandleException<T>(Expression<Func<T>> method, Exception ex)
+        {
+
+            var name = GetMethodName(method);
+
+            return HandleException(name, ex);
+
+        }
+
+
+
+        /// <summary>
+        /// Built-in method to allow for a simple and gracefull handling of unexpected exceptions.
+        /// </summary>
+        /// <param name="method">An expression which identifies the method where the exception was caught.</param>
+        /// <param name="ex">The offending exception.</param>
+        /// <returns>False if problem is un-recoverable, True if problem is minor and you wish to continue the current operation. </returns>
+        public bool HandleException(Expression<Action> method, Exception ex)
+        {
+
+            var name = GetMethodName(method);
+
+            return HandleException(name, ex);
+
+        }
+
+
+
+        /// <summary>
+        /// Built-in method to allow for a simple and gracefully handling unexpected exceptions. Can be overriden to provide custom behavior.
+        /// </summary>
+        /// <param name="methodName">The name of the method where the exception was caught.</param>
+        /// <param name="ex">The offending exception.</param>
+        /// <returns>False if problem is un-recoverable, True if problem is minor and you wish to continue the current operation. </returns>
+        public virtual bool HandleException(string methodName, Exception ex)
+        {
+            
+            var msg = String.Format(_DefaultErrorMessage, ex.GetType().ToString());
+            
+            System.Windows.MessageBox.Show(msg, "Whoops", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            
+            return false;
+
+        }
 
 
 #endregion
@@ -566,6 +651,30 @@ namespace Primer
         //{
         //  Dispose(false)
         //}
+
+
+#endregion
+
+
+#region Reflection Helpers
+
+
+        public string GetMethodName<T>(Expression<Func<T>> methodToInspect)
+        {
+            return ((MethodCallExpression)methodToInspect.Body).Method..Name;
+        }
+
+
+        public string GetMethodName(Expression<Action> methodToInspect)
+        {
+            return ((MethodCallExpression)methodToInspect.Body).Method.Name;
+        }
+
+
+        public string GetPropertyName<T>(Expression<Func<T>> propertyToInspect)
+        {
+            return ((MemberExpression)propertyToInspect.Body).Member.Name;
+        }
 
 
 #endregion
