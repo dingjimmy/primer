@@ -32,23 +32,28 @@ There are four main dependacies on a ViewModel; a Validator, a Messaging-Channel
         public Command OkCommand { get; set;}
         public Command CancelCommand { get; set;}
         
-    
         public CustomerViewModel() {}
-        
 
         public void Load(IQueryable<Customer> customers, IQueryable<CustomerStatus> statuses)
         {
         
-        
+            // load the Model
             Model = customers.First();
             
+            // initialise the Lookup
             AvailableStatuses = Initialise.Lookup<CustomerStatus>(statuses, (status) => status.ID.ToString(), (status) => status.Name, (status) => status);
 
+            // initialise commands
             OkCommand= Initialise.Command(true, p => Save(p));
             CancelCommand = Initialise.Command(true, p => Cancel(p));
             
+            // listen for properties that have changed on the Model
+            Listen<PropertyChanged>((msg) => OnModelPropertyChanged(msg));
+            
         }
         
+        
+        public void OnModelPropertyChanged(message PropertyChanged) { ... }
         public void Save(object property) { ... }
         public void Cancel(object property) { ... }
   
