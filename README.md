@@ -49,7 +49,7 @@ There are four main dependacies on a ViewModel; a Validator, a Messaging-Channel
             
             // listen for properties that have changed
             Listen<PropertyChanged>((msg) => OnAnyPropertyChanged(msg));
-            Listen<PropertyChanged>((msg) msg.Sender = this.Model, (msg) => OnModelPropertyChanged(msg.Name));
+            Listen<PropertyChanged>((msg) msg.Sender == this.Model, (msg) => OnModelPropertyChanged(msg.Name));
             
         }
         
