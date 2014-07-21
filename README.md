@@ -14,10 +14,11 @@ When loading-up a new viewmodel, we reccommend you inject any dependancies in th
     var vm = new CustomerViewModel() 
         { 
             Validator = new CustomerValidator(),
-            Channel = new MessagingChannel()
+            Channel = new MessagingChannel(),
+            Initialiser = new ViewModelInitialiser()
         };
         
-    vm.Initialise(customerQuery, statusQuery);
+    vm.Load(customerQuery, statusQuery);
 
 
 ##### Declaring a ViewModel
@@ -33,23 +34,17 @@ When loading-up a new viewmodel, we reccommend you inject any dependancies in th
         public CustomerViewModel() {}
         
 
-        protected override void Initialise(ViewModelInitialiser initialise, params object[] dataSources)
+        public void Load(IQueryable<Customer> customers, IQueryable<CustomerStatus> statuses)
         {
         
-            var customers = dataSources[0] as IQueryable<Customer>;
-            var statuses = dataSources[1] as IQueryable<CustomerStatus>;
-            
+        
             Model = customers.First();
             
-            AvailableStatuses = initialise.Lookup<CustomerStatus>(statuses, (status, item) => 
-                {
-                    item.Key = status.ID.ToString();
-                    item.Description = status.Name;
-                    item.Entity = status;
-                }
+            AvailableStatuses = Initialise.Lookup<CustomerStatus>(statuses, (status) => status.ID.ToString(), (status) => status.Name, (status) => status);
+
                 
-            Ok = initialise.Command(true, p => Save(p));
-            Cancel = initialise.Command(true, p => Cancel(p));
+            Ok = Initialise.Command(true, p => Save(p));
+            Cancel = Initialise.Command(true, p => Cancel(p));
             
         }
   
