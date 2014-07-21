@@ -27,8 +27,8 @@ When loading-up a new viewmodel, we reccommend you inject any dependancies in th
     {
     
         public Lookup<CustomerStatus> AvailableStatuses { get; set; }
-        public Command Ok { get; set;}
-        public Command Cancel { get; set;}
+        public Command OkCommand { get; set;}
+        public Command CancelCommand { get; set;}
         
     
         public CustomerViewModel() {}
@@ -42,11 +42,13 @@ When loading-up a new viewmodel, we reccommend you inject any dependancies in th
             
             AvailableStatuses = Initialise.Lookup<CustomerStatus>(statuses, (status) => status.ID.ToString(), (status) => status.Name, (status) => status);
 
-                
-            Ok = Initialise.Command(true, p => Save(p));
-            Cancel = Initialise.Command(true, p => Cancel(p));
+            OkCommand= Initialise.Command(true, p => Save(p));
+            CancelCommand = Initialise.Command(true, p => Cancel(p));
             
         }
+        
+        public void Save(object property) { ... }
+        public void Cancel(object property) { ... }
   
     }
     
