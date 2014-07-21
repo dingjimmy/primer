@@ -47,13 +47,15 @@ There are four main dependacies on a ViewModel; a Validator, a Messaging-Channel
             OkCommand= Initialise.Command(true, p => Save(p));
             CancelCommand = Initialise.Command(true, p => Cancel(p));
             
-            // listen for properties that have changed on the Model
-            Listen<PropertyChanged>((msg) => OnModelPropertyChanged(msg));
+            // listen for properties that have changed
+            Listen<PropertyChanged>((msg) => OnAnyPropertyChanged(msg));
+            Listen<PropertyChanged>((msg) msg.Sender = this.Model, (msg) => OnModelPropertyChanged(msg.Name));
             
         }
         
         
-        public void OnModelPropertyChanged(message PropertyChanged) { ... }
+        public void OnAnyPropertyChanged(message PropertyChanged) { ... }
+        public void OnModelPropertyChanged(property String) { ... }
         public void Save(object property) { ... }
         public void Cancel(object property) { ... }
   
