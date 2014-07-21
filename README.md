@@ -4,9 +4,11 @@ A simple MVVM based application framework for WPF and .NET, designed to work wel
 
 ### Usage
 
-##### Fire-Up a ViewModel instance
+There are four main dependacies on a ViewModel; a Validator, a Messaging-Channel, a ViewModel-Initialiser and of course the Model. They can be injected-in, or created in the constructor or any other method; whichever you prefer. The below example injects three of the dependancies using object initialisers and then loads the Model and a supporting Lookup using two LINQ queries inside the <code>Load(customers, statuses)</code> method. 
 
-When loading-up a new viewmodel, we reccommend you inject any dependancies in the constructor or using object initialisers (as shown below) and inject any data into the Initialise() method.
+<em>This is the recommended way to implement a ViewModel, but you are free to do it however you please!</em>
+
+##### Fire-Up a ViewModel instance
 
     var customerQuery = from c in Customers where c.ID = 123456 select c;
     var statusQuery = From s in CustomerStatus where select s;
