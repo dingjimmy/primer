@@ -12,7 +12,7 @@ namespace Primer.SampleApp
     {
 
         // Dependancies
-        public readonly DataContext Context { get; protected set; }
+        public DataContext Context { get; protected set; }
 
 
         // Sub-ViewModel collections
