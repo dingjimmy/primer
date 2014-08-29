@@ -3,6 +3,7 @@ using System;
 using System.Windows.Input;
 using System.Linq;
 using Primer.Messages;
+using FluentValidation;
 
 namespace Primer.SampleApp
 {
@@ -11,7 +12,7 @@ namespace Primer.SampleApp
     {
 
         // Dependancies
-        DataContext _Context;
+        public readonly DataContext Context { get; protected set; }
 
 
         // Sub-ViewModel collections
@@ -19,10 +20,8 @@ namespace Primer.SampleApp
         public ViewModelCollection MoreDetails { get; set; }
 
 
-
         // Lookups
         public Lookup<Supplier> AvailableSuppliers { get; set; }
-
 
 
         // Commands
@@ -31,41 +30,31 @@ namespace Primer.SampleApp
 
 
 
-
-
-        public SampleCustomerViewModel(DataContext ctx)
+        public SampleCustomerViewModel(DataContext context, IValidator<CustomerFacade> validator)
         {
-
-            // Set dependancies
-            _Context = ctx;
+            Context = context;
             Channel = new MessagingChannel();
-            //Validator = new CustomerValidator();
-
-
-            // build queries
-            var cusQuery = from c in _Context.Customers where c.ID == 1876309338 select c;
-            var dtlQuery = from d in _Context.Details select d;
-            var splQuery = from s in _Context.Suppliers select s;         
-
-
-            Initialise(cusQuery, dtlQuery, splQuery);
-
+            Validator = validator;
+            Initialiser = new ViewModelInitialiser(this);
         }
 
 
-        protected override void Initialise(ViewModelInitialiser Init, params object[] dataSources)
+        public SampleCustomerViewModel(DataContext context, IMessagingChannel channel, IValidator<CustomerFacade> validator, IViewModelInitialiser initialiser) 
         {
+            Context = context;
+            Channel = channel;
+            Validator = validator;
+            Initialiser = initialiser;
+        }
 
-            // Verify dependacies
-            var customers = dataSources[0] as IQueryable<Customer>;
-            var details = dataSources[1] as IQueryable<OrderDetail>;
-            var suppliers = dataSources[2] as IQueryable<Supplier>;
+
+
+        public void Load(IQueryable<Customer> customers, IQueryable<OrderDetail> details, IQueryable<Supplier> suppliers)
+        {
 
 
             // Set the model
             Model = new CustomerFacade(customers.First(), this.Channel);
-
-           
 
 
             // Init a collection of ViewModels using a specific initialisation method.
@@ -75,11 +64,9 @@ namespace Primer.SampleApp
                 });
 
 
-
             // Init collection of ViewModels using the ViewModel's default initialisation method.
             MoreDetails = Init.Collection<DetailViewModel, OrderDetail>(details);
 
-            
 
             // Init Lookups
             AvailableSuppliers = Init.Lookup<Supplier>(suppliers, (supplier, item) =>
@@ -88,7 +75,6 @@ namespace Primer.SampleApp
                     item.Description = String.Format("{0} - {1}", supplier.Name, supplier.Branch);
                     item.Entity = supplier;
                 });
-
 
 
             // Init Commands
@@ -153,13 +139,16 @@ namespace Primer.SampleApp
         #endregion
 
 
+
+        #region For Testing 
+
+
         public void DoSomethingSpecial()
         {
             AvailableSuppliers.ClearFilter();
             AvailableSuppliers.ApplyFilter((item) => item.Entity.ID <= 6);
             //AvailableSuppliers.FilterIn((item) => item.Entity > 3 && item.Key < 10);
         }
-
 
         public void TestSubRoutine() { }
 
@@ -170,6 +159,10 @@ namespace Primer.SampleApp
         public bool TestFunctionWithParameter(bool isTest) { return isTest; }
 
         public bool TestFunctionWithTwoParameters(bool isTest, bool thisIsGay) { return isTest; }
+
+
+        #endregion
+
     }
 
 }
