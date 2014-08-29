@@ -12,7 +12,7 @@ namespace Primer
     /// <summary>
     /// Provides methods for initialising the various componants of a ViewModel.
     /// </summary>
-    public class ViewModelInitialiser
+    public class ViewModelInitialiser : IViewModelInitialiser
     {
 
         IViewModel _TargetViewModel;

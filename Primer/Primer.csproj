@@ -93,6 +93,7 @@
     <Compile Include="IMessagingChannel.cs" />
     <Compile Include="InitialiseViewModelException.cs" />
     <Compile Include="IViewModel.cs" />
+    <Compile Include="IViewModelInitialiser.cs" />
     <Compile Include="Messages\CommandExecuted.cs" />
     <Compile Include="Messages\PropertyChanged.cs" />
     <Compile Include="Messages\FieldChanged.cs" />

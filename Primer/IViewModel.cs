@@ -9,6 +9,7 @@ namespace Primer
 
         IMessagingChannel Channel { get; set; }
 
+        [Obsolete]
         void Initialise(params object[] dataSources);
 
         bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate);

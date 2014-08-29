@@ -17,35 +17,19 @@ namespace Primer
     {
 
 
-#region Constructor
+        #region Constructor
 
 
         /// <summary>
         /// Primary Constructor
         /// </summary>
-        public ViewModel() {}
+        public ViewModel() { }
 
 
-#endregion
+        #endregion
 
 
-#region Initialisation
-
-
-        private TModel _Model;
-
-        /// <summary>
-        /// Gets or sets the Model containing the data to be displayed by the View.
-        /// </summary>
-        public TModel Model
-        {
-            get { return _Model; }
-            set
-            {
-                SetProperty(() => Model, ref _Model, value);
-            }
-        }
-
+        #region State Flags
 
 
         private bool _IsLoaded = false;
@@ -81,54 +65,57 @@ namespace Primer
             }
         }
 
+        #endregion
 
+
+        #region Model 
+
+
+        private TModel _Model;
 
         /// <summary>
-        /// Requiered method for ViewModel to operate correctly. Triggers the internal initialisation method.
+        /// Gets or sets the Model containing the data to be displayed by the View.
         /// </summary>
-        /// <param name="dataSources">Objects to use in the viewmodel initialisation.</param>
-        public void Initialise(params object[] dataSources)
+        public TModel Model
         {
-
-            try
+            get { return _Model; }
+            set
             {
-
-                // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
-                Initialise(new ViewModelInitialiser(this), dataSources);
-
-
-                // set loaded state
-                IsLoaded = true;
-
+                SetProperty(() => Model, ref _Model, value);
             }
-            catch (Exception ex)
-            {
-
-                // set loaded state
-                IsLoaded = false;
-
-                // throw more descriptive exception to caller
-                throw new InitialiseViewModelException("ViewModel initialisation has failed. Please see inner exception for further details", ex);
-
-            }
-
         }
 
 
+        #endregion
+
+
+        #region Compenant Initialiser
+
+
+        private IViewModelInitialiser _Initialiser;
 
         /// <summary>
-        /// Internal initialisation method. Implemented by a sub-class, this is where all the ViewModel initialisation should go!
+        /// Gets or sets the <see cref="ViewModelInitialiser"/> that will be used to initialse sub components, such as Lookups, and ViewModelCollections.
         /// </summary>
-        /// <param name="initialise">Handles initialisation of Lookups and ViewModelCollections</param>
-        /// <param name="dataSources">The data-sources to initialise the ViewModel with.</param>
-        protected internal abstract void Initialise(ViewModelInitialiser initialise, params object[] dataSources);
+        public IViewModelInitialiser Initialiser
+        {
+            get { return _Initialiser; }
+            set
+            {
+                SetProperty(() => Initialiser, ref _Initialiser, value);
+            }
+        }
+
+        public IViewModelInitialiser Init
+        {
+            get { return _Initialiser; }
+        }
 
 
+        #endregion
 
-#endregion
 
-
-#region Validation
+        #region Validation
 
 
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
@@ -156,10 +143,7 @@ namespace Primer
             get { return _Validator; }
             set
             {
-                if (UpdateProperty("Validator", ref _Validator, value, false))
-                {
-                    Broadcast(new PropertyChanged() { Name = "Validator", Sender = this });
-                }
+                SetProperty(() => Validator, ref _Validator, value, false, false);
             }
         }
 
@@ -175,7 +159,7 @@ namespace Primer
 
             ClearError(propertyName);
 
-            
+
             if (_Validator == null) return true;
 
 
@@ -301,7 +285,7 @@ namespace Primer
         #endregion
 
 
-#region Property Updating
+        #region Property Updating
 
 
         /// <summary>
@@ -379,10 +363,10 @@ namespace Primer
         }
 
 
-#endregion
+        #endregion
 
 
-#region Message Broadcasting
+        #region Message Broadcasting
 
 
         private IMessagingChannel _Channel;
@@ -423,7 +407,7 @@ namespace Primer
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
         /// <param name="messageHandler">The delegate to execute when a message of the desired type is broadcast.</param>
-        public void Listen<T>(Action<T> messageHandler) where T: IMessage
+        public void Listen<T>(Action<T> messageHandler) where T : IMessage
         {
 
             if (Channel != null)
@@ -431,9 +415,9 @@ namespace Primer
 
                 // wrap the provided generic Action<T> delegete in an Action<IMessage> delegete such that we can easily add it to the messaging channel.
                 Action<IMessage> wrapper = (m) =>
-                    {
-                        messageHandler((T)m);
-                    };
+                {
+                    messageHandler((T)m);
+                };
 
 
                 // add the new wrapper delegate to the channel
@@ -445,10 +429,10 @@ namespace Primer
 
 
 
-#endregion
+        #endregion
 
 
-#region Exception Handling
+        #region Exception Handling
 
 
 
@@ -510,20 +494,20 @@ namespace Primer
         /// <returns>False if problem is un-recoverable, True if problem is minor and you wish to continue the current operation. </returns>
         public virtual bool HandleException(string methodName, Exception ex)
         {
-            
+
             var msg = String.Format(_DefaultErrorMessage, ex.GetType().ToString());
-            
+
             System.Windows.MessageBox.Show(msg, "Whoops", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-            
+
             return false;
 
         }
 
 
-#endregion
+        #endregion
 
 
-#region INotifyPropertyChanged Support
+        #region INotifyPropertyChanged Support
 
 
         /// <summary>
@@ -534,7 +518,7 @@ namespace Primer
 
 
         /// <summary>
-        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the property's value has changed. .
+        /// Raises the <see cref="ViewModel{TModel}.PropertyChanged" /> event to notify any listeners that the property's value has changed. .
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="propertyName">The name of the property that has changed.</param>
@@ -546,13 +530,13 @@ namespace Primer
 
             // invoke the event
             if (handlers != null) handlers(sender, new PropertyChangedEventArgs(propertyName));
-
+            
         }
 
 
 
         /// <summary>
-        /// Raises the <see cref="ViewModel.PropertyChanged" /> event to notify any listeners that the value of the provided properties have changed. 
+        /// Raises the <see cref="ViewModel{TModel}.PropertyChanged" /> event to notify any listeners that the value of the provided properties have changed. 
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="properties">A list of the properties that have been changed.</param>
@@ -565,10 +549,10 @@ namespace Primer
         }
 
 
-#endregion
+        #endregion
 
 
-#region IDataErrorInfo Support
+        #region IDataErrorInfo Support
 
 
         string _Error = string.Empty;
@@ -580,7 +564,7 @@ namespace Primer
         /// <returns> An error message indicating what is wrong with this object. The default is an empty string ("").</returns>
         public string Error
         {
-            get { return _Error; }        
+            get { return _Error; }
         }
 
 
@@ -602,10 +586,10 @@ namespace Primer
 
 
 
-#endregion
+        #endregion
 
 
-#region IDisposable Support
+        #region IDisposable Support
 
 
         protected bool _IsDisposed = false;
@@ -629,9 +613,9 @@ namespace Primer
 
 
             // get rid of managed resources
-            if(disposing)
+            if (disposing)
             {
-                
+
             }
 
 
@@ -653,10 +637,10 @@ namespace Primer
         //}
 
 
-#endregion
+        #endregion
 
 
-#region Reflection Helpers
+        #region Reflection Helpers
 
 
         public string GetMethodName<T>(Expression<Func<T>> methodToInspect)
@@ -677,7 +661,60 @@ namespace Primer
         }
 
 
-#endregion
+        #endregion
+
+
+        #region DEPRECIATED INITIALISATION METHODS
+
+
+        /// <summary>
+        /// Requiered method for ViewModel to operate correctly. Triggers the internal initialisation method.
+        /// </summary>
+        /// <param name="dataSources">Objects to use in the viewmodel initialisation.</param>
+        [Obsolete]
+        public void Initialise(params object[] dataSources)
+        {
+
+            try
+            {
+
+                // initialise the view model. This method is implemented in sub classes, therefore passing initialisation over to creator of the sub class.
+                Initialise(new ViewModelInitialiser(this), dataSources);
+
+
+                // set loaded state
+                IsLoaded = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                // set loaded state
+                IsLoaded = false;
+
+                // throw more descriptive exception to caller
+                throw new InitialiseViewModelException("ViewModel initialisation has failed. Please see inner exception for further details", ex);
+
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// **This method must be overriden as default impl does nothing. Was orginally abstract but has been made virtual since depreciation so that it is optional.**
+        /// Internal initialisation method. Implemented by a sub-class, this is where all the ViewModel initialisation should go!
+        /// </summary>
+        /// <param name="initialise">Handles initialisation of Lookups and ViewModelCollections</param>
+        /// <param name="dataSources">The data-sources to initialise the ViewModel with.</param>
+        [Obsolete]
+        protected internal virtual void Initialise(ViewModelInitialiser initialise, params object[] dataSources)
+        {
+            // Do nothing. Was originally an abstract method, but has been made virtual for backwards compatability; i.e is optional.
+        }
+
+
+        #endregion
 
 
     }

@@ -53,7 +53,7 @@ namespace Primer.SampleApp
         }
 
 
-        protected override void Initialise(ViewModelInitialiser initialise, params object[] dataSources)
+        protected override void Initialise(ViewModelInitialiser Init, params object[] dataSources)
         {
 
             // Verify dependacies
@@ -69,7 +69,7 @@ namespace Primer.SampleApp
 
 
             // Init a collection of ViewModels using a specific initialisation method.
-            Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (init, item, vm) =>
+            Details = Init.Collection<DetailViewModel, OrderDetail>(details, (init, item, vm) =>
                 {
                     vm.Model = new OrderDetailFacade(item, this.Channel); 
                 });
@@ -77,12 +77,12 @@ namespace Primer.SampleApp
 
 
             // Init collection of ViewModels using the ViewModel's default initialisation method.
-            MoreDetails = initialise.Collection<DetailViewModel, OrderDetail>(details);
+            MoreDetails = Init.Collection<DetailViewModel, OrderDetail>(details);
 
             
 
             // Init Lookups
-            AvailableSuppliers = initialise.Lookup<Supplier>(suppliers, (supplier, item) =>
+            AvailableSuppliers = Init.Lookup<Supplier>(suppliers, (supplier, item) =>
                 {
                     item.Key = supplier.ID.ToString();
                     item.Description = String.Format("{0} - {1}", supplier.Name, supplier.Branch);
