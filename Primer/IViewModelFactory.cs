@@ -10,8 +10,8 @@ namespace Primer
 
         ViewModel<T> Of<T>(Func<T> loadDataAction);
 
-        ViewModel<T> Of<T>(IViewModel parentViewModel);
+        ViewModel<T> Of<T>(IMessagingChannel channel);
 
-        ViewModel<T> Of<T>(IViewModel parentViewModel, Func<T> loadDataAction);
+        ViewModel<T> Of<T>(IMessagingChannel channel, Func<T> loadDataAction);
     }
 }
