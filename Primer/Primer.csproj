@@ -90,6 +90,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="Command T.cs" />
     <Compile Include="Facade.cs" />
+    <Compile Include="Helper Factories\LookupFactory.cs" />
     <Compile Include="ILookupFactory.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="IMessagingChannel.cs" />

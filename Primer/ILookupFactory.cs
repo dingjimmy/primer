@@ -7,6 +7,6 @@ namespace Primer
 {
     public interface ILookupFactory
     {
-        Lookup<T> From<T>(IEnumerable<T> source, Func<T> key, Func<T> description, Func<T> entity);
+        Lookup<T> From<T>(IEnumerable<T> sourceCollection, Func<T, string> key, Func<T, string> description, Func<T, T> value);
     }
 }

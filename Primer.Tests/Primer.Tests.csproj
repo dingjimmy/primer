@@ -99,6 +99,7 @@
     <Compile Include="Fakes\ViewModelTester.cs" />
     <Compile Include="MessagingChannelTests.cs" />
     <Compile Include="LookupTests.cs" />
+    <Compile Include="LookupFactoryTests.cs" />
     <Compile Include="ViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
