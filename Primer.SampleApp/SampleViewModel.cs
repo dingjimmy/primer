@@ -63,7 +63,7 @@ namespace Primer.SampleApp
 
 
             // Set the model
-            Model = new CustomerFacade(customers.First(), this.Channel);
+            Model = new CustomerFacade(customers.First(), this.Channel, new CustomerValidator());
 
            
 

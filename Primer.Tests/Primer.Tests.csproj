@@ -73,6 +73,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.5.3.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1402.2112\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -94,7 +98,7 @@
     <Compile Include="Fakes\ViewModelTester.cs" />
     <Compile Include="MessagingChannelTests.cs" />
     <Compile Include="LookupTests.cs" />
-    <Compile Include="ViewModelTests.cs" />
+    <Compile Include="View Model Tests\ValidationUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,11 +1,13 @@
 ﻿using Primer.Messages;
 using System;
 using Primer;
+using System.ComponentModel;
+using FluentValidation;
 
 namespace Primer.SampleApp
 {
 
-    public class CustomerFacade : Facade
+    public class CustomerFacade : Facade, IDataErrorInfo
     {
 
         private int _ID;
@@ -129,9 +131,10 @@ namespace Primer.SampleApp
 
 
 
-        public CustomerFacade(Customer customer, IMessagingChannel channel)
+        public CustomerFacade(Customer customer, IMessagingChannel channel, IValidator validator)
         {
             this.Channel = channel;
+            this.Validator = validator;
             _ID = customer.ID;
             _FirstName = customer.FirstName;
             _FamilyName = customer.FamilyName;
@@ -139,8 +142,8 @@ namespace Primer.SampleApp
             _EndDate = customer.EndDate;
             _TestProperty = customer.TestProperty;
         }
-    }
 
+    }
 
     public class OrderDetailFacade : Facade
     {

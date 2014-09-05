@@ -11,7 +11,12 @@ namespace Primer.SampleApp
     {
         public CustomerValidator()
         {
-            RuleFor(c => c.ID).
+            RuleFor(c => c.ID).GreaterThan(0);
+
+            RuleFor(c => c.FamilyName)
+                .Length(0, 20)
+                .Must(x => x == "Poo")
+                .WithMessage("Wrong Name!");
         }
     }
 }
