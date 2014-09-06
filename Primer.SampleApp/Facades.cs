@@ -7,7 +7,7 @@ using FluentValidation;
 namespace Primer.SampleApp
 {
 
-    public class CustomerFacade : Facade, IDataErrorInfo
+    public class CustomerFacade : Facade
     {
 
         private int _ID;

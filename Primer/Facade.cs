@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace Primer
 {
-    public class Facade : INotifyPropertyChanged
+    public class Facade : INotifyPropertyChanged, IDataErrorInfo
     {
 
 
@@ -180,7 +180,7 @@ namespace Primer
             }
 
 
-            return result.IsValid;
+            return !HasErrors;
 
         }
 
