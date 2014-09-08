@@ -179,8 +179,7 @@ namespace Primer
                 }
             }
 
-
-            return !HasErrors;
+            return !InError(new[] {propertyName});
 
         }
 
@@ -324,7 +323,7 @@ namespace Primer
                 if (!Validate(propertyName))
                     return _Errors[propertyName];
                 else
-                    return String.Empty;
+                   return String.Empty;
             }
         }
 
