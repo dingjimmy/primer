@@ -24,7 +24,7 @@ namespace Primer
         /// Raises the <see cref="INotifyPropertyChanged.PropertyChanged" /> event to notify any bound clients that the property's value has changed.
         /// </summary>
         /// <param name="property">An expression that identifies the property that has changed.</param>
-        protected void RaisePropertyChanged<T>(Expression<Func<T>> property)
+        public void RaisePropertyChanged<T>(Expression<Func<T>> property)
         {
             RaisePropertyChanged(this, property);
         }
@@ -36,7 +36,7 @@ namespace Primer
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="property">An expression that identifies the property that has changed.</param>
-        protected void RaisePropertyChanged<T>(object sender, Expression<Func<T>> property)
+        public void RaisePropertyChanged<T>(object sender, Expression<Func<T>> property)
         {
             var propertyName = Reflection.GetPropertyName(property);
             RaisePropertyChanged(sender, propertyName);    
@@ -49,10 +49,15 @@ namespace Primer
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="propertyName">The name of the property that has changed.</param>
-        protected void RaisePropertyChanged(object sender, string propertyName)
+        public void RaisePropertyChanged(object sender, string propertyName)
         {
+
+            if (String.IsNullOrWhiteSpace(propertyName))
+                throw new ArgumentException("Parameter 'propertyName' cannot be null, empty or full of whitespace.");
+
             var handlers = PropertyChanged;
             if (handlers != null) handlers(sender, new PropertyChangedEventArgs(propertyName));
+
         }
 
 
@@ -62,7 +67,7 @@ namespace Primer
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="properties">A list of the properties that have been changed.</param>
-        protected void RaisePropertyChanged(object sender, params string[] properties)
+        public void RaisePropertyChanged(object sender, params string[] properties)
         {
             foreach (var p in properties)
             {
