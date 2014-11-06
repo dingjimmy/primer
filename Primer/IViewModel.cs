@@ -6,7 +6,9 @@ namespace Primer
 {
     public interface IViewModel
     {
-        IMessagingChannel Channel;
-        IValidator Validator;
+        public bool IsLoaded { get; set; }
+        public string DisplayName { get; set; }
+        IMessagingChannel Channel { get; set; }
+        IValidator Validator { get; set; }
     }
 }

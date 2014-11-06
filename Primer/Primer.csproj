@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILookup.cs" />
+    <Compile Include="IValidator.cs" />
     <Compile Include="Lookup.cs" />
     <Compile Include="ViewModelHelpers.cs" />
     <Compile Include="IMessage.cs" />

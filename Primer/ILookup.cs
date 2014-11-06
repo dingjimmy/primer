@@ -16,8 +16,8 @@ namespace Primer
 
     public interface ILookupItem<T>
     {
-        string Key;
-        string Description;
-        T Entity;
+        string Key { get; set; }
+        string Description { get; set; }
+        T Entity { get; set; }
     }
 }

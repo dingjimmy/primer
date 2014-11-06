@@ -14,14 +14,22 @@ namespace Primer
     /// data that can be displayed/edited on screen, and actions that can be executed to apply business logic 
     /// and update the Model.
     /// </remarks>
-    public abstract class ViewModel: ViewModelBase, IDataErrorInfo, IDisposable
+    public abstract class ViewModel: ViewModelBase, IViewModel, IDataErrorInfo, IDisposable
     {
+
+
+        #region Validation
+
+        public IValidator Validator { get; set; }
+
+        #endregion
 
 
         #region IDataErrorInfo Support
 
 
         string _Error = string.Empty;
+
 
         /// <Summary>
         /// Gets an error message indicating what is wrong with this object.
@@ -43,9 +51,9 @@ namespace Primer
         {   
             get
             {
-                //if (!Validate(propertyName))
-                //    return _Errors[propertyName];
-                //else
+                if (Validator != null && !Validator.Validate(propertyName))
+                    return Validator.Errors[propertyName];
+                else
                     return String.Empty;
             }
         }
