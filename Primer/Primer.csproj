@@ -86,8 +86,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILookup.cs" />
+    <Compile Include="Lookup.cs" />
+    <Compile Include="ViewModelHelpers.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="IMessagingChannel.cs" />
+    <Compile Include="IViewModel.cs" />
     <Compile Include="MessageBase.cs" />
     <Compile Include="PropertyChangedBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
