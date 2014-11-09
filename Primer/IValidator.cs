@@ -15,7 +15,7 @@ namespace Primer
         bool Validate<T>(Expression<Func<T>> property);
         void Validate(params string[] properties);
 
-        bool HasErrors;
+        bool HasErrors { get; set; }
 
         bool InError(string propertyName);
         bool InError<T>(Expression<Func<T>> property);

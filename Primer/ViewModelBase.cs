@@ -11,7 +11,7 @@ namespace Primer
     /// <summary>
     /// Represents the base class for all Primer ViewModels.
     /// </summary>
-    public abstract class ViewModelBase : PropertyChangedBase
+    public abstract class ViewModelBase : PropertyChangedBase, IViewModel
     {
 
 
@@ -58,7 +58,7 @@ namespace Primer
         #endregion
 
 
-        #region Property Updating
+        #region Updating
 
 
         /// <summary>
@@ -132,7 +132,14 @@ namespace Primer
         #endregion
 
 
-        #region Message Broadcasting
+        #region Validation
+
+        public IValidator Validator { get; set; }
+
+        #endregion
+
+
+        #region Messaging
 
 
 

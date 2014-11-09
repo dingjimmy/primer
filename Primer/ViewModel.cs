@@ -18,13 +18,6 @@ namespace Primer
     {
 
 
-        #region Validation
-
-        public IValidator Validator { get; set; }
-
-        #endregion
-
-
         #region IDataErrorInfo Support
 
 
