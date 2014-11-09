@@ -101,30 +101,17 @@ namespace Primer
         /// <param name="broadcastMessage">Choose whether to broadcast a PropertyChanged message on the ViewModel messaging channel.</param>
         public void SetProperty<T>(Expression<Func<T>> propertyToSet, ref T currentValue, T proposedValue, bool forceUpdate, bool broadcastMessage)
         {
-            var name = Reflection.GetPropertyName(propertyToSet);
+            var propertyName = Reflection.GetPropertyName(propertyToSet);
 
-            if (UpdateProperty(name, ref currentValue, proposedValue, forceUpdate) && broadcastMessage && _Channel != null)
-            {
-                _Channel.Broadcast(new PropertyChangedMessage() { Name = name, Sender = this });
-            }
-        }
-
-
-
-        /// <summary>
-        /// Private method that attempts to update the specified property. Returns True if the current value of the property has been updated, false otherwise.
-        /// </summary>
-        private bool UpdateProperty<T>(string propertyName, ref T currentValue, T proposedValue, bool forceUpdate)
-        {
             if (forceUpdate || !EqualityComparer<T>.Default.Equals(currentValue, proposedValue))
             {
+
                 currentValue = proposedValue;
                 RaisePropertyChanged(propertyName);
-                return true;
-            }
-            else
-            {
-                return false;
+
+                if (broadcastMessage && _Channel != null)
+                    _Channel.Broadcast(new PropertyChangedMessage() { Name = propertyName, Sender = this });
+
             }
         }
 
