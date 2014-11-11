@@ -8,7 +8,8 @@ namespace Primer
     {
         bool IsLoaded { get; set; }
         string DisplayName { get; set; }
-        IMessagingChannel Channel { get; set; }
-        IValidator Validator { get; set; }
+        IMessagingChannel Channel { get; private set; }
+        IValidator Validator { get; private set; }
+        ILogger { get; private set; }
     }
 }
