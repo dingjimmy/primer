@@ -10,6 +10,6 @@ namespace Primer
         string DisplayName { get; set; }
         IMessagingChannel Channel { get; private set; }
         IValidator Validator { get; private set; }
-        ILogger { get; private set; }
+        ILogger Logger { get; private set; }
     }
 }
