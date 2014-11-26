@@ -121,14 +121,24 @@ namespace Primer
 
         #region Validation
 
-        public IValidator Validator { get; set; }
+
+        private IValidator _Validator;
+
+        /// <summary>
+        /// Gets or sets the default validator for this ViewModel.
+        /// </summary>
+        public IValidator Validator
+        { 
+            get { return _Validator; }
+            protected set { _Validator = value; }
+        }
+
 
         #endregion
 
 
         #region Messaging
-
-
+        
 
         private IMessagingChannel _Channel;
 
@@ -138,13 +148,30 @@ namespace Primer
         public IMessagingChannel Channel
         {
             get { return _Channel; }
-            set { _Channel = value; }
+            protected set { _Channel = value; }
         }
 
 
 
         #endregion
 
+
+        #region Logging
+
+
+        private ILogger _Logger;
+
+        /// <summary>
+        /// Gets or sets the default error logger for this ViewModel.
+        /// </summary>
+        public ILogger Logger
+        {
+            get { return _Logger; }
+            protected set { _Logger = value; }
+        }
+
+
+        #endregion
 
     }
 }
