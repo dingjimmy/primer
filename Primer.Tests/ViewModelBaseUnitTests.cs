@@ -45,7 +45,49 @@ namespace Primer.Tests
 
 
             // Assert
-            Mock.Get(viewModelBase).Verify((vm) => vm.RaisePropertyChanged(It.IsAny<object>(), It.IsAny<string>()));
+            Mock.Get(viewModelBase).Verify((vm) => vm.RaisePropertyChanged(It.IsAny<string>()), Times.Once);
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("ViewModelBase")]
+        public void SetProperty_WhenCurrentAndProposedAreSameButForceUpdateIsTrue_RaisesPropertyChangedEvent()
+        {
+
+            // Arrange
+            var viewModelBase = Mock.Of<ViewModelBase>();
+            Mock.Get(viewModelBase).CallBase = true;
+            var currentValue = "Current Value";
+
+
+            // Action
+            viewModelBase.SetProperty(() => viewModelBase.DisplayName, ref currentValue, "Current Value", true);
+
+
+            // Assert
+            Mock.Get(viewModelBase).Verify((vm) => vm.RaisePropertyChanged(It.IsAny<string>()), Times.Once);
+
+        }
+
+
+        [TestMethod]
+        [TestCategory("ViewModelBase")]
+        public void SetProperty_WhenCurrentAndProposedAreSame_DoesNotRaisePropertyChangedEvent()
+        {
+
+            // Arrange
+            var viewModelBase = Mock.Of<ViewModelBase>();
+            Mock.Get(viewModelBase).CallBase = true;
+            var currentValue = "Current Value";
+
+
+            // Action
+            viewModelBase.SetProperty(() => viewModelBase.DisplayName, ref currentValue, "Current Value");
+
+
+            // Assert
+            Mock.Get(viewModelBase).Verify((vm) => vm.RaisePropertyChanged(It.IsAny<string>()), Times.Never);
 
         }
 
