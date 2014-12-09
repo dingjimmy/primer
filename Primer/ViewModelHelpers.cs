@@ -19,7 +19,7 @@ namespace Primer.Helpers
         /// <param name="keyExpression">A lamda expression (or annonymous function) that specifies the source item property to use as the lookup key.</param>
         /// <param name="descriptionExpression">A lamda expression (or annonymous function) that specifies the source item property to use a the lookup description.</param>
         /// <returns>An instance of <see cref="Primer.ILookup<T>"/>; That is a collection of <see cref="ILookupItem<T>"/> that can be displayed by a View.</returns>
-        public static ILookup<T> CreateLookup<T>(this ViewModelBase viewModel, IEnumerable<T> sourceItems, Func<T, string> keyExpression, Func<T, string> descriptionExpression)
+        public static ILookup<T> CreateLookup<T>(this ViewModel viewModel, IEnumerable<T> sourceItems, Func<T, string> keyExpression, Func<T, string> descriptionExpression)
         {
 
             // init lookup collection
@@ -38,13 +38,13 @@ namespace Primer.Helpers
         }
 
 
-        public static ICommand CreateCommand(this ViewModelBase viewModel, Action actionToExecute)
+        public static ICommand CreateCommand(this IViewModel viewModel, Action actionToExecute)
         {
             throw new NotImplementedException();
         }
 
 
-        public static ICommand CreateCommand<T>(this ViewModelBase viewModel, Action<T> actionToExecute)
+        public static ICommand CreateCommand<T>(this IViewModel viewModel, Action<T> actionToExecute)
         {
             throw new NotImplementedException();
         }
