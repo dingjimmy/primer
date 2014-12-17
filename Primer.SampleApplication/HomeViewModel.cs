@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Primer;
-
-namespace Primer.SampleApplication
+﻿namespace Primer.SampleApplication
 {
+
+    using Primer;
+    using System;
+    using System.Windows.Input;
+
     class HomeViewModel : ViewModel
     {
         private string firstName;
@@ -45,7 +43,7 @@ namespace Primer.SampleApplication
             get { return this.country; }
             set
             {
-                SetProperty(() => Country, ref this.country, value);
+                SetProperty(() => this.Country, ref this.country, value);
             }
         }           
 
@@ -53,11 +51,47 @@ namespace Primer.SampleApplication
 
         public ILookup<string> AvailableCountries { get; set; }
 
+        public ICommand OkCommand { get; set; }
+
+        public ICommand CancelCommand { get; set; }
+
         public HomeViewModel(IMessagingChannel msgChannel, IValidator validator, ILogger log)
         {
             this.Channel = msgChannel;
             this.Validator = validator;
             this.Logger = log;
+        }
+
+        public void Load()
+        {
+
+            this.Channel.Listen<PropertyChangedMessage>((m) => PropChanged(m.Name) );
+            this.Channel.Listen<PropertyChangedMessage>((m) => m.Name == "FamilyName", (m) => FamilyNameChanged());
+
+
+            this.Channel.Listen<PropertyChangedMessage>().AndInvoke(m => FamilyNameChanged()).Always();
+            this.Channel.Listen<PropertyChangedMessage>().AndInvoke(m => FamilyNameChanged()).When(m => m.Name == "FamilyName");
+
+        }
+
+        public void Ok()
+        {
+
+        }
+
+        public void Cancel()
+        {
+
+        }
+
+        public void PropChanged(string property)
+        {
+
+        }
+
+        public void FamilyNameChanged()
+        {
+
         }
     }
 }
