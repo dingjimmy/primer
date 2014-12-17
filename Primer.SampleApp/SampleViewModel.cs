@@ -139,9 +139,25 @@ namespace Primer.SampleApp
                 // save me to a database!
             }
             
-            var builder = new System.Text.StringBuilder();
+            
 
-            System.Windows.MessageBox.Show(this.Model.Error);
+            //if (!string.IsNullOrWhiteSpace(this.Model.Error))
+            //{
+            //    System.Windows.MessageBox.Show(this.Model.Error);
+            //}
+
+
+            if (this.Model.Errors.Count > 0)
+            {
+                var builder = new System.Text.StringBuilder();
+
+                foreach (var err in this.Model.Errors)
+                {
+                    builder.AppendFormat("{0}\n", err);
+                }
+
+                System.Windows.MessageBox.Show(builder.ToString());
+            }
 
             //Model.FirstName = "This is a test!";
         }
