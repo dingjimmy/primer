@@ -5,6 +5,7 @@ using Primer.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Primer
@@ -131,7 +132,15 @@ namespace Primer
 #region Validation
 
 
+        /// <summary>
+        /// Gets a list of properties which are currently in an error state.
+        /// </summary>
+        public ICollection<String> Errors
+        {
+            get { return _Errors.Keys.ToList(); }
+        }
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
+
 
         /// <summary>
         /// Gets a value that indicates whether the ViewModel has properties in an error state.
@@ -571,16 +580,23 @@ namespace Primer
 #region IDataErrorInfo Support
 
 
-        string _Error = string.Empty;
-
-
         /// <Summary>
         /// Gets an error message indicating what is wrong with this object.
         /// </Summary>
         /// <returns> An error message indicating what is wrong with this object. The default is an empty string ("").</returns>
         public string Error
         {
-            get { return _Error; }        
+            get
+            {
+                if (_Errors.Count > 0)
+                {
+                    return _Errors.First().Key;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
 

@@ -124,7 +124,15 @@ namespace Primer
         #region Validation
 
 
+        /// <summary>
+        /// Gets a list of properties which are currently in an error state.
+        /// </summary>
+        public ICollection<String> Errors
+        {
+            get { return _Errors.Keys.ToList();  }
+        }
         private Dictionary<string, string> _Errors = new Dictionary<string, string>();
+
 
         /// <summary>
         /// Gets a value that indicates whether the ViewModel has properties in an error state.
@@ -309,10 +317,19 @@ namespace Primer
         #region IDataErrorInfo Support
 
 
-        string _Error = string.Empty;
         public string Error
         {
-            get { return _Error; }
+            get 
+            { 
+                if (_Errors.Count > 0 )
+                {
+                    return _Errors.First().Key;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
 

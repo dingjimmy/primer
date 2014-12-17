@@ -17,6 +17,8 @@ namespace Primer.SampleApp
                 .Length(0, 20)
                 .Must(x => x == "Poo")
                 .WithMessage("Wrong Name!");
+
+            RuleFor(c => c.FirstName).NotEmpty();
         }
     }
 }

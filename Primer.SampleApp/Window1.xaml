@@ -52,8 +52,8 @@
         <TextBox Text="{Binding Path=Model.EndDate, Mode=TwoWay, StringFormat={}{0:dd-MMM-yyyy}, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}" TextAlignment="Left" Margin="6" VerticalAlignment="Stretch"  Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="9" />
 
 
-        <Button Content="Ok" Margin="4" Grid.Row="10" Grid.Column="7" Grid.ColumnSpan="3" />
-        <Button Content="Cancel" Margin="4" Grid.Row="10" Grid.Column="10" Grid.ColumnSpan="3" />
+        <Button Content="Ok" Command="{Binding OkCommand}" Margin="4" Grid.Row="10" Grid.Column="7" Grid.ColumnSpan="3" />
+        <Button Content="Cancel" Command="{Binding CancelCommand}" Margin="4" Grid.Row="10" Grid.Column="10" Grid.ColumnSpan="3" />
         
     </Grid>
 </Window>

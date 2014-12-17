@@ -26,8 +26,8 @@ namespace Primer.SampleApp
 
 
         // Commands
-        public Command Ok { get; set; }
-        public Command Cancel { get; set; }
+        public Command OkCommand { get; set; }
+        public Command CancelCommand { get; set; }
 
 
 
@@ -92,8 +92,8 @@ namespace Primer.SampleApp
 
 
             // Init Commands
-            this.Ok = new Command { Action = SaveThis, IsEnabled = true };
-            this.Cancel = new Command { Action = CancelThis, IsEnabled = true };
+            this.OkCommand = new Command { Action = SaveThis, IsEnabled = true };
+            this.CancelCommand = new Command { Action = CancelThis, IsEnabled = true };
 
 
 
@@ -132,21 +132,25 @@ namespace Primer.SampleApp
         {
 
 
-            Validate("ID", "Name", "EmailAddress");
+            Validate("ID", "FirstName", "FamilyName", "TestProperty", "StartDate");
 
-            if (!InError("ID", "Name", "EmailAddress"))
+            if (!InError("ID", "FirstName", "FamilyName", "TestProperty", "StartDate"))
             {
                 // save me to a database!
             }
+            
+            var builder = new System.Text.StringBuilder();
 
-            Model.FirstName = "This is a test!";
+            System.Windows.MessageBox.Show(this.Model.Error);
+
+            //Model.FirstName = "This is a test!";
         }
 
 
 
         public void CancelThis()
         {
-
+            
         }
 
 
