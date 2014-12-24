@@ -33,6 +33,7 @@ namespace Primer
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
         /// <param name="messageHandler">The delegate to invoke when a message of the desired type is broadcast.</param>
+        /// <param name="filter"></param>
         void Listen<T>(Func<T, bool> filter, Action<T> messageHandler) where T : IMessage;
 
         /// <summary>

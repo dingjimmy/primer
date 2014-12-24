@@ -10,6 +10,8 @@ namespace Primer.SampleApplication
         public MainWindow()
         {
             InitializeComponent();
+            var vm = new HomeViewModel(new MessagingChannel(), null, null);   
+            this.Content = vm;
         }
     }
 }
