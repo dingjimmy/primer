@@ -7,10 +7,8 @@
 namespace Primer
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     /// <summary>
     /// 
@@ -33,10 +31,6 @@ namespace Primer
             this.MessageBroadcast += HandleBroadcast;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="msg"></param>
         private void HandleBroadcast(IMessage msg)
         {
             var key = msg.GetType();
@@ -56,7 +50,28 @@ namespace Primer
         /// <param name="message">The message to broadcast.</param>
         public void Broadcast(IMessage message)
         {
-            throw new NotImplementedException();
+            var mb = MessageBroadcast;
+            
+            if (mb != null)
+            {
+                mb(message);
+            }
+        }
+
+        private void Listen<T>(Action<IMessage> messageHandler) where T : IMessage
+        {
+            var key = typeof(T);
+
+            if (Handlers.ContainsKey(key))
+            {
+                Handlers[key].Add(messageHandler);
+            }
+            else
+            {
+                var list = new List<Action<IMessage>>();
+                list.Add(messageHandler);
+                Handlers.Add(key, list);
+            }
         }
 
         /// <summary>
@@ -64,9 +79,19 @@ namespace Primer
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
         /// <param name="messageHandler">The delegate to invoke when a message of the desired type is broadcast.</param>
+        /// <remarks>
+        /// We've made the 'messageHander' delegate generic to provide a simpler syntax; otherwise use of this method would require an explicit cast to IMessage.
+        /// To get this to work, we wrap the provided generic Action[T] delegete inside an Action[IMessage] delegete such that we can add it to the handlers 
+        /// dictionary.
+        /// </remarks>
         public void Listen<T>(Action<T> messageHandler) where T : IMessage
         {
-            throw new NotImplementedException();
+            Action<IMessage> wrapper = (m) =>
+            {
+                messageHandler((T)m);
+            };
+
+            Listen(wrapper);
         }
 
         /// <summary>
@@ -74,10 +99,22 @@ namespace Primer
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
         /// <param name="messageHandler">The delegate to invoke when a message of the desired type is broadcast.</param>
-        /// <param name="filter"></param>
-        public void Listen<T>(Func<T, bool> filter, Action<T> messageHandler) where T : IMessage
-        {
-            throw new NotImplementedException();
+        /// <param name="criteria">An expression that provides additional criteria to control when the messageHander is to be executed.</param>
+        /// <remarks>
+        /// On this occasion we are using a wrapper delegate to ensure that the messageHandler is only triggered when any message meets a set criteria, in addition
+        /// to making it compatable with the handlers dictionary.
+        /// </remarks>
+        public void Listen<T>(Func<T, bool> criteria, Action<T> messageHandler) where T : IMessage
+        {        
+            Action<IMessage> wrapper = (m) =>
+            {
+                if (criteria((T)m) == true)
+                {
+                    messageHandler((T)m);
+                }
+            };
+
+            Listen(wrapper);
         }
 
         /// <summary>
@@ -95,7 +132,12 @@ namespace Primer
         /// <typeparam name="T">The type of message to ingore.</typeparam>
         public void Ignore<T>() where T : IMessage
         {
-            throw new NotImplementedException();
+            var key = typeof(T);
+
+            if (Handlers.ContainsKey(key))
+            {
+                Handlers.Remove(key);
+            }
         }
     }
 }

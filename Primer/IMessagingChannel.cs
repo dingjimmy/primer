@@ -33,8 +33,8 @@ namespace Primer
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
         /// <param name="messageHandler">The delegate to invoke when a message of the desired type is broadcast.</param>
-        /// <param name="filter"></param>
-        void Listen<T>(Func<T, bool> filter, Action<T> messageHandler) where T : IMessage;
+        /// <param name="criteria">An expression that provides additional criteria to control when the messageHander is to be executed.</param>
+        void Listen<T>(Func<T, bool> criteria, Action<T> messageHandler) where T : IMessage;
 
         /// <summary>
         /// Listens to the channel for a particular message type and provides options for when and how to execute a delegate.
