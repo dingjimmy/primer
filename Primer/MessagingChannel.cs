@@ -28,10 +28,10 @@ namespace Primer
         public MessagingChannel()
         {
             this.Handlers = new Dictionary<Type, IList<Action<IMessage>>>();
-            this.MessageBroadcast += HandleBroadcast;
+            this.MessageBroadcast += ExecuteMessageHandlers;
         }
 
-        private void HandleBroadcast(IMessage msg)
+        private void ExecuteMessageHandlers(IMessage msg)
         {
             var key = msg.GetType();
 
@@ -58,7 +58,7 @@ namespace Primer
             }
         }
 
-        private void Listen<T>(Action<IMessage> messageHandler) where T : IMessage
+        private void AddMessageHandler<T>(Action<IMessage> messageHandler) where T : IMessage
         {
             var key = typeof(T);
 
@@ -91,7 +91,7 @@ namespace Primer
                 messageHandler((T)m);
             };
 
-            Listen(wrapper);
+            AddMessageHandler<T>(wrapper);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Primer
                 }
             };
 
-            Listen(wrapper);
+            AddMessageHandler<T>(wrapper);
         }
 
         /// <summary>
@@ -136,6 +136,7 @@ namespace Primer
 
             if (Handlers.ContainsKey(key))
             {
+                Handlers[key].Clear();
                 Handlers.Remove(key);
             }
         }
