@@ -11,11 +11,6 @@ namespace Primer
     public interface IMessagingChannel
     {
         /// <summary>
-        /// Occurs when a message has been broadcast on this channel.
-        /// </summary>
-        event Action<IMessage> MessageBroadcast;
-
-        /// <summary>
         /// Broadcasts a message to anyone who is listening to the channel.
         /// </summary>
         /// <param name="message">The message to broadcast.</param>
