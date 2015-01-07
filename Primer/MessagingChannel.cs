@@ -64,7 +64,7 @@ namespace Primer
         private void AddMessageHandler<T>(Action<IMessage> messageHandler) where T : IMessage
         {
             var key = typeof(T);
-
+            
             if (this.Handlers.ContainsKey(key))
             {
                 this.Handlers[key].Add(messageHandler);
@@ -124,6 +124,7 @@ namespace Primer
         /// Listens to the channel for a particular message type and provides options for when and how to execute a delegate.
         /// </summary>
         /// <typeparam name="T">The type of message to listen out for.</typeparam>
+        /// <exception cref="NotImplementedException">Is always thrown and method has not yet been implemented.</exception>
         public IMessageHandlerBuilder<T> Listen<T>()
         {
             throw new NotImplementedException();

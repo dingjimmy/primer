@@ -95,7 +95,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModelUnitTests.cs" />
+    <Compile Include="MessagingChannelTests.cs" />
+    <Compile Include="ViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
