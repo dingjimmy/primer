@@ -15,7 +15,10 @@ namespace Primer
     /// </summary>
     public class MessagingChannel : IMessagingChannel
     {
-        private IDictionary<Type, IList<Action<IMessage>>> Handlers;
+        /// <summary>
+        /// Gets the message-handlers waiting to be invoked by a message broadcast.
+        /// </summary>
+        public IDictionary<Type, IList<Action<IMessage>>> Handlers { get; private set; }
 
         /// <summary>
         /// Occurs when a message has been broadcast on this channel.
@@ -35,7 +38,7 @@ namespace Primer
         {
             var key = msg.GetType();
 
-            if (Handlers.ContainsKey(key))
+            if (this.Handlers.ContainsKey(key))
             {
                 foreach (var messageHandler in Handlers[key])
                 {
@@ -62,15 +65,15 @@ namespace Primer
         {
             var key = typeof(T);
 
-            if (Handlers.ContainsKey(key))
+            if (this.Handlers.ContainsKey(key))
             {
-                Handlers[key].Add(messageHandler);
+                this.Handlers[key].Add(messageHandler);
             }
             else
             {
                 var list = new List<Action<IMessage>>();
                 list.Add(messageHandler);
-                Handlers.Add(key, list);
+                this.Handlers.Add(key, list);
             }
         }
 
