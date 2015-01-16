@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("James Dingle")]
 [assembly: AssemblyProduct("Primer MVVM Framework")]
-[assembly: AssemblyCopyright("Copyright © James Dingle 2013-2014")]
+[assembly: AssemblyCopyright("Copyright © James Dingle 2013-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

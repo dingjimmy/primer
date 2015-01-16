@@ -45,6 +45,18 @@ namespace Primer
         public ViewModelCollection<TViewModel> Collection<TViewModel, TEntity>(IEnumerable<TEntity> query, Action<ViewModelInitialiser, TEntity, TViewModel> initialiseMethod) 
             where TViewModel : IViewModel, new()
         {
+            return this.Collection<TViewModel, TEntity>(query, (i, e, v, o) => initialiseMethod(i, e, v), null);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ViewModelCollection{TViewModel}" />. 
+        /// </summary>
+        /// <param name="query">A collection of {TEntity} that is used to initialise the <see cref="ViewModelCollection{TViewModel}"/>. This is likley to be a Linq To Sql or Linq to Entities query, however any enumerable collection can be used.</param>
+        /// <param name="initialiseMethod">An action delegete that handles the initialsation of each new ViewModel in the collection.</param>
+        /// <param name="additionalData">An object that contains additional data required for correct initialisation of the ViewModelCollection.</param>
+        public ViewModelCollection<TViewModel> Collection<TViewModel, TEntity>(IEnumerable<TEntity> query, Action<ViewModelInitialiser, TEntity, TViewModel, object> initialiseMethod, dynamic additionalData) 
+            where TViewModel : IViewModel, new()
+        {
 
             // init collection of desired type
             var collection = new ViewModelCollection<TViewModel>();
@@ -64,7 +76,7 @@ namespace Primer
                 vm.Channel = _TargetViewModel.Channel;
 
                 // action the init function supplied by caller
-                initialiseMethod(initialiser, item, vm);
+                initialiseMethod(initialiser, item, vm, additionalData);
 
                 // add vm to collection
                 collection.Add(vm);

@@ -69,10 +69,12 @@ namespace Primer.SampleApp
 
 
             // Init a collection of ViewModels using a specific initialisation method.
-            Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (init, item, vm) =>
-                {
-                    vm.Model = new OrderDetailFacade(item, this.Channel); 
-                });
+            //Details = initialise.Collection<DetailViewModel, OrderDetail>(details, (init, item, vm) =>
+            //    {
+            //        vm.Model = new OrderDetailFacade(item, this.Channel);
+            //    });
+
+            Details = initialise.Collection<DetailViewModel, OrderDetail>(details, InitDetails, new { Data1 = "Foo", Data2 = "Bar" });
 
 
 
@@ -178,6 +180,21 @@ namespace Primer.SampleApp
             AvailableSuppliers.ClearFilter();
             AvailableSuppliers.ApplyFilter((item) => item.Entity.ID <= 6);
             //AvailableSuppliers.FilterIn((item) => item.Entity > 3 && item.Key < 10);
+        }
+
+
+        public void InitDetails(ViewModelInitialiser init, OrderDetail order, DetailViewModel vm, dynamic data)
+        {
+            try
+            {
+                vm.Model = new OrderDetailFacade(order, vm.Channel);
+                //Console.Clear();
+                Console.WriteLine("ID:{0}, Desc:{1}, Data1:{2}, Data2:{3}", order.ID, order.Description, data.Data1, data.Data2);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(string.Format("{0}: {1}", ex.GetType().ToString(), ex.Message));
+            }
         }
 
 
